@@ -77,31 +77,12 @@ Object::~Object()
   Indices.clear();
 }
 
-void Object::Update(unsigned int dt, int &code)
+void Object::Update(unsigned int dt)
 {
   angle += dt * M_PI/1000;
 
   glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
-  glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
-
-  // Make cube orbit by multiply matrices and vector with Translate function
-  if( code == 1 )
-	{
-	rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, -1.0, 0.0));
-	}
-  else if( code == 2 )
-	{
-        model = translateMatrix * rotateMatrix;
-	return;
-	}
-  else if( code == 3 )
-	{
-
-  	model =  rotateMatrix * translateMatrix;
-	return;
-	}
-
 
   model =  rotateMatrix * translateMatrix * rotateMatrix;
 

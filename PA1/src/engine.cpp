@@ -53,7 +53,6 @@ bool Engine::Initialize()
 void Engine::Run()
 {
   m_running = true;
-  int code = 0;
 
   while(m_running)
   {
@@ -63,11 +62,11 @@ void Engine::Run()
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard(code);
+      Keyboard();
     }
 
     // Update and render the graphics
-    m_graphics->Update(m_DT, code);
+    m_graphics->Update(m_DT);
     m_graphics->Render();
 
     // Swap to the Window
@@ -75,7 +74,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( int &code )
+void Engine::Keyboard()
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -88,35 +87,10 @@ void Engine::Keyboard( int &code )
     {
       m_running = false;
     }
-    else if(m_event.key.keysym.sym == SDLK_q)
-    {
-      code = 0;
-    }
-    else if(m_event.key.keysym.sym == SDLK_w)
-    {
-      code = 1;
-    }
-   else if(m_event.key.keysym.sym == SDLK_e)
-    {
-      code = 2;
-    }
-   else if(m_event.key.keysym.sym == SDLK_r)
-    {
-      code = 3;
-    }
 
   }
-  else if(m_event.type == SDL_MOUSEBUTTONDOWN)
-  {
-    if(m_event.button.button == SDL_BUTTON_LEFT)
-    {
-      code = 0;
-    }
-    if(m_event.button.button == SDL_BUTTON_RIGHT)
-    {
-      code = 3;
-    }
-  }
+
+  
   
 }
 
