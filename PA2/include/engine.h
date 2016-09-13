@@ -15,7 +15,7 @@ class Engine
     ~Engine();
     bool Initialize();
     void Run();
-    void Keyboard(int &code, bool &toggle);
+    void Keyboard(int &code, bool &toggle, bool &resetKey);
     unsigned int getDT();
     long long GetCurrentTimeMillis();
   

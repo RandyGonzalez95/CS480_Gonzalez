@@ -54,7 +54,7 @@ void Engine::Run()
   m_running = true;
   int code = 0;
   bool toggle = true;
-  bool updateFlag = false;
+  bool resetKey = false;
 
   while(m_running)
   {
@@ -64,11 +64,11 @@ void Engine::Run()
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard(code, toggle);
+      Keyboard(code, toggle, resetKey);
     }
 
     // Update and render the graphics
-    m_graphics->Update(m_DT, code, toggle);
+    m_graphics->Update(m_DT, code, toggle, resetKey);
     m_graphics->Render();
 
     // Swap to the Window
@@ -76,7 +76,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( int &code, bool &toggle )
+void Engine::Keyboard( int &code, bool &toggle, bool &resetKey )
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -101,33 +101,43 @@ void Engine::Keyboard( int &code, bool &toggle )
     {
       
       code = 1;
-      if(!toggle)
-        toggle = true;
-      else
+      toggle = !toggle;
+
+     if( resetKey )
+      {
         toggle = false;
-    std::cerr<< "Value for toggle is: "<<toggle<<"\n"; 
+      }
+ 
 	
     }
    else if(m_event.key.keysym.sym == SDLK_e)
     {
       code = 2;
-  
-      if(!toggle)
-        toggle = true;
-      else
-        toggle = false;
+      toggle = !toggle;
 
-    std::cerr<< "Value for toggle is: "<<toggle<<"\n";
+
+
+      if( resetKey )
+      {
+        toggle = false;
+        
+      }
 
     }
    else if(m_event.key.keysym.sym == SDLK_r)
     {
       code = 3;
-      if(!toggle)
-        toggle = true;
-      else
-        toggle = false;
-    std::cerr<< "Value for toggle is: "<<toggle<<"\n";
+      toggle = !toggle;
+
+ 
+      
+      if( resetKey )
+      {
+      toggle = false;
+      
+      }
+
+
     }
 
   }

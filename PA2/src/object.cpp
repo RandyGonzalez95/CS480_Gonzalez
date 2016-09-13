@@ -79,7 +79,7 @@ Object::~Object()
   Indices.clear();
 }
 
-void Object::Update(unsigned int dt, int &code, bool toggle)
+void Object::Update(unsigned int dt, int &code, bool toggle, bool &resetKey)
 { 
 
   // Declare matrices
@@ -100,11 +100,16 @@ void Object::Update(unsigned int dt, int &code, bool toggle)
   {
     // REVERSE
     if( !toggle )
-        angle -= dt * M_PI/1000;
+    {
+      resetKey = true;
+      angle -= dt * M_PI/1000;
+    }
+       
     else 
-      {
-        angle += dt* M_PI/1000;
-      }
+    {
+      resetKey = false;
+      angle += dt* M_PI/1000;
+    }
 
     rotateMatrix = glm::rotate(glm::mat4(1.0f), (-angle), glm::vec3(0.0, -1.0, 0.0));
    
@@ -117,10 +122,12 @@ void Object::Update(unsigned int dt, int &code, bool toggle)
 
     if(!toggle)
     {
+      resetKey = true;
       rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
       model = rotateMatrix * translateMatrix;
       return;
     }
+    resetKey = false;
    
   }
   // If 'R' is pressed
@@ -128,12 +135,14 @@ void Object::Update(unsigned int dt, int &code, bool toggle)
   {
     if(!toggle)
     {
+      resetKey = true;
       // PAUSE CUBE
       model =  rotateMatrix * translateMatrix;
       return;
     }
     else
     {
+      resetKey = false;
       angle += dt * M_PI/1000;
           
     }
