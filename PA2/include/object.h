@@ -9,7 +9,7 @@ class Object
   public:
     Object();
     ~Object();
-    void Update(unsigned int dt, int &code);
+    void Update(unsigned int dt, int &code, bool toggle);
     void Render();
 
     glm::mat4 GetModel();
@@ -22,6 +22,8 @@ class Object
     GLuint IB;
 
     float angle;
+    float currentAngle;
+  
 };
 
 #endif /* OBJECT_H */

@@ -1,4 +1,3 @@
-
 #include "engine.h"
 
 Engine::Engine(string name, int width, int height)
@@ -54,6 +53,8 @@ void Engine::Run()
 {
   m_running = true;
   int code = 0;
+  bool toggle = true;
+  bool updateFlag = false;
 
   while(m_running)
   {
@@ -63,11 +64,11 @@ void Engine::Run()
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard(code);
+      Keyboard(code, toggle);
     }
 
     // Update and render the graphics
-    m_graphics->Update(m_DT, code);
+    m_graphics->Update(m_DT, code, toggle);
     m_graphics->Render();
 
     // Swap to the Window
@@ -75,7 +76,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( int &code )
+void Engine::Keyboard( int &code, bool &toggle )
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -83,26 +84,50 @@ void Engine::Keyboard( int &code )
   }
   else if (m_event.type == SDL_KEYDOWN)
   {
+  
     // handle key down events here
     if (m_event.key.keysym.sym == SDLK_ESCAPE)
     {
       m_running = false;
     }
-    else if(m_event.key.keysym.sym == SDLK_q)
+    else if(m_event.key.keysym.sym == SDLK_q)  // Default key
     {
+    
+      toggle = true;
       code = 0;
+      
     }
-    else if(m_event.key.keysym.sym == SDLK_w)
+    else if(m_event.key.keysym.sym == SDLK_w) // Reverse key
     {
+      
       code = 1;
+      if(!toggle)
+        toggle = true;
+      else
+        toggle = false;
+    std::cerr<< "Value for toggle is: "<<toggle<<"\n"; 
+	
     }
    else if(m_event.key.keysym.sym == SDLK_e)
     {
       code = 2;
+  
+      if(!toggle)
+        toggle = true;
+      else
+        toggle = false;
+
+    std::cerr<< "Value for toggle is: "<<toggle<<"\n";
+
     }
    else if(m_event.key.keysym.sym == SDLK_r)
     {
       code = 3;
+      if(!toggle)
+        toggle = true;
+      else
+        toggle = false;
+    std::cerr<< "Value for toggle is: "<<toggle<<"\n";
     }
 
   }
@@ -115,6 +140,10 @@ void Engine::Keyboard( int &code )
     if(m_event.button.button == SDL_BUTTON_RIGHT)
     {
       code = 3;
+      if(toggle)
+        toggle = false;
+      else
+        toggle = true;
     }
   }
   
