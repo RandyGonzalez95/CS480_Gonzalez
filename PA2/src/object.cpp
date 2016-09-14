@@ -79,13 +79,13 @@ Object::~Object()
   Indices.clear();
 }
 
-void Object::Update(unsigned int dt, int &code, bool toggle, bool &resetKey)
+void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
 { 
 
   // Declare matrices
   glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
-  glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (currentAngle), glm::vec3(0.0, 1.0, 0.0));
 
   
   // Check keyboard input
@@ -93,62 +93,82 @@ void Object::Update(unsigned int dt, int &code, bool toggle, bool &resetKey)
   {
     // DEFAULT
     angle += dt * M_PI/1000;
-    rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
+    currentAngle += dt* M_PI/1000;
+
   }
   // If 'W' is pressed
   else if( code == 1 )
   {
     // REVERSE
-    if( !toggle )
-    {
-      resetKey = true;
-      angle -= dt * M_PI/1000;
-    }
-       
+    if( !toggle ) // check if key was pressed the first time   
+    { 
+      angle -= dt * M_PI/1000;  
+      currentAngle -= dt* M_PI/1000;
+    }       
     else 
     {
-      resetKey = false;
+      // Normal
       angle += dt* M_PI/1000;
+      currentAngle += dt* M_PI/1000;
     }
 
-    rotateMatrix = glm::rotate(glm::mat4(1.0f), (-angle), glm::vec3(0.0, -1.0, 0.0));
    
   }
   // If user presses 'E'
   else if( (code == 2) )
   {
     // STOP ROTATE but keep ORBIT
-    angle += dt * M_PI/1000;
+    angle += dt* M_PI/1000;
+    currentAngle += dt* M_PI/1000;;
 
-    if(!toggle)
-    {
-      resetKey = true;
-      rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
-      model = rotateMatrix * translateMatrix;
-      return;
+    if(!toggle)// check for toggle key
+    {    
+      // stop cube from rotate while orbitting     
+    	currentAngle = 0;      
     }
-    resetKey = false;
+
    
   }
   // If 'R' is pressed
   else if( code == 3 )
   {
-    if(!toggle)
+    if(!toggle)// check for toggle key
     {
-      resetKey = true;
-      // PAUSE CUBE
-      model =  rotateMatrix * translateMatrix;
-      return;
+    
+      // PAUSE CUBE	
+	// do nothing
     }
     else
-    {
-      resetKey = false;
+    {  
+      // Normal
       angle += dt * M_PI/1000;
+      currentAngle += dt * M_PI/1000;
+          
+    }
+  }
+  // If 'T' is pressed
+  else if( code == 4 )
+  {
+    if(!toggle)// check for toggle key
+    {
+      // PAUSE ORBIT
+      angle += 0;
+      currentAngle += dt * M_PI/1000;
+     
+
+    }
+    else
+    {  
+      // normal setting
+      angle += dt * M_PI/1000;
+      currentAngle += dt * M_PI/1000;
           
     }
   }
 
-  model = rotateMatrix * translateMatrix * rotateMatrix;
+  }
+
+  model = rotateMatrix * translateMatrix * rotateMatrix2;
 }
 
 glm::mat4 Object::GetModel()

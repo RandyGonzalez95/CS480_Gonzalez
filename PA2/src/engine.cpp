@@ -76,7 +76,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( int &code, bool &toggle, bool &resetKey )
+void Engine::Keyboard( int &code, bool &toggle, bool &resetKey ) // Reset key is redundant, Purpose was to reset the toggle with an 									incoming new input.
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -99,61 +99,43 @@ void Engine::Keyboard( int &code, bool &toggle, bool &resetKey )
     }
     else if(m_event.key.keysym.sym == SDLK_w) // Reverse key
     {
-      
       code = 1;
-      toggle = !toggle;
-
-     if( resetKey )
-      {
-        toggle = false;
-      }
- 
+      toggle = !toggle; 
 	
     }
-   else if(m_event.key.keysym.sym == SDLK_e)
+   else if(m_event.key.keysym.sym == SDLK_e) // Stop spin
     {
       code = 2;
-      toggle = !toggle;
-
-
-
-      if( resetKey )
-      {
-        toggle = false;
-        
-      }
+      toggle = !toggle; 
 
     }
-   else if(m_event.key.keysym.sym == SDLK_r)
+   else if(m_event.key.keysym.sym == SDLK_r) // Pause cube
     {
       code = 3;
-      toggle = !toggle;
-
+      toggle = !toggle; 
  
-      
-      if( resetKey )
-      {
-      toggle = false;
-      
-      }
+     }
+   else if(m_event.key.keysym.sym == SDLK_t) // Pause orbit
+    {
+      code = 4;
+      toggle = !toggle; 
+ 
+     }
 
-
-    }
 
   }
   else if(m_event.type == SDL_MOUSEBUTTONDOWN)
   {
     if(m_event.button.button == SDL_BUTTON_LEFT)
     {
-      code = 0;
+      code = 1;
+      toggle = !toggle;
     }
     if(m_event.button.button == SDL_BUTTON_RIGHT)
     {
-      code = 3;
-      if(toggle)
-        toggle = false;
-      else
-        toggle = true;
+      code = 2;
+  
+      toggle = !toggle;
     }
   }
   
