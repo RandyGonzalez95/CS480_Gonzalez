@@ -44,8 +44,8 @@ bool Graphics::Initialize(int width, int height)
     return false;
   }
 
-  // Create the object
-  m_cube = new Object();
+  // Create the objects
+  m_cube = new Object[2]();
 
   // Set up the shaders
   m_shader = new Shader();
@@ -100,6 +100,7 @@ bool Graphics::Initialize(int width, int height)
     return false;
   }
 
+
   //enable depth testing
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
@@ -110,7 +111,15 @@ bool Graphics::Initialize(int width, int height)
 void Graphics::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
 {
   // Update the object
-  m_cube->Update(dt, code, toggle, resetKey);
+  m_cube[0].Update(dt, code, toggle, resetKey);
+
+
+}
+
+void Graphics::UpdateMoon(unsigned int dt, int &code, bool &toggle, bool &resetKey)
+{
+
+  m_cube[1].Update(dt, code, toggle, resetKey);
 }
 
 void Graphics::Render()
@@ -126,9 +135,13 @@ void Graphics::Render()
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection())); 
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView())); 
 
-  // Render the object
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_cube->GetModel()));
-  m_cube->Render();
+  // Render the cube and the moon
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_cube[0].GetModel()));
+
+  m_cube[0].Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_cube[1].GetModel()));
+  m_cube[1].Render();
 
   // Get any errors from OpenGL
   auto error = glGetError();

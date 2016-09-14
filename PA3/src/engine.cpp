@@ -55,6 +55,7 @@ void Engine::Run()
   int code = 0;
   bool toggle = true;
   bool resetKey = false;
+  int moonCode = 0;
 
   while(m_running)
   {
@@ -69,6 +70,7 @@ void Engine::Run()
 
     // Update and render the graphics
     m_graphics->Update(m_DT, code, toggle, resetKey);
+    //m_graphics->UpdateMoon(m_DT, moonCode, toggle, resetKey);
     m_graphics->Render();
 
     // Swap to the Window

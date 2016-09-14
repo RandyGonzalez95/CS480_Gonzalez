@@ -81,13 +81,7 @@ Object::~Object()
 
 void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
 { 
-
-  // Declare matrices
-  glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
-  glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
-  glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (currentAngle), glm::vec3(0.0, 1.0, 0.0));
-
-  
+ 
   // Check keyboard input
   if( code == 0 )
   {
@@ -133,8 +127,7 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
   else if( code == 3 )
   {
     if(!toggle)// check for toggle key
-    {
-    
+    {    
       // PAUSE CUBE	
 	// do nothing
     }
@@ -142,8 +135,7 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     {  
       // Normal
       angle += dt * M_PI/1000;
-      currentAngle += dt * M_PI/1000;
-          
+      currentAngle += dt * M_PI/1000;          
     }
   }
   // If 'T' is pressed
@@ -153,20 +145,23 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     {
       // PAUSE ORBIT
       angle += 0;
-      currentAngle += dt * M_PI/1000;
-     
+      currentAngle += dt * M_PI/1000;   
 
     }
     else
     {  
       // normal setting
       angle += dt * M_PI/1000;
-      currentAngle += dt * M_PI/1000;
-          
+      currentAngle += dt * M_PI/1000;          
     }
-  }
+  }  
 
-  }
+
+
+  // Declare matrices
+  glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
+  glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (currentAngle), glm::vec3(0.0, 1.0, 0.0));
 
   model = rotateMatrix * translateMatrix * rotateMatrix2;
 }

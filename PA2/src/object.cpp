@@ -166,7 +166,7 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     }
   }
 
-  }
+  
 
   model = rotateMatrix * translateMatrix * rotateMatrix2;
 }
