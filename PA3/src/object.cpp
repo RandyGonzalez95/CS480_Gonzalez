@@ -60,8 +60,15 @@ Object::Object()
     Indices[i] = Indices[i] - 1;
   }
 
-  angle = 0.0f;
-  currentAngle = 0.0f;
+  // Initialize Angle Arrays
+  planetAngle = new float[2];
+  moonAngle = new float[2];
+
+  for(unsigned int i = 0; i<2; i++ )
+  {
+    planetAngle[i] = 0;
+    moonAngle[i] = 0;
+  }
  
 
   glGenBuffers(1, &VB);
@@ -81,13 +88,17 @@ Object::~Object()
 
 void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
 { 
- 
+  // orbit moon angle
+  moonAngle[0] += (dt * M_PI/1000);
+  moonAngle[1] += (dt * M_PI/1000);
+
   // Check keyboard input
   if( code == 0 )
   {
     // DEFAULT
-    angle += dt * M_PI/1000;
-    currentAngle += dt* M_PI/1000;
+    planetAngle[0] += dt * M_PI/1000; // orbit
+    planetAngle[1] += dt* M_PI/1000; // rotate
+   
 
   }
   // If 'W' is pressed
@@ -96,14 +107,20 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     // REVERSE
     if( !toggle ) // check if key was pressed the first time   
     { 
-      angle -= dt * M_PI/1000;  
-      currentAngle -= dt* M_PI/1000;
+      planetAngle[0] -= dt * M_PI/1000;  //orbit
+      planetAngle[1] -= dt* M_PI/1000;  // rotate
+
+      moonAngle[0] -= (dt * M_PI/1000);
+      moonAngle[1] -= (dt * M_PI/1000);
     }       
     else 
     {
       // Normal
-      angle += dt* M_PI/1000;
-      currentAngle += dt* M_PI/1000;
+      planetAngle[0] += dt* M_PI/1000;  // orbit
+      planetAngle[1] += dt* M_PI/1000;  // rotate
+
+      moonAngle[0] += (dt * M_PI/1000);
+      moonAngle[1] += (dt * M_PI/1000);
     }
 
    
@@ -112,13 +129,13 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
   else if( (code == 2) )
   {
     // STOP ROTATE but keep ORBIT
-    angle += dt* M_PI/1000;
-    currentAngle += dt* M_PI/1000;;
+    planetAngle[0] += dt* M_PI/1000; // orbit
+    planetAngle[1] += dt* M_PI/1000; // rotate
 
     if(!toggle)// check for toggle key
     {    
       // stop cube from rotate while orbitting     
-    	currentAngle = 0;      
+    	planetAngle[1] = 0;   // rotate   
     }
 
    
@@ -134,8 +151,8 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     else
     {  
       // Normal
-      angle += dt * M_PI/1000;
-      currentAngle += dt * M_PI/1000;          
+      planetAngle[0] += dt * M_PI/1000; // orbit
+      planetAngle[1] += dt * M_PI/1000; // rotate         
     }
   }
   // If 'T' is pressed
@@ -144,31 +161,50 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     if(!toggle)// check for toggle key
     {
       // PAUSE ORBIT
-      angle += 0;
-      currentAngle += dt * M_PI/1000;   
+      planetAngle[0] += 0; // orbit
+      planetAngle[1] += dt * M_PI/1000; // rotate  
 
     }
     else
     {  
       // normal setting
-      angle += dt * M_PI/1000;
-      currentAngle += dt * M_PI/1000;          
+      planetAngle[0] += dt * M_PI/1000; // orbit
+      planetAngle[1] += dt * M_PI/1000;  // rotate        
     }
   }  
 
 
 
   // Declare matrices
-  glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 orbitMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[0]), glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
-  glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (currentAngle), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));
 
-  model = rotateMatrix * translateMatrix * rotateMatrix2;
+  model = orbitMatrix * translateMatrix * rotateMatrix; // planet
+ 
+
+  // Moon matrices
+
+  /*orbitMatrix = glm::rotate(model, (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));
+  translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -3.0));
+  rotateMatrix = glm::rotate(glm::mat4(1.0f), (moonAngle[1]), glm::vec3(0.0, 1.0, 0.0));
+
+  moon_model = orbitMatrix * translateMatrix * rotateMatrix;*/
+
+  //moon_model = glm::rotate(glm::mat4(1.0f), (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));    
+  moon_model = glm::translate( model, glm::vec3( 3* sin(moonAngle[0]), 0.0, 3 *cos(moonAngle[1])));   
+  moon_model = glm::rotate(moon_model, moonAngle[1], glm::vec3(0.0,1.0,0.0));
+
 }
 
 glm::mat4 Object::GetModel()
 {
   return model;
+}
+
+glm::mat4 Object::GetMoonModel()
+{
+  return moon_model;
 }
 
 void Object::Render()

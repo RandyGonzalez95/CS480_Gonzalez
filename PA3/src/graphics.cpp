@@ -112,14 +112,10 @@ void Graphics::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
 {
   // Update the object
   m_cube[0].Update(dt, code, toggle, resetKey);
-
-
-}
-
-void Graphics::UpdateMoon(unsigned int dt, int &code, bool &toggle, bool &resetKey)
-{
-
   m_cube[1].Update(dt, code, toggle, resetKey);
+  //m_cube[1].UpdateMoon(dt, code, toggle );
+
+
 }
 
 void Graphics::Render()
@@ -140,7 +136,7 @@ void Graphics::Render()
 
   m_cube[0].Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_cube[1].GetModel()));
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_cube[1].GetMoonModel()));
   m_cube[1].Render();
 
   // Get any errors from OpenGL
