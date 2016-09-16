@@ -180,20 +180,23 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
   glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));
 
+ // model = glm::translate(glm::mat4(1.0f), glm::vec3(5*sin(planetAngle[0]), 0.0, 5*cos(planetAngle[1])));
+  //model = glm::rotate(model, (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));;
+
   model = orbitMatrix * translateMatrix * rotateMatrix; // planet
  
 
   // Moon matrices
 
-  /*orbitMatrix = glm::rotate(model, (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));
+  orbitMatrix = glm::rotate(model, (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));
   translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -3.0));
   rotateMatrix = glm::rotate(glm::mat4(1.0f), (moonAngle[1]), glm::vec3(0.0, 1.0, 0.0));
 
-  moon_model = orbitMatrix * translateMatrix * rotateMatrix;*/
+  moon_model = orbitMatrix * translateMatrix * rotateMatrix;
 
-  //moon_model = glm::rotate(glm::mat4(1.0f), (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));    
-  moon_model = glm::translate( model, glm::vec3( 3* sin(moonAngle[0]), 0.0, 3 *cos(moonAngle[1])));   
-  moon_model = glm::rotate(moon_model, moonAngle[1], glm::vec3(0.0,1.0,0.0));
+  /*moon_model = glm::rotate(glm::mat4(1.0f), (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));    
+  moon_model = glm::translate( model, glm::vec3( 0.0, 0.0, -3.0));   
+  moon_model = glm::rotate(moon_model, moonAngle[1], glm::vec3(0.0,1.0,0.0));*/
 
 }
 
