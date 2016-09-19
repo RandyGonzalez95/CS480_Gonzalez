@@ -49,13 +49,24 @@ bool Engine::Initialize()
   return true;
 }
 
+void Engine::InitCodes( bool * code )
+{
+  int index = 0;
+
+  // initialize array of booleans to 0
+  for(index = 0; index<10; index++)
+  {
+    code[index] = false;
+  }
+}
+
 void Engine::Run()
 {
   m_running = true;
-  int code = 0;
-  bool toggle = true;
-  bool resetKey = false;
-  int moonCode = 0;
+  bool *code = new bool[10]; // creates array of booleans to check spin, orbit, rotate codes
+
+  // initialize all bools to false
+  InitCodes(code);
 
   while(m_running)
   {
@@ -65,11 +76,11 @@ void Engine::Run()
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard(code, toggle, resetKey);
+      Keyboard(code);
     }
 
     // Update and render the graphics
-    m_graphics->Update(m_DT, code, toggle, resetKey);
+    m_graphics->Update(m_DT, code);
     m_graphics->Render();
 
     // Swap to the Window
@@ -77,7 +88,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( int &code, bool &toggle, bool &resetKey ) // Reset key is redundant, Purpose was to reset the toggle with an 									incoming new input.
+void Engine::Keyboard( bool *code )
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -85,7 +96,7 @@ void Engine::Keyboard( int &code, bool &toggle, bool &resetKey ) // Reset key is
   }
   else if (m_event.type == SDL_KEYDOWN)
   {
-  
+
     // handle key down events here
     if (m_event.key.keysym.sym == SDLK_ESCAPE)
     {
@@ -93,35 +104,60 @@ void Engine::Keyboard( int &code, bool &toggle, bool &resetKey ) // Reset key is
     }
     else if(m_event.key.keysym.sym == SDLK_q)  // Default key
     {
-    
-      toggle = true;
-      code = 0;
-      
+       // code 0
+       code[0] = !code[0];
+
     }
     else if(m_event.key.keysym.sym == SDLK_w) // Reverse key
     {
-      code = 1;
-      toggle = !toggle; 
-	
+      // code 1
+      code[1] = !code[1];
     }
    else if(m_event.key.keysym.sym == SDLK_e) // Stop spin
     {
-      code = 2;
-      toggle = !toggle; 
+      // code 2
+      code[2] = !code[2];
 
     }
    else if(m_event.key.keysym.sym == SDLK_r) // Pause cube
     {
-      code = 3;
-      toggle = !toggle; 
- 
-     }
+      // code 3
+      code[3] = !code[3];
+
+
+    }
    else if(m_event.key.keysym.sym == SDLK_t) // Pause orbit
     {
-      code = 4;
-      toggle = !toggle; 
- 
-     }
+      // code 4
+      code[4] = !code[4];
+    }
+
+   // Moon Keys
+
+  else if(m_event.key.keysym.sym == SDLK_a)  // Default key
+    {
+
+
+    }
+    else if(m_event.key.keysym.sym == SDLK_s) // Reverse key
+    {
+
+
+    }
+   else if(m_event.key.keysym.sym == SDLK_d) // Stop spin
+    {
+
+
+    }
+   else if(m_event.key.keysym.sym == SDLK_f) // Pause cube
+    {
+
+    }
+   else if(m_event.key.keysym.sym == SDLK_g) // Pause orbit
+    {
+
+    }
+
 
 
   }
@@ -129,17 +165,14 @@ void Engine::Keyboard( int &code, bool &toggle, bool &resetKey ) // Reset key is
   {
     if(m_event.button.button == SDL_BUTTON_LEFT)
     {
-      code = 1;
-      toggle = !toggle;
+      code[1] = !code[1];
     }
     if(m_event.button.button == SDL_BUTTON_RIGHT)
     {
-      code = 2;
-  
-      toggle = !toggle;
+      code[2] = !code[2];
     }
   }
-  
+
 }
 
 unsigned int Engine::getDT()

@@ -1,7 +1,7 @@
 #include "object.h"
 
 Object::Object()
-{  
+{
   /*
     # Blender File for a Cube
     o Cube
@@ -69,7 +69,7 @@ Object::Object()
     planetAngle[i] = 0;
     moonAngle[i] = 0;
   }
- 
+
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -86,92 +86,54 @@ Object::~Object()
   Indices.clear();
 }
 
-void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
-{ 
-  // orbit moon angle
-  moonAngle[0] += (dt * M_PI/1000);
-  moonAngle[1] += (dt * M_PI/1000);
+void Object::Update(unsigned int dt, bool *code)
+{
 
-  // Check keyboard input
-  if( code == 0 )
+    // orbit moon angle
+    moonAngle[0] += (dt * M_PI/1000);
+    moonAngle[1] += (dt * M_PI/1000);
+
+  if(!code[3]) // if the cube is not paused
   {
-    // DEFAULT
-    planetAngle[0] += dt * M_PI/1000; // orbit
-    planetAngle[1] += dt* M_PI/1000; // rotate
-   
-
-  }
-  // If 'W' is pressed
-  else if( code == 1 )
-  {
-    // REVERSE
-    if( !toggle ) // check if key was pressed the first time   
-    { 
-      planetAngle[0] -= dt * M_PI/1000;  //orbit
-      planetAngle[1] -= dt* M_PI/1000;  // rotate
-
-      moonAngle[0] -= (dt * M_PI/1000);
-      moonAngle[1] -= (dt * M_PI/1000);
-    }       
-    else 
+    // Check keyboard input
+    if( code[0] )
     {
-      // Normal
-      planetAngle[0] += dt* M_PI/1000;  // orbit
-      planetAngle[1] += dt* M_PI/1000;  // rotate
-
-      moonAngle[0] += (dt * M_PI/1000);
-      moonAngle[1] += (dt * M_PI/1000);
+      // DEFAULT
     }
+    // If 'W' is pressed
+    if( code[1] )
+    {
+        planetAngle[0] -= dt * M_PI/1000;  //orbit
+        planetAngle[1] -= dt* M_PI/1000;  // rotate
 
-   
-  }
-  // If user presses 'E'
-  else if( (code == 2) )
-  {
-    // STOP ROTATE but keep ORBIT
-    planetAngle[0] += dt* M_PI/1000; // orbit
-    planetAngle[1] += dt* M_PI/1000; // rotate
-
-    if(!toggle)// check for toggle key
-    {    
-      // stop cube from rotate while orbitting     
-    	planetAngle[1] = 0;   // rotate   
-    }
-
-   
-  }
-  // If 'R' is pressed
-  else if( code == 3 )
-  {
-    if(!toggle)// check for toggle key
-    {    
-      // PAUSE CUBE	
-	// do nothing
+        moonAngle[0] += (dt * M_PI/600);
+        moonAngle[1] += (dt * M_PI/600);
     }
     else
-    {  
-      // Normal
-      planetAngle[0] += dt * M_PI/1000; // orbit
-      planetAngle[1] += dt * M_PI/1000; // rotate         
-    }
-  }
-  // If 'T' is pressed
-  else if( code == 4 )
-  {
-    if(!toggle)// check for toggle key
     {
-      // PAUSE ORBIT
-      planetAngle[0] += 0; // orbit
-      planetAngle[1] += dt * M_PI/1000; // rotate  
-
-    }
-    else
-    {  
-      // normal setting
+      // DEFAULT
       planetAngle[0] += dt * M_PI/1000; // orbit
-      planetAngle[1] += dt * M_PI/1000;  // rotate        
+      planetAngle[1] += dt * M_PI/1000; // rotate
     }
-  }  
+    // If user presses 'E'
+    if( code[2] )  // stop cube from rotate while orbitting
+        planetAngle[1] = 0;   // rotate
+
+    // If 'T' is pressed
+    if( code[4] )
+    {
+        // PAUSE ORBIT
+        planetAngle[0] -= dt * M_PI/1000; //orbit
+        //planetAngle[1] += dt * M_PI/1000; // rotate
+    }
+
+
+  }
+  else // cube is paused so do nothing
+  {
+    // dont update
+  }
+
 
 
 
@@ -180,23 +142,19 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
   glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));
 
- // model = glm::translate(glm::mat4(1.0f), glm::vec3(5*sin(planetAngle[0]), 0.0, 5*cos(planetAngle[1])));
-  //model = glm::rotate(model, (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));;
 
+  // Planet Model
   model = orbitMatrix * translateMatrix * rotateMatrix; // planet
- 
+
 
   // Moon matrices
-
   orbitMatrix = glm::rotate(model, (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));
   translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -3.0));
   rotateMatrix = glm::rotate(glm::mat4(1.0f), (moonAngle[1]), glm::vec3(0.0, 1.0, 0.0));
 
-  moon_model = orbitMatrix * translateMatrix * rotateMatrix;
+  // Moon Model
+  moon_model = (orbitMatrix * translateMatrix * rotateMatrix) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5));;
 
-  /*moon_model = glm::rotate(glm::mat4(1.0f), (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));    
-  moon_model = glm::translate( model, glm::vec3( 0.0, 0.0, -3.0));   
-  moon_model = glm::rotate(moon_model, moonAngle[1], glm::vec3(0.0,1.0,0.0));*/
 
 }
 
@@ -226,4 +184,3 @@ void Object::Render()
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
 }
-

@@ -14,14 +14,15 @@ class Engine
     Engine(string name);
     ~Engine();
     bool Initialize();
+    void InitCodes(bool* code);
     void Run();
-    void Keyboard(int &code, bool &toggle, bool &resetKey);
+    void Keyboard(bool* code);
     unsigned int getDT();
     long long GetCurrentTimeMillis();
-  
+
   private:
     // Window related variables
-    Window *m_window;    
+    Window *m_window;
     string m_WINDOW_NAME;
     int m_WINDOW_WIDTH;
     int m_WINDOW_HEIGHT;
