@@ -89,52 +89,84 @@ Object::~Object()
 void Object::Update(unsigned int dt, bool *code)
 {
 
+  // If 'Q' is pressed
+  if( code[0] ) // Reverse Orbit
+  {
+     planetAngle[0] -= dt * M_PI/600;  //orbit
+     planetAngle[1] += dt * M_PI/600; // rotate
+  }
+  // If 'W' is pressed
+  if( code[1] ) // Reverse Rotate
+  {
+      planetAngle[1] -= dt* M_PI/250;  // rotate
+
+      if(!code[7]) // if the moon is not paused
+      moonAngle[0] += (dt * M_PI/400);
+  }
+  // If 'E' is pressed
+  if( code[2] && !code[7])
+  {
+    // don't do anything
+
+    moonAngle[0] += (dt * M_PI/1000); // orbit
+    moonAngle[1] += (dt * M_PI/1000); // rotate
+  }
+  // If user presses 'R'
+  if( code[3] )  // PAUSE obit, rotate in place
+  {
+    planetAngle[1] -= dt * M_PI/1000;   // rotate
+  }
+  // If 'T' is pressed
+  if( code[4] )
+  {
+    // PAUSE rotate, orbit around origin
+    planetAngle[0] -= dt * M_PI/1000;   // orbit
+    if( code[0] )// if it's reverse
+    {
+      planetAngle[0] += dt * M_PI/600;
+    }
+  }
+  // Moon Interactions
+  // If 'A' is pressed
+  if( code[5] )// Reverse Orbit of Moon
+  {
+    moonAngle[0] -= dt * M_PI/250; // orbit
+    moonAngle[1] += dt * M_PI/250; // rotate
+  }
+  // If 'S' is pressed
+  if( code[6] ) // Reverse Rotate
+  {
+    moonAngle[1] -= dt * M_PI/200; // rotate
+  }
+  // If 'D' is pressed
+  if( code[7] ) // Pause completely
+  {
+    // do nothing
+  }
+  // If user presses 'F'
+  if( code[8] )  // PAUSE obit, rotate in place
+  {
+    moonAngle[1] -= dt*M_PI/400; // pauses rotate
+  }
+  // If 'G' is pressed
+  if( code[9] )
+  {
+    moonAngle[1] -= dt*M_PI/250;
+  }
+  // Default
+  if(!code[2]) // do if NOT paused
+  {
+    // plant orbit and rotate
+    planetAngle[0] += dt * M_PI/1000; // orbit
+    planetAngle[1] += dt * M_PI/1000; // rotate
+
+  }
+  if(!code[7])
+  {
     // orbit moon angle
-    moonAngle[0] += (dt * M_PI/1000);
-    moonAngle[1] += (dt * M_PI/1000);
-
-  if(!code[3]) // if the cube is not paused
-  {
-    // Check keyboard input
-    if( code[0] )
-    {
-      // DEFAULT
-    }
-    // If 'W' is pressed
-    if( code[1] )
-    {
-        planetAngle[0] -= dt * M_PI/1000;  //orbit
-        planetAngle[1] -= dt* M_PI/1000;  // rotate
-
-        moonAngle[0] += (dt * M_PI/600);
-        moonAngle[1] += (dt * M_PI/600);
-    }
-    else
-    {
-      // DEFAULT
-      planetAngle[0] += dt * M_PI/1000; // orbit
-      planetAngle[1] += dt * M_PI/1000; // rotate
-    }
-    // If user presses 'E'
-    if( code[2] )  // stop cube from rotate while orbitting
-        planetAngle[1] = 0;   // rotate
-
-    // If 'T' is pressed
-    if( code[4] )
-    {
-        // PAUSE ORBIT
-        planetAngle[0] -= dt * M_PI/1000; //orbit
-        //planetAngle[1] += dt * M_PI/1000; // rotate
-    }
-
-
+    moonAngle[0] += (dt * M_PI/1000); // orbit
+    moonAngle[1] += (dt * M_PI/1000); // rotate
   }
-  else // cube is paused so do nothing
-  {
-    // dont update
-  }
-
-
 
 
   // Declare matrices
@@ -142,10 +174,8 @@ void Object::Update(unsigned int dt, bool *code)
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
   glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));
 
-
   // Planet Model
   model = orbitMatrix * translateMatrix * rotateMatrix; // planet
-
 
   // Moon matrices
   orbitMatrix = glm::rotate(model, (moonAngle[0]), glm::vec3(0.0, 1.0, 0.0));

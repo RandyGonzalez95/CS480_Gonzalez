@@ -102,63 +102,63 @@ void Engine::Keyboard( bool *code )
     {
       m_running = false;
     }
-    else if(m_event.key.keysym.sym == SDLK_q)  // Default key
+    else if(m_event.key.keysym.sym == SDLK_q)  // Reverse orbit
     {
        // code 0
        code[0] = !code[0];
 
     }
-    else if(m_event.key.keysym.sym == SDLK_w) // Reverse key
+    else if(m_event.key.keysym.sym == SDLK_w) // Reverse rotate
     {
       // code 1
       code[1] = !code[1];
     }
-   else if(m_event.key.keysym.sym == SDLK_e) // Stop spin
+   else if(m_event.key.keysym.sym == SDLK_e) // Pause completely
     {
+      // Re-initialize all codes to pause
+      if( !code[2] )
+      InitCodes(code);
       // code 2
       code[2] = !code[2];
-
     }
-   else if(m_event.key.keysym.sym == SDLK_r) // Pause cube
+   else if(m_event.key.keysym.sym == SDLK_r) // Pause rotate
     {
+
       // code 3
       code[3] = !code[3];
-
-
     }
    else if(m_event.key.keysym.sym == SDLK_t) // Pause orbit
     {
       // code 4
       code[4] = !code[4];
     }
+    else if(m_event.key.keysym.sym == SDLK_a)
+     {
+       // code 5
+       code[5] = !code[5];
+     }
 
    // Moon Keys
-
-  else if(m_event.key.keysym.sym == SDLK_a)  // Default key
+    else if(m_event.key.keysym.sym == SDLK_s)
     {
-
-
+      // code 6
+      code[6] = !code[6];
     }
-    else if(m_event.key.keysym.sym == SDLK_s) // Reverse key
+    else if(m_event.key.keysym.sym == SDLK_d)
     {
-
-
+      // code 7
+      code[7] = !code[7];
     }
-   else if(m_event.key.keysym.sym == SDLK_d) // Stop spin
+    else if(m_event.key.keysym.sym == SDLK_f)
     {
-
-
+      // code 8
+      code[8] = !code[8];
     }
-   else if(m_event.key.keysym.sym == SDLK_f) // Pause cube
+    else if(m_event.key.keysym.sym == SDLK_g) 
     {
-
+      // code 9
+      code[9] = !code[9];
     }
-   else if(m_event.key.keysym.sym == SDLK_g) // Pause orbit
-    {
-
-    }
-
-
 
   }
   else if(m_event.type == SDL_MOUSEBUTTONDOWN)
