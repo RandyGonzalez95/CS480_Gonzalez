@@ -112,15 +112,15 @@ void Object::Update(unsigned int dt, bool *code)
     moonAngle[1] += (dt * M_PI/1000); // rotate
   }
   // If user presses 'R'
-  if( code[3] )  // PAUSE obit, rotate in place
+  if( code[3] )  // PAUSE rotate, orbit in place
   {
-    planetAngle[1] -= dt * M_PI/1000;   // rotate
+    planetAngle[1] -= dt * M_PI/1000;   // stop rotate angle
   }
   // If 'T' is pressed
   if( code[4] )
   {
-    // PAUSE rotate, orbit around origin
-    planetAngle[0] -= dt * M_PI/1000;   // orbit
+    // PAUSE orbit, orbit around origin
+    planetAngle[0] -= dt * M_PI/1000;   // stop orbit angle
     if( code[0] )// if it's reverse
     {
       planetAngle[0] += dt * M_PI/600;
@@ -144,14 +144,14 @@ void Object::Update(unsigned int dt, bool *code)
     // do nothing
   }
   // If user presses 'F'
-  if( code[8] )  // PAUSE obit, rotate in place
+  if( code[8] )  // PAUSE rotate for moon
   {
-    moonAngle[1] -= dt*M_PI/400; // pauses rotate
+    moonAngle[0] += dt*M_PI/600; // pauses orbit angle
   }
   // If 'G' is pressed
-  if( code[9] )
+  if( code[9] ) // PAUSE orbit
   {
-    moonAngle[1] -= dt*M_PI/250;
+    moonAngle[1] += dt*M_PI/600; // pauses rotate angle
   }
   // Default
   if(!code[2]) // do if NOT paused
@@ -161,7 +161,7 @@ void Object::Update(unsigned int dt, bool *code)
     planetAngle[1] += dt * M_PI/1000; // rotate
 
   }
-  if(!code[7])
+  if(!code[7]) // if not paused
   {
     // orbit moon angle
     moonAngle[0] += (dt * M_PI/1000); // orbit

@@ -152,11 +152,17 @@ void Engine::Keyboard( bool *code )
     else if(m_event.key.keysym.sym == SDLK_f)
     {
       // code 8
+      if(!code[7])
+       code[7]= true;
+
       code[8] = !code[8];
+
     }
-    else if(m_event.key.keysym.sym == SDLK_g) 
+    else if(m_event.key.keysym.sym == SDLK_g)
     {
       // code 9
+      if(!code[7])
+       code[7]= true;
       code[9] = !code[9];
     }
 
