@@ -1,7 +1,7 @@
 #include "object.h"
 
 Object::Object()
-{  
+{
   /*
     # Blender File for a Cube
     o Cube
@@ -62,7 +62,7 @@ Object::Object()
 
   angle = 0.0f;
   currentAngle = 0.0f;
- 
+
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -80,14 +80,14 @@ Object::~Object()
 }
 
 void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
-{ 
+{
 
   // Declare matrices
   glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -5.0));
   glm::mat4 rotateMatrix2 = glm::rotate(glm::mat4(1.0f), (currentAngle), glm::vec3(0.0, 1.0, 0.0));
 
-  
+
   // Check keyboard input
   if( code == 0 )
   {
@@ -100,19 +100,19 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
   else if( code == 1 )
   {
     // REVERSE
-    if( !toggle ) // check if key was pressed the first time   
-    { 
-      angle -= dt * M_PI/1000;  
+    if( !toggle ) // check if key was pressed the first time
+    {
+      angle -= dt * M_PI/1000;
       currentAngle -= dt* M_PI/1000;
-    }       
-    else 
+    }
+    else
     {
       // Normal
       angle += dt* M_PI/1000;
       currentAngle += dt* M_PI/1000;
     }
 
-   
+
   }
   // If user presses 'E'
   else if( (code == 2) )
@@ -122,28 +122,27 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
     currentAngle += dt* M_PI/1000;;
 
     if(!toggle)// check for toggle key
-    {    
-      // stop cube from rotate while orbitting     
-    	currentAngle = 0;      
+    {
+      // stop cube from rotate while orbitting
+    	currentAngle = 0;
     }
-
-   
+ 
   }
   // If 'R' is pressed
   else if( code == 3 )
   {
     if(!toggle)// check for toggle key
     {
-    
-      // PAUSE CUBE	
+
+      // PAUSE CUBE
 	// do nothing
     }
     else
-    {  
+    {
       // Normal
       angle += dt * M_PI/1000;
       currentAngle += dt * M_PI/1000;
-          
+
     }
   }
   // If 'T' is pressed
@@ -154,19 +153,19 @@ void Object::Update(unsigned int dt, int &code, bool &toggle, bool &resetKey)
       // PAUSE ORBIT
       angle += 0;
       currentAngle += dt * M_PI/1000;
-     
+
 
     }
     else
-    {  
+    {
       // normal setting
       angle += dt * M_PI/1000;
       currentAngle += dt * M_PI/1000;
-          
+
     }
   }
 
-  
+
 
   model = rotateMatrix * translateMatrix * rotateMatrix2;
 }
@@ -192,4 +191,3 @@ void Object::Render()
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
 }
-
