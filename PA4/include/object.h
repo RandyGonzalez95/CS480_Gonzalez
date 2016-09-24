@@ -15,6 +15,7 @@ class Object
   public:
     Object(char *objFile);
     ~Object();
+    bool LoadMTL(std::string file, std::string colorInfo);
     bool LoadOBJ(char *obj);
     void Render();
 
@@ -24,6 +25,7 @@ class Object
     glm::mat4 model;
     vertex *Geometry;
     unsigned int *Indices;
+    float RGB[3];
     int iSize;
     int vSize;
     GLuint VB;

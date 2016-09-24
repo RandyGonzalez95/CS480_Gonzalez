@@ -7,6 +7,7 @@ Object::Object(char * objFile)
 {
   Geometry = new vertex[1000000];
   Indices = new unsigned int[10000000];
+
   // check for object file
   if( !LoadOBJ(objFile) )
   {
@@ -89,6 +90,63 @@ Object::~Object()
 
 }
 
+bool Object::LoadMTL(std::string file, std::string colorInfo)
+{
+  // Declare Variables
+  std::ifstream fin;
+  std::string dummy, material;
+  float colorValue;
+
+  //open file
+  fin.clear();
+  fin.open( file.c_str() ); // since file is a string, converto to cstyle
+
+  if(!fin.good())
+  {
+    return false; // file not found
+  }
+  else
+  {
+    while(fin.good())
+    {
+      // check for colorInfo
+      fin>>dummy;
+      if(dummy=="newmtl")// we are at the correct colorInfo
+      {
+        fin>> material;
+
+        if(material == colorInfo) // compare the two to see if they match
+        {
+          fin>>dummy; // keep extracting // this should be the Ns line
+          while(dummy!= "Kd")// we want to keep looping til with find Kd information
+          {
+            fin>>dummy;
+          }// loop ends when we get to Kd information
+
+          // These next three numbers are our RGB colors
+          std::cerr<< "The colors are : ";
+          for(int i=0; i<3; i++) // loop through the three colors
+          {
+            fin>>colorValue;
+            RGB[i] = colorValue; // extract colors
+            std::cerr<<RGB[i]<<" ";
+          }
+          std::cerr<<"\n";
+          break; // break out of loop since we are done with file
+
+        }// end if
+
+      }// end if
+
+
+
+    }// end while
+  }// end else
+
+    // we are done
+  return true;
+}
+
 bool Object::LoadOBJ(char* obj)
 {
   // declare file variables
@@ -96,9 +154,11 @@ bool Object::LoadOBJ(char* obj)
   char ignore; // assume not more than 300 chars in one line
   std::string dummy; //used to see where we are at the file
   float ignoreNum; // this will store useless face information
-
   int vertexSize = 0; // how many vertices there are on file
   int index = 0; // index of the Indices array
+  std::string mtlFile; // material file
+  std::string colorInfo; // the name of the color for material
+  int colorIndex = 0;
 
 
   // open File
@@ -115,23 +175,46 @@ bool Object::LoadOBJ(char* obj)
       fin>> dummy;
       // first ignore any unnecessary lines
         // Til we reach all the vertex information
-      if(dummy=="v") // meaning we are at the vertices
-        {
-          for(int i = 0; i< 3; i++ )// for the three positions
-            {
-              fin>> Geometry[vertexSize].position[i]; // stores floats to the three positions
-            }
-          vertexSize++; // go to next vertex
 
-        }
-      else if(dummy=="f") // we are at the faces
+      // Check for Material file
+      if(dummy == "mtllib")
+      {
+        fin>>mtlFile; // extract file name as string
+        mtlFile = "../Material/" + mtlFile; // merge the FILENAME with destination so we can open
+      }
+      else if(dummy == "usemtl")
+      {
+        fin>>colorInfo; // name of the color for material
+        // start loading the file and get color info from .mtlFile
+        if(!LoadMTL(mtlFile, colorInfo)) // check if file exists
         {
-          for(int j= 0; j<3;j++)// loop through 3 faces (Triangulated)
-            {
-              fin>>Indices[index]>>ignore>>ignore>>ignoreNum;
-              index++; // go to next index
-            }
-        }// end else if
+          std::cerr<< "ERROR: MTL file not found, colors not extracted.\n";
+        }// else colors are saved onto the RGB array
+      }
+      else if(dummy=="v") // meaning we are at the vertices
+      {
+        for(int i = 0; i< 3; i++ )// for the three positions
+          {
+            fin>> Geometry[vertexSize].position[i]; // stores floats to the three positions
+          }
+
+        vertexSize++; // go to next vertex
+
+      }
+      else if(dummy=="f") // we are at the faces
+      {
+        std::cerr<<"COLORS for index ("<<colorIndex<<"): ";
+        for(int i= 0; i<3;i++)// loop through 3 faces (Triangulated)
+          {
+            fin>>Indices[index]>>ignore>>ignore>>ignoreNum;
+            Geometry[colorIndex].color[i] = RGB[i];
+            std::cerr<<RGB[i]<<" ";
+            index++; // go to next index
+          }
+          colorIndex++;
+          std::cerr<<"\n";
+      }
+
     }// end while loop
   }// end else
 
