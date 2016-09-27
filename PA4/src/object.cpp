@@ -8,6 +8,12 @@ Object::Object(char * objFile)
   Geometry = new vertex[1000000];
   Indices = new unsigned int[10000000];
 
+ RGB[0] = 1.0;
+ RGB[1] = 1.0;
+ RGB[2] = 1.0;
+
+
+
   // check for object file
   if( !LoadOBJ(objFile) )
   {
@@ -142,6 +148,7 @@ bool Object::LoadOBJ(char* obj)
         for(int i = 0; i< 3; i++ )// for the three positions
           {
             fin>> Geometry[vertexSize].position[i]; // stores floats to the three positions
+            Geometry[vertexSize].color[i] = RGB[i];
           }
         vertexSize++; // go to next vertex
       }
@@ -149,17 +156,22 @@ bool Object::LoadOBJ(char* obj)
       {
         int i = 0;
         // extract each character at a time
-        std::cerr<<"VertexColor is: ";
         while(fin.get(ignore))
         {
 
           if(ignore == ' ')// check if we are at a space
           {
-            i++;
-            fin>>Indices[index]; // grab the first index available and ingore the rest
-            Geometry[colorIndex].color[i] = RGB[i];
-            std::cerr<<Geometry[colorIndex].color[i]<<" ";
+            fin>>Indices[index]; // grab the first index available and ignore the rest
+            if(colorIndex < vertexSize )
+            {
+              Geometry[colorIndex].color[i] = RGB[i];
+            }
+            else{
+              colorIndex-=1;
+            }
+
             index++; // go to next
+            i++;
           }
 
           if(ignore == '\n')// we are at the end of the face line
@@ -169,8 +181,8 @@ bool Object::LoadOBJ(char* obj)
 
 
         }// end while
-          colorIndex++;
-          std::cerr<<"\n";
+        colorIndex++;
+
       }// end else if
 
     }// end while loop
@@ -180,6 +192,8 @@ bool Object::LoadOBJ(char* obj)
   vSize = vertexSize;
   iSize = index;
 
+
+
   // close the file
   fin.close();
   return true;
@@ -188,7 +202,7 @@ bool Object::LoadOBJ(char* obj)
 
 glm::mat4 Object::GetModel()
 {
-  model = glm::scale(glm::mat4(1.0f),glm::vec3(1.0f)) * glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0, 0.0));
+  model = glm::scale(glm::mat4(1.0f),glm::vec3(1.0f)); //* glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0, 0.0));
 
   return model;
 }
