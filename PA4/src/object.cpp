@@ -118,7 +118,7 @@ bool Object::LoadMTL(std::string file, std::string colorInfo)
         if(material == colorInfo) // compare the two to see if they match
         {
           fin>>dummy; // keep extracting // this should be the Ns line
-          while(dummy!= "Kd")// we want to keep looping til with find Kd information
+          while(dummy!= "Kd")// we want to keep looping til we find Kd information
           {
             fin>>dummy;
           }// loop ends when we get to Kd information
@@ -135,13 +135,11 @@ bool Object::LoadMTL(std::string file, std::string colorInfo)
           break; // break out of loop since we are done with file
 
         }// end if
-
       }// end if
-
-
-
     }// end while
   }// end else
+
+  fin.close();
 
     // we are done
   return true;
@@ -197,23 +195,25 @@ bool Object::LoadOBJ(char* obj)
           {
             fin>> Geometry[vertexSize].position[i]; // stores floats to the three positions
           }
-
         vertexSize++; // go to next vertex
-
       }
       else if(dummy=="f") // we are at the faces
       {
-        std::cerr<<"COLORS for index ("<<colorIndex<<"): ";
-        for(int i= 0; i<3;i++)// loop through 3 faces (Triangulated)
+        // extract each character at a time
+        while(fin.get(ignore))
+        {
+          if(ignore == ' ')// check if we are at a space
           {
-            fin>>Indices[index]>>ignore>>ignore>>ignoreNum;
-            Geometry[colorIndex].color[i] = RGB[i];
-            std::cerr<<RGB[i]<<" ";
-            index++; // go to next index
+            fin>>Indices[index]; // grag the first index available and ingore the rest
+            index++; // go to next
           }
-          colorIndex++;
-          std::cerr<<"\n";
-      }
+
+          if(ignore == '\n')// we are at the end of the face line
+          {
+            break;
+          }
+        }// end while
+      }// end else if
 
     }// end while loop
   }// end else
@@ -227,9 +227,11 @@ bool Object::LoadOBJ(char* obj)
   return true;
 }
 
+
 glm::mat4 Object::GetModel()
 {
-  model = glm::scale(glm::mat4(1.0f),glm::vec3(1.0f));
+  model = glm::scale(glm::mat4(1.0f),glm::vec3(1.0f));// * glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0, 0.0));
+
   return model;
 }
 
