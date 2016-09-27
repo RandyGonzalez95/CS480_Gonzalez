@@ -14,64 +14,12 @@ Object::Object(char * objFile)
     std::cerr<< "ERROR: Object was not able to load. Ending program.\n";
     exit(1);
   }
-  /*
-    # Blender File for a Cube
-    o Cube
-    v 1.000000 -1.000000 -1.000000
-    v 1.000000 -1.000000 1.000000
-    v -1.000000 -1.000000 1.000000
-    v -1.000000 -1.000000 -1.000000
-    v 1.000000 1.000000 -0.999999
-    v 0.999999 1.000000 1.000001
-    v -1.000000 1.000000 1.000000
-    v -1.000000 1.000000 -1.000000
-    s off
-    f 2 3 4
-    f 8 7 6
-    f 1 5 6
-    f 2 6 7
-    f 7 8 4
-    f 1 4 8
-    f 1 2 4
-    f 5 8 6
-    f 2 1 6
-    f 3 2 7
-    f 3 7 4
-    f 5 1 8
-  */
-
-  /*Vertices = {
-    {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}},
-    {{1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
-    {{-1.0f, -1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}},
-    {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 1.0f}},
-    {{1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, 0.0f}},
-    {{1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 1.0f}},
-    {{-1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f}},
-    {{-1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, 1.0f}}
-  };*/
-
-/*  Indices = {
-    2, 3, 4,
-    8, 7, 6,
-    1, 5, 6,
-    2, 6, 7,
-    7, 8, 4,
-    1, 4, 8,
-    1, 2, 4,
-    5, 8, 6,
-    2, 1, 6,
-    3, 2, 7,
-    3, 7, 4,
-    5, 1, 8
-  };*/
 
   // The index works at a 0th index
   for(unsigned int i = 0; i < iSize; i++)
   {
     Indices[i] = Indices[i] - 1;
   }
-
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -199,12 +147,18 @@ bool Object::LoadOBJ(char* obj)
       }
       else if(dummy=="f") // we are at the faces
       {
+        int i = 0;
         // extract each character at a time
+        std::cerr<<"VertexColor is: ";
         while(fin.get(ignore))
         {
+
           if(ignore == ' ')// check if we are at a space
           {
-            fin>>Indices[index]; // grag the first index available and ingore the rest
+            i++;
+            fin>>Indices[index]; // grab the first index available and ingore the rest
+            Geometry[colorIndex].color[i] = RGB[i];
+            std::cerr<<Geometry[colorIndex].color[i]<<" ";
             index++; // go to next
           }
 
@@ -212,7 +166,11 @@ bool Object::LoadOBJ(char* obj)
           {
             break;
           }
+
+
         }// end while
+          colorIndex++;
+          std::cerr<<"\n";
       }// end else if
 
     }// end while loop
@@ -230,7 +188,7 @@ bool Object::LoadOBJ(char* obj)
 
 glm::mat4 Object::GetModel()
 {
-  model = glm::scale(glm::mat4(1.0f),glm::vec3(1.0f));// * glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0, 0.0));
+  model = glm::scale(glm::mat4(1.0f),glm::vec3(1.0f)) * glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0, 0.0));
 
   return model;
 }
