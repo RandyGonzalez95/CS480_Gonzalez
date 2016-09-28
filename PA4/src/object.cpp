@@ -78,12 +78,10 @@ bool Object::LoadMTL(std::string file, std::string colorInfo)
           }// loop ends when we get to Kd information
 
           // These next three numbers are our RGB colors
-          std::cerr<< "The colors are : ";
           for(int i=0; i<3; i++) // loop through the three colors
           {
             fin>>colorValue;
             RGB[i] = colorValue; // extract colors
-            std::cerr<<RGB[i]<<" ";
           }
           std::cerr<<"\n";
           break; // break out of loop since we are done with file
@@ -127,7 +125,6 @@ bool Object::LoadOBJ(char* obj)
       fin>> dummy;
       // first ignore any unnecessary lines
         // Til we reach all the vertex information
-
       // Check for Material file
       if(dummy == "mtllib")
       {
@@ -158,7 +155,6 @@ bool Object::LoadOBJ(char* obj)
         // extract each character at a time
         while(fin.get(ignore))
         {
-
           if(ignore == ' ')// check if we are at a space
           {
             fin>>Indices[index]; // grab the first index available and ignore the rest
@@ -166,10 +162,10 @@ bool Object::LoadOBJ(char* obj)
             {
               Geometry[colorIndex].color[i] = RGB[i];
             }
-            else{
-              colorIndex-=1;
+            else
+            {
+              colorIndex--;
             }
-
             index++; // go to next
             i++;
           }
@@ -178,13 +174,9 @@ bool Object::LoadOBJ(char* obj)
           {
             break;
           }
-
-
         }// end while
         colorIndex++;
-
       }// end else if
-
     }// end while loop
   }// end else
 
