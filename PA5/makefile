@@ -4,7 +4,7 @@ UNAME_S := $(shell uname -s)
 # Linux
 ifeq ($(UNAME_S), Linux)
 	CC=g++
-	LIBS=-lSDL2 -lGLEW -lGL
+	LIBS=-lSDL2 -lGLEW -lGL -lassimp
 # Mac
 else
 	CC=clang++
@@ -12,7 +12,7 @@ else
 endif
 
 # Paths, use this to set Include directories, or library directories; uncomment in all: if used
-#PATHI=-I/usr/local/include/ 
+#PATHI=-I/usr/local/include/
 #PATHL=-L/usr/local/lib/
 
 #Compiler Flags

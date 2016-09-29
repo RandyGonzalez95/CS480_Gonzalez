@@ -22,6 +22,12 @@
 
 #define INVALID_UNIFORM_LOCATION 0x7fffffff
 
+// Assimp Libraries
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/color4.h>
+
 struct Vertex
 {
   glm::vec3 vertex;
