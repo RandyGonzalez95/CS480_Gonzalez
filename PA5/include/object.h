@@ -10,19 +10,21 @@ class Object
   public:
     Object(char *objFile);
     ~Object();
-    void Render();
 
+    bool Initialize(char *objFile);
+    void SetVertices();
+    void Render();
     glm::mat4 GetModel();
 
   private:
     glm::mat4 model;
-    //vertex *Geometry;
-    //unsigned int *Indices;
-    //float RGB[3];
-    //int iSize;
-    //int vSize;
+    std::vector<Vertex> Geometry;
+    std::vector<unsigned int> Indices;
     GLuint VB;
     GLuint IB;
+    // assimp
+    Assimp::Importer importer;
+    const aiScene *myScene;
 
 
 };
