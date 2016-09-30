@@ -86,7 +86,7 @@ void Object::SetVertices()
 
 glm::mat4 Object::GetModel()
 {
-  model = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0,0.0));
+  //model = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0,0.0));
   return model;
 }
 
