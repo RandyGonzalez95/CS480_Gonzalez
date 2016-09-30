@@ -4,7 +4,6 @@
 #include <vector>
 #include "graphics_headers.h"
 
-
 class Object
 {
   public:

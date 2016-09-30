@@ -15,13 +15,8 @@ Object::Object(char * objFile)
     exit(1);
   }
 
+  SetVertices();
 
-
-  // The index works at a 0th index
-  for(unsigned int i = 0; i < Indices.size(); i++)
-  {
-    Indices[i] = Indices[i] - 1;
-  }
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -54,29 +49,44 @@ return true;
 void Object::SetVertices()
 {
   // Declare variables
-  int meshes = 0;
-  // myScene currently holds all .obj data
-  // grab the number of meshes
-  meshes = myScene->mNumMeshes; // usually just one
+    // myScene currently holds all .obj data
+    // grab the number of meshes
+  int meshes = myScene->mNumMeshes;// usually just one
+  int faces = 0;
+  int index = 0;
+  Vertex temp;
+
   // Iterate through mMeshes
-  for(meshes = 0; meshes < myScene->mNumMeshes; meshes++)
+  for(int iMesh = 0; iMesh < meshes; iMesh++) // mesh index iterator
   {
+    // Find number of faces per mesh
+    faces = myScene->mMeshes[iMesh]->mNumFaces;
+    for(int iFaces = 0; iFaces <faces; iFaces++) // face index
+    {
+      // for each face in the mesh
+      for(int i = 0; i<3; i++)
+      {
+          // Grab index info of the faces
+        index = myScene->mMeshes[iMesh]->mFaces[iFaces].mIndices[i];
+        for(int j =0; j<3; j++)  // iterate through each face
+        {
+          // Index info corresponds to a vertex position
+          temp.position[j] = myScene->mMeshes[iMesh]->mVertices[index][j];
+          temp.color[j] = 1.0f;
+        }
 
-
+        // Push back Index and Geomtry info
+        Indices.push_back(index);
+        Geometry.push_back(temp);
+      }
+    }
   }
-
-  // find number of faces within the mMeshes
-    // iterate through each face
-
-    // Grab index info of the faces
-
-    // Index info corresponds to a vertex position
-
 
 }
 
 glm::mat4 Object::GetModel()
 {
+  model = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0,0.0));
   return model;
 }
 

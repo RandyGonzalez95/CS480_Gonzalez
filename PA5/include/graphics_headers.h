@@ -34,4 +34,5 @@ struct Vertex
   GLfloat color[3];
 };
 
+
 #endif /* GRAPHICS_HEADERS_H */
