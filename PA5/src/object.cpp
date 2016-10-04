@@ -55,10 +55,18 @@ void Object::SetVertices()
   int faces = 0;
   int index = 0;
   Vertex temp;
+  float RGB[3] = {1.0,1.0,1.0};
 
   // Iterate through mMeshes
   for(int iMesh = 0; iMesh < meshes; iMesh++) // mesh index iterator
   {
+
+    // Attempt to extract color
+    // Declare mesh pointer and mtl pointer
+    const aiMesh* model = myScene->mMeshes[iMesh];
+    const aiMaterial *mtl = myScene->mMaterials[model->mMaterialIndex];
+    aiColor4D diffuse; // color values
+
     // Find number of faces per mesh
     faces = myScene->mMeshes[iMesh]->mNumFaces;
     for(int iFaces = 0; iFaces <faces; iFaces++) // face index
@@ -70,9 +78,14 @@ void Object::SetVertices()
         index = myScene->mMeshes[iMesh]->mFaces[iFaces].mIndices[i];
         for(int j =0; j<3; j++)  // iterate through each face
         {
+          // check for materials folder
+          if (AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+            {
+              RGB[j] = diffuse[j];
+            }
           // Index info corresponds to a vertex position
           temp.position[j] = myScene->mMeshes[iMesh]->mVertices[index][j];
-          temp.color[j] = 1.0f;
+          temp.color[j] = RGB[j];
         }
 
         // Push back Index and Geomtry info
@@ -86,7 +99,8 @@ void Object::SetVertices()
 
 glm::mat4 Object::GetModel()
 {
-  //model = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(1.0,0.0,0.0));
+
+  //model = glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(1.0,0.0,0.0));
   return model;
 }
 

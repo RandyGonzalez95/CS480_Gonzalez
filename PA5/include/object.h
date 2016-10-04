@@ -23,7 +23,7 @@ class Object
     GLuint IB;
     // assimp
     Assimp::Importer importer;
-    const aiScene *myScene;
+    const aiScene *myScene;;
 
 
 };
