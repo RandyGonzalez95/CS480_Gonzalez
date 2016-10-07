@@ -54,38 +54,37 @@ void Object::SetVertices()
   int meshes = myScene->mNumMeshes;// usually just one
   int faces = 0;
   int index = 0;
+  int vIndex = 0;
   Vertex temp;
-  float RGB[3] = {1.0,1.0,1.0};
+
 
   // Iterate through mMeshes
   for(int iMesh = 0; iMesh < meshes; iMesh++) // mesh index iterator
   {
-
-    // Attempt to extract color
-    // Declare mesh pointer and mtl pointer
-    const aiMesh* model = myScene->mMeshes[iMesh];
-    const aiMaterial *mtl = myScene->mMaterials[model->mMaterialIndex];
-    aiColor4D diffuse; // color values
-
+    aiMesh* model = myScene->mMeshes[iMesh];
     // Find number of faces per mesh
-    faces = myScene->mMeshes[iMesh]->mNumFaces;
+    faces = model->mNumFaces;
     for(int iFaces = 0; iFaces <faces; iFaces++) // face index
     {
       // for each face in the mesh
       for(int i = 0; i<3; i++)
       {
           // Grab index info of the faces
-        index = myScene->mMeshes[iMesh]->mFaces[iFaces].mIndices[i];
+        index = model->mFaces[iFaces].mIndices[i];
+
+        // check for texture coodinates
+        if(model->HasTextureCoords(0))
+        {
+          temp.uv[0] = model->mTextureCoords[0][index].x;
+          temp.uv[1] = model->mTextureCoords[0][index].y;
+        }
+
+        // Load Vertex Position
         for(int j =0; j<3; j++)  // iterate through each face
         {
-          // check for materials folder
-          if (AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
-            {
-              RGB[j] = diffuse[j];
-            }
           // Index info corresponds to a vertex position
-          temp.position[j] = myScene->mMeshes[iMesh]->mVertices[index][j];
-          temp.color[j] = RGB[j];
+          temp.position[j] = model->mVertices[index][j];
+
         }
 
         // Push back Index and Geomtry info
@@ -111,7 +110,7 @@ void Object::Render()
 
   glBindBuffer(GL_ARRAY_BUFFER, VB);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,color));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,uv));
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
 

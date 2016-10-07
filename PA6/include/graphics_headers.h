@@ -27,11 +27,12 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/color4.h>
+//#include <Magick++.h>
 
 struct Vertex
 {
   GLfloat position[3];
-  GLfloat color[3];
+  GLfloat uv[2];
 };
 
 
