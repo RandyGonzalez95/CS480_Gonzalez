@@ -10,7 +10,7 @@ Graphics::~Graphics()
 
 }
 
-bool Graphics::Initialize(int width, int height, char* objFile)
+bool Graphics::Initialize(int width, int height, char* objFile, char* textureFile)
 {
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
@@ -45,7 +45,7 @@ bool Graphics::Initialize(int width, int height, char* objFile)
   }
 
   // Create the object
-  object = new Object(objFile);
+  object = new Object(objFile, textureFile);
 
   // Set up the shaders
   m_shader = new Shader();

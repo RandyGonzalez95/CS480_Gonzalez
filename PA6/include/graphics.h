@@ -14,7 +14,7 @@ class Graphics
   public:
     Graphics();
     ~Graphics();
-    bool Initialize(int width, int height, char* objFile);
+    bool Initialize(int width, int height, char* objFile, char* textureFile);
     void Render();
 
   private:

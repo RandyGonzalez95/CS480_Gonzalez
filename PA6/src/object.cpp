@@ -3,7 +3,7 @@
 #include <cstring>
 
 
-Object::Object(char * objFile)
+Object::Object(char * objFile, char * textureFile)
 {
   // Initialize
   myScene = NULL;

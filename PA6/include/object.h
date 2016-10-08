@@ -7,7 +7,7 @@
 class Object
 {
   public:
-    Object(char *objFile);
+    Object(char *objFile, char *textureFile);
     ~Object();
 
     bool Initialize(char *objFile);
@@ -23,9 +23,7 @@ class Object
     GLuint IB;
     // assimp
     Assimp::Importer importer;
-    const aiScene *myScene;;
-
-
+    const aiScene *myScene;
 };
 
 
