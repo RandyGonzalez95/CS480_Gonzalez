@@ -3,6 +3,9 @@
 *.lo
 *.o
 
+# Temporary Files
+*~
+
 # Precompiled Headers
 *.gch
 *.pch
