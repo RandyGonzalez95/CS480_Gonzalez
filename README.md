@@ -1,11 +1,12 @@
-# Team Members: 
-- Randy Gonzalez
-- Brett Knadle
-- Phillip Vong
-
 # OpenGL Graphics Programs
 ## This is for use at the University of Nevada, Reno CS 480/680 Graphics Class
 Any students in that class follow the instructions at [**Github Setup**](https://github.com/HPC-Vis/computer-graphics/wiki/Github-Setup) to begin. This is part of the first assignment in the class and necessary for turning in assignments throughout the semester.
+
+# Team Members
+
+- Randy Gonzalez
+- Brett Knadle
+- Phillip Vong
 
 # Projects
 
@@ -27,6 +28,6 @@ This is model created in blender and loading model into the program. To run this
 ## PA5: Assimp and Model Loading 
 This is model loading program using Assimp to load models and then display them. To run this project ```cd PA5``` then follow the instructions in the README.md.  
 
-## PA5: Assimp with Textures
+## PA6: Assimp with Textures
 This program's focus is to use Assimp to load models and textures for those models. To run this project ```cd PA5``` then follow the instructions in the README.md.  
 
