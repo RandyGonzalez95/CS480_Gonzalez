@@ -11,7 +11,7 @@ Object::Object(char * objFile, char * textureFile)
   // Open File Data
   if(!Initialize(objFile))
   {
-    std::cerr<< "OBJ file was not found, ending program";
+    std::cerr<< "OBJ file was not found, ending program.\n";
     exit(1);
   }
 

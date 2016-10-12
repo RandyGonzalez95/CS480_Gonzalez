@@ -29,6 +29,8 @@
 #include <assimp/color4.h>
 #include <Magick++.h>
 
+using namespace Magick;
+
 struct Vertex
 {
   GLfloat position[3];

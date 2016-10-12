@@ -4,6 +4,7 @@
 #include <vector>
 #include "graphics_headers.h"
 
+
 class Object
 {
   public:
@@ -12,6 +13,7 @@ class Object
 
     bool Initialize(char *objFile);
     void SetVertices();
+    void getTextures(char* textureFile, GLuint &Textures);
     void Render();
     glm::mat4 GetModel();
 
