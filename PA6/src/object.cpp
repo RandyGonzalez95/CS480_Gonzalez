@@ -17,7 +17,7 @@ Object::Object(char * objFile, char * textureFile)
 
   SetVertices();
 
-
+  getTextures(textureFile);
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
   glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Geometry.size(), &Geometry[0], GL_STATIC_DRAW);
@@ -103,8 +103,36 @@ glm::mat4 Object::GetModel()
   return model;
 }
 
+void Object::getTextures(char* textureFile)
+{
+  InitializeMagick(textureFile);
+  Image myImage;
+
+  myImage.read(textureFile);
+
+  int imageWidth = myImage.columns();
+  int imageHeight = myImage.rows();
+  // Not too sure what this stuff is..
+  Blob blob;
+  myImage.magick("RGBA");
+  myImage.write( &blob );
+
+  glGenTextures(1, &Textures);
+
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, Textures);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, blob.data());
+
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+}
+
 void Object::Render()
 {
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, Textures);
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
 
@@ -115,6 +143,7 @@ void Object::Render()
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
 
   glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);

@@ -1,22 +1,30 @@
+# Image Loader
+MAGICKLIBS= `Magick++-config --ldflags --libs`
+MAGICKFLAGS= `Magick++-config --cxxflags --cppflags`
+
 # Check for OS Type
 UNAME_S := $(shell uname -s)
 
 # Linux
 ifeq ($(UNAME_S), Linux)
 	CC=g++
-	LIBS=-lSDL2 -lGLEW -lGL -lassimp `Magick++-config --cppflags --cxxflags --ldflags --libs` 
+	LIBS=-lSDL2 -lGLEW -lGL -lassimp `Magick++-config --cppflags --libs` `Magick++-config --cxxflags --cppflags`
 # Mac
 else
 	CC=clang++
 	LIBS=-lSDL2 -framework OpenGL -framework Cocoa -lGLEW -stdlib=libc++
 endif
 
+# Image Loader
+MAGICKLIBS= `Magick++-config --ldflags --libs`
+MAGICKFLAGS= `Magick++-config --cxxflags --cppflags`
+
 # Paths, use this to set Include directories, or library directories; uncomment in all: if used
 #PATHI=-I/usr/local/include/
 #PATHL=-L/usr/local/lib/
 
 #Compiler Flags
-CXXFLAGS=-g -Wall -std=c++0x
+CXXFLAGS=-g -Wall -std=c++0x $(MAGICKFLAGS)
 
 # .o Compilation
 O_FILES=main.o camera.o engine.o graphics.o object.o shader.o window.o

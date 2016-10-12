@@ -13,7 +13,7 @@ class Object
 
     bool Initialize(char *objFile);
     void SetVertices();
-    void getTextures(char* textureFile, GLuint &Textures);
+    void getTextures(char* textureFile);
     void Render();
     glm::mat4 GetModel();
 
@@ -21,6 +21,8 @@ class Object
     glm::mat4 model;
     std::vector<Vertex> Geometry;
     std::vector<unsigned int> Indices;
+
+    GLuint Textures;
     GLuint VB;
     GLuint IB;
     // assimp
