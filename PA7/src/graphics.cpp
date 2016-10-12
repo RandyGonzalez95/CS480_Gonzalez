@@ -10,7 +10,7 @@ Graphics::~Graphics()
 
 }
 
-bool Graphics::Initialize(int width, int height, char* objFile, char* textureFile)
+bool Graphics::Initialize(int width, int height, char* configFile)
 {
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
@@ -44,8 +44,9 @@ bool Graphics::Initialize(int width, int height, char* objFile, char* textureFil
     return false;
   }
 
-  // Create the object
-  object = new Object(objFile, textureFile);
+  // Create the SolarSystem
+  MilkyWay = new SolarSystem(configFile);
+
 
   // Set up the shaders
   m_shader = new Shader();
@@ -121,10 +122,17 @@ void Graphics::Render()
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
-  // Render the cube and the moon
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object->GetModel()));
+  // Render Entire Solar System
+  int size = MilkyWay->getNumObjects();
 
-  object->Render();
+  for(int i = 0; i <size; i++ )
+  {
+    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object->GetModel()));
+
+    MilkyWay->Render();
+
+  }
+
 
 
   // Get any errors from OpenGL

@@ -5,7 +5,7 @@
 class SolarSystem
 {
 public:
-  SolarSystem();
+  SolarSystem(char* configFile);
   ~SolarSystem();
 
   bool Initialize(char* filename);
@@ -13,7 +13,8 @@ public:
   bool configData(char*filename);
   bool readFile(char*filepath);
   Object *getPlanets();
-
+  int getNumObjects();
+  void Render();
 
 
 private:
