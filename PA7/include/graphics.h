@@ -16,6 +16,7 @@ class Graphics
     Graphics();
     ~Graphics();
     bool Initialize(int width, int height, char* configFile);
+    void Update( unsigned int dt, bool *code);
     void Render();
 
   private:
@@ -30,6 +31,7 @@ class Graphics
 
 
     SolarSystem *MilkyWay;
+    Object object;
 };
 
 #endif /* GRAPHICS_H */

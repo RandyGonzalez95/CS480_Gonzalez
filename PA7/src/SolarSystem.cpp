@@ -24,7 +24,7 @@ bool SolarSystem::Initialize(char* filename)
 
 }
 
-void SolarSystem::Update(unsigned int dt)
+void SolarSystem::Update(unsigned int dt, bool *code)
 {
 
 
@@ -39,7 +39,19 @@ bool SolarSystem::readFile(char*filepath)
 
 }
 
-Object* SolarSystem::getPlanets()
+Object SolarSystem::GetPlanet(int index)
+{
+
+  return Planet[index];
+}
+
+Object SolarSystem::GetMoon()
+{
+
+  return Moon[index];
+}
+
+Object SolarSystem::GetSun()
 {
 
 
@@ -49,13 +61,4 @@ int SolarSystem::getNumObjects()
 {
 
   return numPlanets+1;
-}
-
-void SolarSystem::Render()
-{
-  for(int i = 0; i<numPlanets; i++)
-  {
-
-  }
-
 }

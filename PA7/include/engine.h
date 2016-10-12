@@ -15,7 +15,9 @@ class Engine
     ~Engine();
     bool Initialize(char *configFile);
     void Run();
-    void Keyboard();
+    void Keyboard(bool *code);
+    unsigned int getDT();
+    long long GetCurrentTimeMillis();
 
   private:
     // Window related variables
@@ -27,6 +29,8 @@ class Engine
     SDL_Event m_event;
 
     Graphics *m_graphics;
+    unsigned int m_DT;
+    long long m_currentTimeMillis;
     bool m_running;
 };
 

@@ -45,18 +45,36 @@ bool Engine::Initialize(char * configFile)
   return true;
 }
 
+void Engine::InitCodes( bool *code )
+{
+  int index = 0;
+
+  // initialize array of boooleans to 0
+  for(index = 0; index <10; index++)
+  {
+    code[index] = false;
+  }
+
+}
+
 void Engine::Run()
 {
   m_running = true;
+  bool *code = new bool[10]; // creates array of booleans for keyboard input
 
   while(m_running)
   {
+    // Update the DT
+    m_DT = getDT();
+
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard();
+      Keyboard(code);
     }
 
+    // Render All Graphics
+    m_graphics->Update(m_DT, code);
     m_graphics->Render();
 
     // Swap to the Window
@@ -64,7 +82,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard()
+void Engine::Keyboard( bool *code )
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -78,5 +96,21 @@ void Engine::Keyboard()
       m_running = false;
     }
   }
+}
 
+unsigned int Engine::getDT()
+{
+  long long TimeNowMillis = GetCurrentTimeMillis();
+  assert(TimeNowMillis >= m_currentTimeMillis);
+  unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
+  m_currentTimeMillis = TimeNowMillis;
+  return DeltaTimeMillis;
+}
+
+long long Engine::GetCurrentTimeMillis()
+{
+  timeval t;
+  gettimeofday(&t, NULL);
+  long long ret = t.tv_sec * 1000 + t.tv_usec / 1000;
+  return ret;
 }

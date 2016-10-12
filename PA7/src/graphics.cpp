@@ -109,6 +109,13 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   return true;
 }
 
+void Graphics::Update(unsigned int dt, bool *code)
+{
+  // Update the Solar System
+  MilkyWay->Update(dt, code);
+
+}
+
 void Graphics::Render()
 {
   //clear the screen
@@ -125,13 +132,38 @@ void Graphics::Render()
   // Render Entire Solar System
   int size = MilkyWay->getNumObjects();
 
+  // First Handle Sun Model
+  object = MilkyWay->GetSun();
+
+  // Render Sun Object
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object.GetModel()));
+  object.Render();
+
+  // Handle ALL other models, Planets and respective Moon models
+    // for all planets in the solar system
   for(int i = 0; i <size; i++ )
   {
-    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object->GetModel()));
+    // Reuse object variable
+    object = MilkyWay->GetPlanet(i);
 
-    MilkyWay->Render();
+    // Grab Number of Moons in the Current planet
+    int numMoons = object.GetNumMoons();
 
-  }
+    // Render Planet
+    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object.GetModel()));
+    object.Render();
+
+    object = MilkyWay->GetMoon(i);
+
+    // Render Moons of Planets
+    for(int j = 0; j<numMoons; j++)
+    {
+      glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object.GetMoon(j)));
+      object.Render();
+
+    }
+  } // end for loop
+  // All planets and moons have been rendered
 
 
 

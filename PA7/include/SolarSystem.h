@@ -9,16 +9,19 @@ public:
   ~SolarSystem();
 
   bool Initialize(char* filename);
-  void Update(unsigned int dt);
+  void Update(unsigned int dt, bool *code);
   bool configData(char*filename);
   bool readFile(char*filepath);
-  Object *getPlanets();
+  Object GetPlanet(int index);
+  Object GetMoon(int index);
+  Object GetSun();
   int getNumObjects();
-  void Render();
+
 
 
 private:
   Object *Planet;
+  Object *Moon;
   Object Sun;
   int numPlanets;
 

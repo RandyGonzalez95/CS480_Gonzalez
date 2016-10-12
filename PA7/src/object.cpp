@@ -91,11 +91,23 @@ void Object::SetVertices()
   }
 }
 
+int Object::GetNumMoons()
+{
+
+  return numMoons;
+}
+
 glm::mat4 Object::GetModel()
 {
 
   //model = glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(1.0,0.0,0.0));
   return model;
+}
+
+glm::mat4 Object::GetMoon(int index)
+{
+
+  return moonModel[index];
 }
 
 void Object::getTextures(char* textureFile)

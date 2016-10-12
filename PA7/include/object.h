@@ -15,12 +15,17 @@ class Object
     void SetVertices();
     void getTextures(char* textureFile);
     void Render();
+    int GetNumMoons();
     glm::mat4 GetModel();
+    glm::mat4 GetMoon(int index);
 
   private:
     glm::mat4 model;
+    glm::mat4 *moonModel;
     std::vector<Vertex> Geometry;
     std::vector<unsigned int> Indices;
+
+    int numMoons;
 
     GLuint Textures;
     GLuint VB;
