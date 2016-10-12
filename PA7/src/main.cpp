@@ -5,8 +5,8 @@
 
 int main(int argc, char **argv)
 {
-  char *objFile;
-  char *textureFile;
+  char *configFile;
+
 
   // Check for file input in command line
   if(argc != 2) // if no more than two arguments
@@ -15,12 +15,12 @@ int main(int argc, char **argv)
     return 1;
   }
   //else save the obj file
-  objFile = argv[1];
-  textureFile = argv[2];
+  configFile = argv[1];
+
 
   // Start an engine and run it then cleanup after
   Engine *engine = new Engine("Tutorial Window Name", 800, 600);
-  if(!engine->Initialize(objFile, textureFile)) // pass object through
+  if(!engine->Initialize(configFile)) // pass object through
   {
     printf("The engine failed to start.\n");
     delete engine;
