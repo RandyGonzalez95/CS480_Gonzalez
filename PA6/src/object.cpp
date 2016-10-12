@@ -18,6 +18,7 @@ Object::Object(char * objFile, char * textureFile)
   SetVertices();
 
   getTextures(textureFile);
+
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
   glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Geometry.size(), &Geometry[0], GL_STATIC_DRAW);
@@ -51,25 +52,21 @@ void Object::SetVertices()
   // Declare variables
     // myScene currently holds all .obj data
     // grab the number of meshes
-  int meshes = myScene->mNumMeshes;// usually just one
-  int faces = 0;
   int index = 0;
-  int vIndex = 0;
   Vertex temp;
 
-
-  // Iterate through mMeshes
-  for(int iMesh = 0; iMesh < meshes; iMesh++) // mesh index iterator
+  // Iterate through Meshes
+  for(unsigned int iMesh = 0; iMesh < myScene->mNumMeshes; iMesh++) // mesh index iterator
   {
     aiMesh* model = myScene->mMeshes[iMesh];
-    // Find number of faces per mesh
-    faces = model->mNumFaces;
-    for(int iFaces = 0; iFaces <faces; iFaces++) // face index
+
+    // Iterate through faces
+    for(int iFaces = 0; iFaces < model->mNumFaces; iFaces++) // face index
     {
-      // for each face in the mesh
-      for(int i = 0; i<3; i++)
+      // for each indice in the mesh
+      for(int i = 0; i < 3; i++)
       {
-          // Grab index info of the faces
+        // Grab index info of the faces
         index = model->mFaces[iFaces].mIndices[i];
 
         // check for texture coodinates
@@ -80,11 +77,10 @@ void Object::SetVertices()
         }
 
         // Load Vertex Position
-        for(int j =0; j<3; j++)  // iterate through each face
+        for(int j = 0; j < 3; j++)  // iterate through each face
         {
           // Index info corresponds to a vertex position
           temp.position[j] = model->mVertices[index][j];
-
         }
 
         // Push back Index and Geomtry info
@@ -93,7 +89,6 @@ void Object::SetVertices()
       }
     }
   }
-
 }
 
 glm::mat4 Object::GetModel()

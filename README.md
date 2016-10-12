@@ -29,5 +29,5 @@ This is model created in blender and loading model into the program. To run this
 This is model loading program using Assimp to load models and then display them. To run this project ```cd PA5``` then follow the instructions in the README.md.  
 
 ## PA6: Assimp with Textures
-This program's focus is to use Assimp to load models and textures for those models. To run this project ```cd PA5``` then follow the instructions in the README.md.  
+This program's focus is to use Assimp to load models and textures for those models. To run this project ```cd PA6``` then follow the instructions in the README.md.  
 
