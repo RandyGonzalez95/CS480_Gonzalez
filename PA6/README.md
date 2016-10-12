@@ -6,7 +6,7 @@
 - Randy Gonzalez  
 
 ## Dependencies, Building, and Running
-This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./PA6 ../models/{FILENAME.obj} ../models/{FILENAME.png}  
+This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./Tutorial ../models/{FILENAME.obj} ../models/{FILENAME.png}  
 
 ## Dependency Instructions
 For both of the operating systems to run this project installation of these three programs are required [GLEW](http://glew.sourceforge.net/), [GLM](http://glm.g-truc.net/0.9.7/index.html), and [SDL2](https://wiki.libsdl.org/Tutorials).
@@ -37,11 +37,11 @@ mkdir build
 cd build
 cp ../makefile .
 make
-./PA6 ../models/{FILENAME.obj} ../models/{FILENAME.png}
+./Tutorial ../models/{FILENAME.obj} ../models/{FILENAME.png}
 ```
 
 ## Ubuntu.cse.unr.edu
 OpenGL 3.3 will run on the [ubuntu.cse.unr.edu](https://ubuntu.cse.unr.edu/) website. To do so follow the build instructions, but when running the Tutorial executable use this line to execute.
 ```bash
-/usr/NX/scripts/vgl/vglrun ./PA6 ../models/{FILENAME.obj} ../models/{FILENAME.png}
+/usr/NX/scripts/vgl/vglrun ./Tutorial ../models/{FILENAME.obj} ../models/{FILENAME.png}
 ```
