@@ -10,8 +10,8 @@ public:
 
   bool Initialize(char* filename);
   void Update(unsigned int dt, bool *code);
-  bool configData(char*filename);
-  bool readFile(char*filepath);
+  bool ConfigData(char*filename);
+  bool ReadFile(char*filepath);
   Object GetPlanet(int index);
   Object GetMoon(int index);
   Object GetSun();
@@ -20,9 +20,10 @@ public:
 
 
 private:
-  Object *Planet;
-  Object *Moon;
-  Object Sun;
+  std::vector<Object> Planet;
+  std::vector<Object> Moon;
+  Object *Sun;
   int numPlanets;
+  std::vector<std::string> data;
 
 };

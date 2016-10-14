@@ -2,9 +2,15 @@
 
 SolarSystem::SolarSystem(char* configFile)
 {
-  numPlanets = 9;
 
-  Initialize(configFile);
+
+  if(!Initialize(configFile))
+  {
+
+    exit(1);
+  }
+
+  numPlanets = 9;
 
 
 
@@ -18,8 +24,19 @@ SolarSystem::~SolarSystem()
 
 bool SolarSystem::Initialize(char* filename)
 {
-  // Open configFile
+  //Object temp(data[2], data[3]);
 
+  // Open configFile
+  if(!ReadFile(filename))
+  {
+
+    return false;
+  }
+
+  Sun = new Object(data[0], data[1]);
+
+
+  //Planet.push_back(temp);
 
 
 }
@@ -29,14 +46,31 @@ void SolarSystem::Update(unsigned int dt, bool *code)
 
 
 }
-bool SolarSystem::configData(char*filename)
+bool SolarSystem::ConfigData(char*filename)
 {
+
 
 }
 
-bool SolarSystem::readFile(char*filepath)
+bool SolarSystem::ReadFile(char*filepath)
 {
+  std::string temp;
+  std::ifstream fin(filepath);
 
+  //check if file exists
+  if( !fin.good() )
+  {
+    std::cerr<< "Config File not found. Ending Program.\n";
+    return false;
+  }
+
+  while(fin>>temp)
+  {
+    data.push_back(temp);
+  }
+
+
+  return true;
 }
 
 Object SolarSystem::GetPlanet(int index)
@@ -45,7 +79,7 @@ Object SolarSystem::GetPlanet(int index)
   return Planet[index];
 }
 
-Object SolarSystem::GetMoon()
+Object SolarSystem::GetMoon(int index)
 {
 
   return Moon[index];

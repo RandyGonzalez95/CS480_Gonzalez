@@ -2,12 +2,16 @@
 #include <fstream>
 #include <cstring>
 
+Object::Object()
+{
 
-Object::Object(char * objFile, char * textureFile)
+}
+
+Object::Object(std::string objFile, std::string textureFile)
 {
   // Initialize
   myScene = NULL;
-
+  
   // Open File Data
   if(!Initialize(objFile))
   {
@@ -34,7 +38,7 @@ Object::~Object()
   Indices.clear();
 }
 
-bool Object::Initialize(char *objFile)
+bool Object::Initialize(std::string objFile)
 {
   // Open File
   myScene = importer.ReadFile(objFile, aiProcess_Triangulate);
@@ -110,9 +114,9 @@ glm::mat4 Object::GetMoon(int index)
   return moonModel[index];
 }
 
-void Object::getTextures(char* textureFile)
+void Object::getTextures(std::string textureFile)
 {
-  InitializeMagick(textureFile);
+  InitializeMagick(textureFile.c_str());
   Image myImage;
 
   myImage.read(textureFile);

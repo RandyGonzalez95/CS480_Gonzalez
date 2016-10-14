@@ -171,7 +171,7 @@ void Graphics::Render()
   auto error = glGetError();
   if ( error != GL_NO_ERROR )
   {
-    string val = ErrorString( error );
+    std::string val = ErrorString( error );
     std::cout<< "Error initializing OpenGL! " << error << ", " << val << std::endl;
   }
 }
