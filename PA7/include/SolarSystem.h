@@ -14,7 +14,7 @@ public:
   bool ReadFile(char*filepath);
   Object GetPlanet(int index);
   Object GetMoon(int index);
-  Object GetSun();
+  Object* GetSun();
   int getNumObjects();
 
 
@@ -24,6 +24,6 @@ private:
   std::vector<Object> Moon;
   Object *Sun;
   int numPlanets;
-  std::vector<std::string> data;
+  std::vector<Data> SolarData;
 
 };

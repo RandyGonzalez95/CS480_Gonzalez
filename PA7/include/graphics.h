@@ -30,7 +30,6 @@ class Graphics
 
 
     SolarSystem *MilkyWay;
-    Object object;
 };
 
 #endif /* GRAPHICS_H */

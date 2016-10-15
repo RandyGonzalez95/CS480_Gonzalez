@@ -11,7 +11,11 @@ Object::Object(std::string objFile, std::string textureFile)
 {
   // Initialize
   myScene = NULL;
-  
+
+  // init Vars
+  rotateAngle = 0.0;
+  orbitAngle = 0.0;
+
   // Open File Data
   if(!Initialize(objFile))
   {
@@ -30,6 +34,7 @@ Object::Object(std::string objFile, std::string textureFile)
   glGenBuffers(1, &IB);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
+
 }
 
 Object::~Object()
@@ -77,7 +82,7 @@ void Object::SetVertices()
         if(model->HasTextureCoords(0))
         {
           temp.uv[0] = model->mTextureCoords[0][index].x;
-          temp.uv[1] = model->mTextureCoords[0][index].y;
+          temp.uv[1] = 1-model->mTextureCoords[0][index].y;
         }
 
         // Load Vertex Position
@@ -95,6 +100,18 @@ void Object::SetVertices()
   }
 }
 
+void Object::Update(unsigned int dt, bool* code)
+{
+
+  rotateAngle += 0.01;
+
+
+  //model = glm::rotate(glm::mat4(1.0f), -155.0f, glm::vec3(1.0, 0.0, 0.0))* glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0))*glm::scale(glm::mat4(1.0f), glm::vec3(6.0));
+
+  model = glm::rotate(glm::mat4(1.0f), rotateAngle, glm::vec3(0.0, 1.0, 0.0))*glm::scale(glm::mat4(1.0f), glm::vec3(10.0));
+
+}
+
 int Object::GetNumMoons()
 {
 
@@ -103,8 +120,7 @@ int Object::GetNumMoons()
 
 glm::mat4 Object::GetModel()
 {
-
-  //model = glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(1.0,0.0,0.0));
+  //model = glm::scale(glm::mat4(1.0f), glm::vec3(6.0)) * glm::rotate(glm::mat4(1.0f), (180.0f), glm::vec3(1.0, 0.0, 0.0));
   return model;
 }
 
@@ -112,6 +128,16 @@ glm::mat4 Object::GetMoon(int index)
 {
 
   return moonModel[index];
+}
+
+void Object::SetData(Data SolarData)
+{
+  rotateAngle = SolarData.rAngle;
+  orbitAngle = SolarData.oAngle;
+  distance = SolarData.distance;
+  size = SolarData.size;
+  oFile= SolarData.objFile;
+  tFile = SolarData.texFile;
 }
 
 void Object::getTextures(std::string textureFile)

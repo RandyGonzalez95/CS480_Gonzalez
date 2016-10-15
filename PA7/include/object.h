@@ -4,6 +4,15 @@
 #include <vector>
 #include "graphics_headers.h"
 
+struct Data
+{
+  std::string objFile;
+  std::string texFile;
+  float rAngle;
+  float oAngle;
+  float distance;
+  float size;
+};
 
 class Object
 {
@@ -15,8 +24,10 @@ class Object
     bool Initialize(std::string objFile);
     void SetVertices();
     void getTextures(std::string textureFile);
+    void Update(unsigned int dt, bool* code);
     void Render();
     int GetNumMoons();
+    void SetData(Data SolarData);
     glm::mat4 GetModel();
     glm::mat4 GetMoon(int index);
 
@@ -34,6 +45,10 @@ class Object
     // assimp
     Assimp::Importer importer;
     const aiScene *myScene;
+
+    float *moonAngle;
+    float rotateAngle, orbitAngle, distance, size;
+    std::string oFile, tFile;
 };
 
 

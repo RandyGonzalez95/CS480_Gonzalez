@@ -12,6 +12,7 @@ Graphics::~Graphics()
 
 bool Graphics::Initialize(int width, int height, char* configFile)
 {
+
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
     // cout << glewGetString(GLEW_VERSION) << endl;
@@ -45,8 +46,8 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   }
 
   // Create the SolarSystem
-  MilkyWay = new SolarSystem(configFile);
 
+  MilkyWay = new SolarSystem(configFile);
 
   // Set up the shaders
   m_shader = new Shader();
@@ -106,6 +107,8 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
 
+
+
   return true;
 }
 
@@ -132,37 +135,28 @@ void Graphics::Render()
   // Render Entire Solar System
   int size = MilkyWay->getNumObjects();
 
-  // First Handle Sun Model
-  object = MilkyWay->GetSun();
+
 
   // Render Sun Object
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object.GetModel()));
-  object.Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetSun()->GetModel()));
+  MilkyWay->GetSun()->Render();
 
   // Handle ALL other models, Planets and respective Moon models
     // for all planets in the solar system
-  for(int i = 0; i <size; i++ )
-  {
-    // Reuse object variable
-    object = MilkyWay->GetPlanet(i);
 
+  /*for(int i = 0; i <size; i++ )
+  {
     // Grab Number of Moons in the Current planet
-    int numMoons = object.GetNumMoons();
+    int numMoons = MilkyWay->GetPlanet(i).GetNumMoons();
 
     // Render Planet
-    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object.GetModel()));
-    object.Render();
+    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetPlanet(i).GetModel()));
+    MilkyWay->GetPlanet(i).Render();
 
-    object = MilkyWay->GetMoon(i);
+    // Render Moons
 
-    // Render Moons of Planets
-    for(int j = 0; j<numMoons; j++)
-    {
-      glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object.GetMoon(j)));
-      object.Render();
 
-    }
-  } // end for loop
+  } // end for loop*/
   // All planets and moons have been rendered
 
 
