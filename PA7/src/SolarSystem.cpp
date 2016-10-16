@@ -44,16 +44,16 @@ bool SolarSystem::Initialize(char* filename)
 
   }
 
-
-
-  //Planet.push_back(temp);
   return true;
-
 }
 
 void SolarSystem::Update(unsigned int dt, bool *code)
 {
   Sun->Update(dt, code);
+  for(int i = 0; i < numPlanets; i++)
+  {
+    Planet[i].Update(dt, code);
+  }
 }
 
 bool SolarSystem::ReadFile(char*filepath)
@@ -88,8 +88,6 @@ bool SolarSystem::ReadFile(char*filepath)
       numPlanets++;
       SolarData.push_back(temp);
     }
-
-
   }
 
   numPlanets -=2;  // minus moon and sun

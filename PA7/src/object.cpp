@@ -72,18 +72,14 @@ void Object::SetVertices()
 
 void Object::Update(unsigned int dt, bool* code)
 {
-
-  rotateAngle += 0.01;
-
+  orbitAngle += rotateAngle;
   // Declare matrices
-//  glm::mat4 orbitMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[0]), glm::vec3(0.0, 1.0, 0.0));
-  glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, distance));
-  //glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 orbitRotation = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(distance, 0.0, 0.0));
+  glm::mat4 spinRotation = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0, 1.0, 0.0));
 
 
-  //model = glm::rotate(glm::mat4(1.0f), -155.0f, glm::vec3(1.0, 0.0, 0.0))* glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0))*glm::scale(glm::mat4(1.0f), glm::vec3(6.0));
-
-  model = translateMatrix* glm::rotate(glm::mat4(1.0f), rotateAngle, glm::vec3(0.0, 1.0, 0.0))* glm::scale(glm::mat4(1.0f), glm::vec3(size));
+  model = ( orbitRotation * translateMatrix* spinRotation) * glm::scale(glm::mat4(1.0f), glm::vec3(size / 10));
 
 }
 
@@ -118,9 +114,7 @@ void Object::SetData(Data SolarData)
   // Initialize
   myScene = NULL;
 
-  // init Vars
-  rotateAngle = 0.0;
-  orbitAngle = 0.0;
+  orbitAngle = 0;
 
   // Open File Data
   if(!Initialize())
