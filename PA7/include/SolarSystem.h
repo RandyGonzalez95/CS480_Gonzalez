@@ -10,7 +10,6 @@ public:
 
   bool Initialize(char* filename);
   void Update(unsigned int dt, bool *code);
-  bool ConfigData(char*filename);
   bool ReadFile(char*filepath);
   Object GetPlanet(int index);
   Object GetMoon(int index);

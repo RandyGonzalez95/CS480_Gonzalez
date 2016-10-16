@@ -144,10 +144,10 @@ void Graphics::Render()
   // Handle ALL other models, Planets and respective Moon models
     // for all planets in the solar system
 
-  /*for(int i = 0; i <size; i++ )
+  for(int i = 0; i <9; i++ )
   {
     // Grab Number of Moons in the Current planet
-    int numMoons = MilkyWay->GetPlanet(i).GetNumMoons();
+    //int numMoons = MilkyWay->GetPlanet(i).GetNumMoons();
 
     // Render Planet
     glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetPlanet(i).GetModel()));

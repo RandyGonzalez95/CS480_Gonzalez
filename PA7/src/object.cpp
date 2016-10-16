@@ -7,43 +7,13 @@ Object::Object()
 
 }
 
-Object::Object(std::string objFile, std::string textureFile)
-{
-  // Initialize
-  myScene = NULL;
-
-  // init Vars
-  rotateAngle = 0.0;
-  orbitAngle = 0.0;
-
-  // Open File Data
-  if(!Initialize(objFile))
-  {
-    std::cerr<< "OBJ file was not found, ending program.\n";
-    exit(1);
-  }
-
-  SetVertices();
-
-  getTextures(textureFile);
-
-  glGenBuffers(1, &VB);
-  glBindBuffer(GL_ARRAY_BUFFER, VB);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Geometry.size(), &Geometry[0], GL_STATIC_DRAW);
-
-  glGenBuffers(1, &IB);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
-
-}
-
 Object::~Object()
 {
   Geometry.clear();
   Indices.clear();
 }
 
-bool Object::Initialize(std::string objFile)
+bool Object::Initialize()
 {
   // Open File
   myScene = importer.ReadFile(objFile, aiProcess_Triangulate);
@@ -105,10 +75,15 @@ void Object::Update(unsigned int dt, bool* code)
 
   rotateAngle += 0.01;
 
+  // Declare matrices
+//  glm::mat4 orbitMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[0]), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, distance));
+  //glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (planetAngle[1]), glm::vec3(0.0, 1.0, 0.0));
+
 
   //model = glm::rotate(glm::mat4(1.0f), -155.0f, glm::vec3(1.0, 0.0, 0.0))* glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0))*glm::scale(glm::mat4(1.0f), glm::vec3(6.0));
 
-  model = glm::rotate(glm::mat4(1.0f), rotateAngle, glm::vec3(0.0, 1.0, 0.0))*glm::scale(glm::mat4(1.0f), glm::vec3(10.0));
+  model = translateMatrix* glm::rotate(glm::mat4(1.0f), rotateAngle, glm::vec3(0.0, 1.0, 0.0))* glm::scale(glm::mat4(1.0f), glm::vec3(size));
 
 }
 
@@ -132,15 +107,42 @@ glm::mat4 Object::GetMoon(int index)
 
 void Object::SetData(Data SolarData)
 {
+  // Init All data
   rotateAngle = SolarData.rAngle;
   orbitAngle = SolarData.oAngle;
   distance = SolarData.distance;
   size = SolarData.size;
-  oFile= SolarData.objFile;
-  tFile = SolarData.texFile;
+  objFile= SolarData.objFile;
+  textureFile = SolarData.texFile;
+
+  // Initialize
+  myScene = NULL;
+
+  // init Vars
+  rotateAngle = 0.0;
+  orbitAngle = 0.0;
+
+  // Open File Data
+  if(!Initialize())
+  {
+    std::cerr<< "OBJ file was not found, ending program.\n";
+    exit(1);
+  }
+
+  SetVertices();
+  getTextures();
+
+  // Draw
+  glGenBuffers(1, &VB);
+  glBindBuffer(GL_ARRAY_BUFFER, VB);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Geometry.size(), &Geometry[0], GL_STATIC_DRAW);
+
+  glGenBuffers(1, &IB);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
 }
 
-void Object::getTextures(std::string textureFile)
+void Object::getTextures()
 {
   InitializeMagick(textureFile.c_str());
   Image myImage;

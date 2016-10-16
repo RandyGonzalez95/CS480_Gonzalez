@@ -18,12 +18,11 @@ class Object
 {
   public:
     Object();
-    Object(std::string objFile, std::string textureFile);
     ~Object();
 
-    bool Initialize(std::string objFile);
+    bool Initialize();
     void SetVertices();
-    void getTextures(std::string textureFile);
+    void getTextures();
     void Update(unsigned int dt, bool* code);
     void Render();
     int GetNumMoons();
@@ -48,7 +47,7 @@ class Object
 
     float *moonAngle;
     float rotateAngle, orbitAngle, distance, size;
-    std::string oFile, tFile;
+    std::string objFile, textureFile;
 };
 
 
