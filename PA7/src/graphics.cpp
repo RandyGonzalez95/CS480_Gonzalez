@@ -112,7 +112,7 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   return true;
 }
 
-void Graphics::Update(unsigned int dt, bool *code)
+void Graphics::Update(unsigned int dt, int code)
 {
   // Update the Solar System
   MilkyWay->Update(dt, code);
@@ -129,7 +129,7 @@ void Graphics::Render()
   m_shader->Enable();
 
 
-  //m_camera->SetView(MilkyWay->GetView(););
+  m_camera->SetView(MilkyWay->GetView());
 
   // Send in the projection and view to the shader
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));

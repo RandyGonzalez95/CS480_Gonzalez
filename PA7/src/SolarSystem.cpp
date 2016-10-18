@@ -2,7 +2,11 @@
 
 SolarSystem::SolarSystem(char* configFile)
 {
+  // Default settings
   numPlanets = 0;
+  viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
+                      glm::vec3(0.0, 0.0, 0.0), //Focus point
+                      glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
 
   // Initialize the Solar System with the configuration file
   if(!Initialize(configFile))
@@ -37,18 +41,16 @@ bool SolarSystem::Initialize(char* filename)
   Sun = new Object();
   Sun->SetData(SolarData[0]);// first element contains the sun info
 
-  // Last Element of solar data contains moon info.
   // only store planet data in planet vector
-  // Loop Through number of planets and set the data
+  // Loop Through number of planets and set the datA
   for(int i = 1; i<SolarData.size() ;i++)
   {
     temp->SetData(SolarData[i]);
     // Set planet data
     Planet.push_back(*temp);
 
-    if( i == SolarData.size())
+    if(i==SolarData.size())
     {
-      // Create the moon object and initialize it with data
       Moon.push_back(*temp);
     }
   }
@@ -56,38 +58,64 @@ bool SolarSystem::Initialize(char* filename)
   return true;
 }
 
-void SolarSystem::Update(unsigned int dt, bool *code)
+void SolarSystem::Update(unsigned int dt, int code)
 {
-
-
-    if(code[0])
-    {
-    
-
-    }
-    if(code[1])
-    {
-
-
-    }
-
-    if(code[2])
-    {
-
-
-    }
-    if(code[3])
-    {
-
-
-    }
-
   // Update the Sun
-  Sun->Update(dt, code, SolarData[0]);
+  Sun->Update(dt, SolarData[0]);
   // Update each Planet
   for(int i = 1; i <= numPlanets; i++)
   {
-    Planet[i-1].Update(dt, code, SolarData[i]);
+    Planet[i-1].Update(dt, SolarData[i]);
+  }
+
+  glm::mat4 sunModel = Sun->GetModel();
+
+  glm::vec3 CameraFocus = glm::vec3( sunModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+
+  glm::vec3 CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+  if(code == 0)
+  {
+
+  viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position X, Y, Z
+                              glm::vec3(0.0, 0.0, 0.0), //Focus point
+                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+  }
+  if(code == 1)
+  {
+    viewMatrix = glm::lookAt( CameraPosition, //Eye Position X, Y, Z
+                              CameraFocus, //Focus point
+                              glm::vec3(0.0, 0.0, 1.0)); //Positive Y is up
+
+  }
+
+  if(code == 2)
+  {
+    viewMatrix = glm::lookAt( glm::vec3(-20.0, 8.0, -20.0), //Eye Position X, Y, Z
+                              glm::vec3(0.0, 0.0, 0.0), //Focus point
+                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+  }
+  if(code == 3)
+  {
+    viewMatrix = glm::lookAt( glm::vec3(0.0, -20.0, -20.0), //Eye Position X, Y, Z
+                              glm::vec3(0.0, 0.0, 0.0), //Focus point
+                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+  }
+  if(code == 4)
+  {
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position X, Y, Z
+                              glm::vec3(0.0, 0.0, 0.0), //Focus point
+                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+  }
+  if(code == 5)
+  {
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position X, Y, Z
+                                  glm::vec3(0.0, 0.0, 0.0), //Focus point
+                                  glm::vec3(0.0, 1.0, 0.0));
+
   }
 }
 
@@ -147,4 +175,9 @@ int SolarSystem::getNumObjects()
 {
 
   return numPlanets+1;
+}
+
+glm::mat4 SolarSystem::GetView()
+{
+  return viewMatrix;
 }

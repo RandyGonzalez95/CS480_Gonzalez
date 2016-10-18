@@ -15,8 +15,7 @@ class Engine
     ~Engine();
     bool Initialize(char *configFile);
     void Run();
-    void InitCodes(bool *code);
-    void Keyboard(bool *code);
+    void Keyboard(int &code);
     unsigned int getDT();
     long long GetCurrentTimeMillis();
 

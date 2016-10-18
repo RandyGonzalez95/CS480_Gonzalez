@@ -11,7 +11,8 @@ class Camera
     bool Initialize(int w, int h);
     glm::mat4 GetProjection();
     glm::mat4 GetView();
-  
+    void SetView(glm::mat4 viewMatrix);
+
   private:
     glm::mat4 projection;
     glm::mat4 view;

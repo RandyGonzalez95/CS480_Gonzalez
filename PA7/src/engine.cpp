@@ -46,22 +46,13 @@ bool Engine::Initialize(char * configFile)
   return true;
 }
 
-void Engine::InitCodes( bool *code )
-{
-  int index = 0;
 
-  // initialize array of boooleans to 0
-  for(index = 0; index <10; index++)
-  {
-    code[index] = false;
-  }
-
-}
 
 void Engine::Run()
 {
   m_running = true;
-  bool *code = new bool[10]; // creates array of booleans for keyboard input
+  int code = 0;
+
 
   while(m_running)
   {
@@ -83,7 +74,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( bool *code )
+void Engine::Keyboard( int &code )
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -99,20 +90,21 @@ void Engine::Keyboard( bool *code )
         break;
 
       case SDLK_a:
-
+        code = 0;
         break;
       case SDLK_s:
-
+        code = 1;
         break;
       case SDLK_d:
-
+        code = 2;
         break;
       case SDLK_f:
-
+        code = 3;
         break;
       case SDLK_g:
-    
+        code = 4;
         break;
+
     }
 
   }
