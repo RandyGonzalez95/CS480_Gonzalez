@@ -70,13 +70,15 @@ void Object::SetVertices()
   }
 }
 
-void Object::Update(unsigned int dt, bool* code)
+void Object::Update(unsigned int dt, bool* code, Data SolarData)
 {
-  orbitAngle += rotateAngle;
+  orbitAngle += SolarData.oAngle;
+  rotateAngle += SolarData.rAngle;
+
   // Declare matrices
   glm::mat4 orbitRotation = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(distance, 0.0, 0.0));
-  glm::mat4 spinRotation = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 spinRotation = glm::rotate(glm::mat4(1.0f), rotateAngle, glm::vec3(0.0, 1.0, 0.0));
 
 
   model = ( orbitRotation * translateMatrix* spinRotation) * glm::scale(glm::mat4(1.0f), glm::vec3(size / 10));

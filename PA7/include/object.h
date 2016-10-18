@@ -23,7 +23,7 @@ class Object
     bool Initialize();
     void SetVertices();
     void getTextures();
-    void Update(unsigned int dt, bool* code);
+    void Update(unsigned int dt, bool* code, Data SolarData);
     void Render();
     int GetNumMoons();
     void SetData(Data SolarData);

@@ -49,10 +49,10 @@ bool SolarSystem::Initialize(char* filename)
 
 void SolarSystem::Update(unsigned int dt, bool *code)
 {
-  Sun->Update(dt, code);
-  for(int i = 0; i < numPlanets; i++)
+  Sun->Update(dt, code, SolarData[0]);
+  for(int i = 1; i <= numPlanets; i++)
   {
-    Planet[i].Update(dt, code);
+    Planet[i-1].Update(dt, code, SolarData[i]);
   }
 }
 
