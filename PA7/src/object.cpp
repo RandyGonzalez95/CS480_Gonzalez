@@ -76,10 +76,10 @@ void Object::SetVertices()
   }
 }
 
-void Object::Update(unsigned int dt, Data SolarData)
+void Object::Update(unsigned int dt, Data SolarData, int speedValue)
 {
-  orbitAngle += SolarData.oAngle;
-  rotateAngle += SolarData.rAngle;
+  orbitAngle += SolarData.oAngle * speedValue;
+  rotateAngle += SolarData.rAngle * speedValue;
 
 
 

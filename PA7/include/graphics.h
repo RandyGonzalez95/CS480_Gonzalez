@@ -15,7 +15,7 @@ class Graphics
     Graphics();
     ~Graphics();
     bool Initialize(int width, int height, char* configFile);
-    void Update( unsigned int dt, int code);
+    void Update( unsigned int dt, int code, int speedValue);
     void Render();
 
   private:

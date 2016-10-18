@@ -24,7 +24,7 @@ class Object
     bool Initialize();
     void SetVertices();
     void getTextures();
-    void Update(unsigned int dt, Data SolarData);
+    void Update(unsigned int dt, Data SolarData, int speedValue);
     void Render();
     void RenderSaturn();
     int GetNumMoons();

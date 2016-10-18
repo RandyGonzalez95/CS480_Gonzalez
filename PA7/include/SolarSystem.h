@@ -9,14 +9,13 @@ public:
   ~SolarSystem();
 
   bool Initialize(char* filename);
-  void Update(unsigned int dt, int code);
+  void Update(unsigned int dt, int code, int speedValue);
   bool ReadFile(char*filepath);
   Object GetPlanet(int index);
   Object GetMoon(int index);
   Object* GetSun();
   int getNumObjects();
   glm::mat4 GetView();
-
 
 
 private:

@@ -112,10 +112,10 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   return true;
 }
 
-void Graphics::Update(unsigned int dt, int code)
+void Graphics::Update(unsigned int dt, int code, int speedValue)
 {
   // Update the Solar System
-  MilkyWay->Update(dt, code);
+  MilkyWay->Update(dt, code, speedValue);
 
 }
 

@@ -59,7 +59,7 @@ bool SolarSystem::Initialize(char* filename)
   return true;
 }
 
-void SolarSystem::Update(unsigned int dt, int code)
+void SolarSystem::Update(unsigned int dt, int code, int speedValue)
 {
   glm::vec3 CameraFocus = glm::vec3( (glm::mat4(1.0f) * glm::vec4(0.0, 0.0, 0.0, 1.0)));
   glm::vec3 CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
@@ -68,12 +68,13 @@ void SolarSystem::Update(unsigned int dt, int code)
   glm::mat4 SunModel = Sun->GetModel();
   glm::mat4 PlanetModel = glm::mat4(1.0f);
 
+
   // Update the Sun
-  Sun->Update(dt, SolarData[0]);
+  Sun->Update(dt, SolarData[0], speedValue);
   // Update each Planet
   for(int i = 1; i <= numPlanets; i++)
   {
-    Planet[i-1].Update(dt, SolarData[i]);
+    Planet[i-1].Update(dt, SolarData[i], speedValue);
   }
 
   if(code==0) // Default
@@ -81,6 +82,8 @@ void SolarSystem::Update(unsigned int dt, int code)
     viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
                         glm::vec3(0.0, 0.0, 0.0), //Focus point
                         glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+    speedValue = 1;
     return;
 
   }
@@ -106,7 +109,7 @@ void SolarSystem::Update(unsigned int dt, int code)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[1].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.5, -0.5 );
 
   }
   if(code == 4) // Earth
@@ -114,7 +117,7 @@ void SolarSystem::Update(unsigned int dt, int code)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[2].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.5, -0.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.5 , -0.5 );
 
   }
   if(code == 5) // Mars
@@ -167,13 +170,19 @@ void SolarSystem::Update(unsigned int dt, int code)
   }
   if(code == 11)
   {
-
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+    return;
 
   }
   if(code == 12)
   {
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
 
-
+    return;
   }
   if(code == 13)
   {

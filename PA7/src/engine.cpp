@@ -52,6 +52,7 @@ void Engine::Run()
 {
   m_running = true;
   int code = 0;
+  int speedValue = 1;
 
 
   while(m_running)
@@ -62,11 +63,11 @@ void Engine::Run()
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard(code);
+      Keyboard(code, speedValue);
     }
 
     // Render All Graphics
-    m_graphics->Update(m_DT, code);
+    m_graphics->Update(m_DT, code, speedValue);
     m_graphics->Render();
 
     // Swap to the Window
@@ -74,8 +75,9 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard( int &code )
+void Engine::Keyboard( int &code, int &speedValue )
 {
+
   if(m_event.type == SDL_QUIT)
   {
     m_running = false;
@@ -121,6 +123,18 @@ void Engine::Keyboard( int &code )
       break;
       case SDLK_a: // Pluto
       code = 10;
+      break;
+      case SDLK_n: // Speed UP
+      code = 11;
+      speedValue += 1;
+      break;
+      case SDLK_m: // Speed DOWN
+      code = 12;
+      speedValue -= 1;
+      if(speedValue < 1)
+      {
+        speedValue = 1;
+      }
       break;
 
 
