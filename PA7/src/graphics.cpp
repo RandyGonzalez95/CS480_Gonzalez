@@ -153,11 +153,6 @@ void Graphics::Render()
 
     // Render Planet
     glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetPlanet(i).GetModel()));
-    if(i == 5)
-    {
-      MilkyWay->GetPlanet(i).RenderSaturn();
-    }
-    else
 
     MilkyWay->GetPlanet(i).Render();
 

@@ -19,6 +19,7 @@ SolarSystem::SolarSystem(char* configFile)
 
 SolarSystem::~SolarSystem()
 {
+  // deallocate
   delete Sun;
   Planet.clear();
   Moon.clear();
@@ -44,22 +45,20 @@ bool SolarSystem::Initialize(char* filename)
   // Loop Through number of planets and set the datA
   for(int i = 1; i<SolarData.size() ;i++)
   {
+    // create temporary object to store all data
     Object *temp = new Object;
     temp->SetData(SolarData[i]);
 
-
+    // check if we are at the moon data
     if(i==SolarData.size()-1)
     {
+      // push moon data back
       Moon.push_back(*temp);
-      Moon[0].print();
       break;
     }
 
     // Set planet data
     Planet.push_back(*temp);
-    
-
-    // Moon Data is at the last index of data
 
   }
 
@@ -68,10 +67,11 @@ bool SolarSystem::Initialize(char* filename)
 
 void SolarSystem::Update(unsigned int dt, int code, int speedValue)
 {
+  // Declare camera variables to move
   glm::vec3 CameraFocus = glm::vec3( (glm::mat4(1.0f) * glm::vec4(0.0, 0.0, 0.0, 1.0)));
   glm::vec3 CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
 
-
+  // To get matrix models
   glm::mat4 SunModel = Sun->GetModel();
   glm::mat4 PlanetModel = glm::mat4(1.0f);
 
@@ -175,7 +175,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.2 );
 
   }
-  if(code == 11)
+  if(code == 11) // Speed UP
   {
     viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
                         glm::vec3(0.0, 0.0, 0.0), //Focus point
@@ -183,7 +183,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     return;
 
   }
-  if(code == 12)
+  if(code == 12) // Speed Down
   {
     viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
                         glm::vec3(0.0, 0.0, 0.0), //Focus point
@@ -193,11 +193,11 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
   }
   if(code == 13)
   {
-
+      // STILL DO TO
 
   }
 
-
+  // Change camera view
   viewMatrix = glm::lookAt( CameraPosition, //Eye Position X, Y, Z
                             CameraFocus, //Focus point
                             glm::vec3(0.0, 0.0, 1.0)); //Positive Y is up
@@ -217,8 +217,10 @@ bool SolarSystem::ReadFile(char*filepath)
     return false;
   }
 
+  // run through data file
   while(fin.get(dummy))
   {
+    // check if we are at valuable data
     if( dummy == ':')
     {
       fin>>temp.texFile;
@@ -229,6 +231,7 @@ bool SolarSystem::ReadFile(char*filepath)
       fin>>temp.size;
       fin>>temp.numberMoons;
 
+      // push all data back to the struct
       SolarData.push_back(temp);
 
       numPlanets++;

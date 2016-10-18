@@ -26,10 +26,8 @@ class Object
     void getTextures();
     void Update(unsigned int dt, Data SolarData, int speedValue);
     void Render();
-    void RenderSaturn();
     int GetNumMoons();
     void SetData(Data SolarData);
-    void print();
     glm::mat4 GetModel();
     glm::mat4 GetMoon();
 
