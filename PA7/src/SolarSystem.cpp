@@ -4,9 +4,10 @@ SolarSystem::SolarSystem(char* configFile)
 {
   numPlanets = 0;
 
+  // Initialize the Solar System with the configuration file
   if(!Initialize(configFile))
   {
-
+    // If initialize went bad, exit the program
     exit(1);
   }
 
@@ -22,8 +23,9 @@ SolarSystem::~SolarSystem()
 
 bool SolarSystem::Initialize(char* filename)
 {
-
+  // Temporary object to allocate data
   Object *temp = new Object;
+  int lastIndex = 0;
 
   // Open configFile
   if(!ReadFile(filename))
@@ -31,17 +33,24 @@ bool SolarSystem::Initialize(char* filename)
     return false;
   }
 
+  // Create the sun and initialize it with data
   Sun = new Object();
-  Sun->SetData(SolarData[0]);
+  Sun->SetData(SolarData[0]);// first element contains the sun info
 
-
-
-  std::cout<< "Number of planets are: "<< numPlanets<<'\n';
-  for(int i = 1; i<SolarData.size();i++)
+  // Last Element of solar data contains moon info.
+  // only store planet data in planet vector
+  // Loop Through number of planets and set the data
+  for(int i = 1; i<SolarData.size() ;i++)
   {
     temp->SetData(SolarData[i]);
+    // Set planet data
     Planet.push_back(*temp);
 
+    if( i == SolarData.size())
+    {
+      // Create the moon object and initialize it with data
+      Moon.push_back(*temp);
+    }
   }
 
   return true;
@@ -49,7 +58,9 @@ bool SolarSystem::Initialize(char* filename)
 
 void SolarSystem::Update(unsigned int dt, bool *code)
 {
+  // Update the Sun
   Sun->Update(dt, code, SolarData[0]);
+  // Update each Planet
   for(int i = 1; i <= numPlanets; i++)
   {
     Planet[i-1].Update(dt, code, SolarData[i]);
@@ -85,6 +96,7 @@ bool SolarSystem::ReadFile(char*filepath)
       fin>>temp.oAngle;
       fin>>temp.distance;
       fin>>temp.size;
+      fin>>temp.numberMoons;
       numPlanets++;
       SolarData.push_back(temp);
     }

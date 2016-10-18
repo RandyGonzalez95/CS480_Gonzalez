@@ -12,6 +12,7 @@ struct Data
   float oAngle;
   float distance;
   float size;
+  int numberMoons;
 };
 
 class Object
@@ -28,11 +29,11 @@ class Object
     int GetNumMoons();
     void SetData(Data SolarData);
     glm::mat4 GetModel();
-    glm::mat4 GetMoon(int index);
+    glm::mat4 GetMoon();
 
   private:
     glm::mat4 model;
-    glm::mat4 *moonModel;
+    glm::mat4 moonModel;
     std::vector<Vertex> Geometry;
     std::vector<unsigned int> Indices;
 

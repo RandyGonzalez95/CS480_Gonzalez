@@ -4,6 +4,12 @@
 
 Object::Object()
 {
+  rotateAngle = 0;
+  orbitAngle = 0;
+  moonAngle = new float[2];
+  moonAngle[0] = 0; // rotateAngle
+  moonAngle[1] = 0; // orbit
+
 
 }
 
@@ -83,6 +89,14 @@ void Object::Update(unsigned int dt, bool* code, Data SolarData)
 
   model = ( orbitRotation * translateMatrix* spinRotation) * glm::scale(glm::mat4(1.0f), glm::vec3(size / 10));
 
+  orbitRotation = glm::rotate(model, rotateAngle, glm::vec3(0.0, 1.0, 0.0));
+  translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -1.5));
+  spinRotation = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0, 1.0, 0.0));
+
+  // Moon Model
+  moonModel = (orbitRotation * translateMatrix * spinRotation) * glm::scale(glm::mat4(1.0f), glm::vec3(0.15));;
+
+
 }
 
 int Object::GetNumMoons()
@@ -97,10 +111,10 @@ glm::mat4 Object::GetModel()
   return model;
 }
 
-glm::mat4 Object::GetMoon(int index)
+glm::mat4 Object::GetMoon()
 {
 
-  return moonModel[index];
+  return moonModel;
 }
 
 void Object::SetData(Data SolarData)
@@ -112,6 +126,7 @@ void Object::SetData(Data SolarData)
   size = SolarData.size;
   objFile= SolarData.objFile;
   textureFile = SolarData.texFile;
+  numMoons = SolarData.numberMoons;
 
   // Initialize
   myScene = NULL;
