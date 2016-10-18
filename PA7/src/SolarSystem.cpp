@@ -46,14 +46,21 @@ bool SolarSystem::Initialize(char* filename)
   {
     Object *temp = new Object;
     temp->SetData(SolarData[i]);
-    // Set planet data
-    Planet.push_back(*temp);
 
-    // Moon Data is at the last index of data
-    if(i==SolarData.size())
+
+    if(i==SolarData.size()-1)
     {
       Moon.push_back(*temp);
+      Moon[0].print();
+      break;
     }
+
+    // Set planet data
+    Planet.push_back(*temp);
+    
+
+    // Moon Data is at the last index of data
+
   }
 
   return true;
@@ -91,7 +98,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
   {
     // Grab Sun Model to map to camera
     CameraFocus = glm::vec3( SunModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3(0.0, 0.5, -7.5 );
 
 
   }
@@ -100,7 +107,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[0].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .1, -.5 );
 
   }
 
@@ -109,7 +116,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[1].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.5, -0.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.1, -0.5 );
 
   }
   if(code == 4) // Earth
@@ -117,7 +124,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[2].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.5 , -0.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.1 , -0.5 );
 
   }
   if(code == 5) // Mars
@@ -125,7 +132,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[3].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .1, -.5 );
 
   }
   if(code == 6) // Jupiter
@@ -133,7 +140,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[4].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .1, -1.5 );
 
   }
   if(code == 7) // Saturn
@@ -141,7 +148,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[5].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .1, -1.5 );
 
   }
   if(code == 8) // Uranus
@@ -149,7 +156,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[6].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.1, -1.5 );
 
   }
   if(code == 9) // Neptune
@@ -157,7 +164,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[7].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -1.5 );
 
   }
   if(code == 10) // Pluto
@@ -165,7 +172,7 @@ void SolarSystem::Update(unsigned int dt, int code, int speedValue)
     // Grab Planet Model to map to camera
     PlanetModel = Planet[8].GetModel();
     CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.2 );
 
   }
   if(code == 11)

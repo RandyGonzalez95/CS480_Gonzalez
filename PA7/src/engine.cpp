@@ -93,6 +93,7 @@ void Engine::Keyboard( int &code, int &speedValue )
 
       case SDLK_q: // Default view
       code = 0;
+      speedValue = 1;
       break;
       case SDLK_w: // Look at Sun
       code = 1;
@@ -135,6 +136,9 @@ void Engine::Keyboard( int &code, int &speedValue )
       {
         speedValue = 1;
       }
+      break;
+      case SDLK_b:
+      speedValue = 0;
       break;
 
 

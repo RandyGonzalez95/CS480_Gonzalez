@@ -29,6 +29,7 @@ class Object
     void RenderSaturn();
     int GetNumMoons();
     void SetData(Data SolarData);
+    void print();
     glm::mat4 GetModel();
     glm::mat4 GetMoon();
 

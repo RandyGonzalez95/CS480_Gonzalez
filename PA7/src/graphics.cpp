@@ -166,7 +166,7 @@ void Graphics::Render()
     for( int j = 0;j<numMoons; j++)
     {
       glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetPlanet(i).GetMoon()));
-      MilkyWay->GetPlanet(j).Render();
+      MilkyWay->GetMoon(j).Render();
     }
 
 
