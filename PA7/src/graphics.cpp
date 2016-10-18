@@ -128,13 +128,15 @@ void Graphics::Render()
   // Start the correct program
   m_shader->Enable();
 
+
+  //m_camera->SetView(MilkyWay->GetView(););
+
   // Send in the projection and view to the shader
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
   // Render Entire Solar System
   int size = MilkyWay->getNumObjects();
-
 
 
   // Render Sun Object
@@ -151,6 +153,12 @@ void Graphics::Render()
 
     // Render Planet
     glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetPlanet(i).GetModel()));
+    if(i == 5)
+    {
+      MilkyWay->GetPlanet(i).RenderSaturn();
+    }
+    else
+
     MilkyWay->GetPlanet(i).Render();
 
     // Render Moons

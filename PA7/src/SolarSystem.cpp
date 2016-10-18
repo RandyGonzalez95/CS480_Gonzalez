@@ -58,6 +58,30 @@ bool SolarSystem::Initialize(char* filename)
 
 void SolarSystem::Update(unsigned int dt, bool *code)
 {
+
+
+    if(code[0])
+    {
+    
+
+    }
+    if(code[1])
+    {
+
+
+    }
+
+    if(code[2])
+    {
+
+
+    }
+    if(code[3])
+    {
+
+
+    }
+
   // Update the Sun
   Sun->Update(dt, code, SolarData[0]);
   // Update each Planet
@@ -83,26 +107,23 @@ bool SolarSystem::ReadFile(char*filepath)
 
   while(fin.get(dummy))
   {
-
-    if( dummy == '-')
-    {
-      fin>>temp.objFile;
-
-    }
     if( dummy == ':')
     {
       fin>>temp.texFile;
+      fin>>temp.objFile;
       fin>>temp.rAngle;
       fin>>temp.oAngle;
       fin>>temp.distance;
       fin>>temp.size;
       fin>>temp.numberMoons;
-      numPlanets++;
+
       SolarData.push_back(temp);
+
+      numPlanets++;
     }
   }
 
-  numPlanets -=2;  // minus moon and sun
+  numPlanets -= 2;  // minus moon and sun
 
   return true;
 }

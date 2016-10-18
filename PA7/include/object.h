@@ -26,6 +26,7 @@ class Object
     void getTextures();
     void Update(unsigned int dt, bool* code, Data SolarData);
     void Render();
+    void RenderSaturn();
     int GetNumMoons();
     void SetData(Data SolarData);
     glm::mat4 GetModel();

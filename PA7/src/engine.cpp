@@ -92,10 +92,29 @@ void Engine::Keyboard( bool *code )
   else if (m_event.type == SDL_KEYDOWN)
   {
     // handle key down events here
-    if (m_event.key.keysym.sym == SDLK_ESCAPE)
+    switch(m_event.key.keysym.sym)
     {
-      m_running = false;
+      case SDLK_ESCAPE:
+        m_running = false;
+        break;
+
+      case SDLK_a:
+
+        break;
+      case SDLK_s:
+
+        break;
+      case SDLK_d:
+
+        break;
+      case SDLK_f:
+
+        break;
+      case SDLK_g:
+    
+        break;
     }
+
   }
 }
 

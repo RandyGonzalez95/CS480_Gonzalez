@@ -81,6 +81,8 @@ void Object::Update(unsigned int dt, bool* code, Data SolarData)
   orbitAngle += SolarData.oAngle;
   rotateAngle += SolarData.rAngle;
 
+
+
   // Declare matrices
   glm::mat4 orbitRotation = glm::rotate(glm::mat4(1.0f), orbitAngle, glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(distance, 0.0, 0.0));
@@ -194,6 +196,27 @@ void Object::Render()
 
   glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 
+
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
+}
+
+void Object::RenderSaturn()
+{
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, Textures);
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VB);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,uv));
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
+
+
+  glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
