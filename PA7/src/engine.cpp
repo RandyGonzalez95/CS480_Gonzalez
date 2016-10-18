@@ -86,24 +86,43 @@ void Engine::Keyboard( int &code )
     switch(m_event.key.keysym.sym)
     {
       case SDLK_ESCAPE:
-        m_running = false;
-        break;
+      m_running = false;
+      break;
 
-      case SDLK_a:
-        code = 0;
-        break;
-      case SDLK_s:
-        code = 1;
-        break;
-      case SDLK_d:
-        code = 2;
-        break;
-      case SDLK_f:
-        code = 3;
-        break;
-      case SDLK_g:
-        code = 4;
-        break;
+      case SDLK_q: // Default view
+      code = 0;
+      break;
+      case SDLK_w: // Look at Sun
+      code = 1;
+      break;
+      case SDLK_e: // Mercury
+      code = 2;
+      break;
+      case SDLK_r: // Venus
+      code = 3;
+      break;
+      case SDLK_t: // Earth
+      code = 4;
+      break;
+      case SDLK_y: // Mars
+      code = 5;
+      break;
+      case SDLK_u: // Jupiter
+      code = 6;
+      break;
+      case SDLK_i: // Saturn
+      code = 7;
+      break;
+      case SDLK_o: // Uranus
+      code = 8;
+      break;
+      case SDLK_p: // Neptune
+      code = 9;
+      break;
+      case SDLK_a: // Pluto
+      code = 10;
+      break;
+
 
     }
 

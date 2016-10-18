@@ -49,6 +49,7 @@ bool SolarSystem::Initialize(char* filename)
     // Set planet data
     Planet.push_back(*temp);
 
+    // Moon Data is at the last index of data
     if(i==SolarData.size())
     {
       Moon.push_back(*temp);
@@ -60,6 +61,13 @@ bool SolarSystem::Initialize(char* filename)
 
 void SolarSystem::Update(unsigned int dt, int code)
 {
+  glm::vec3 CameraFocus = glm::vec3( (glm::mat4(1.0f) * glm::vec4(0.0, 0.0, 0.0, 1.0)));
+  glm::vec3 CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+
+
+  glm::mat4 SunModel = Sun->GetModel();
+  glm::mat4 PlanetModel = glm::mat4(1.0f);
+
   // Update the Sun
   Sun->Update(dt, SolarData[0]);
   // Update each Planet
@@ -68,55 +76,115 @@ void SolarSystem::Update(unsigned int dt, int code)
     Planet[i-1].Update(dt, SolarData[i]);
   }
 
-  glm::mat4 sunModel = Sun->GetModel();
-
-  glm::vec3 CameraFocus = glm::vec3( sunModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
-
-  glm::vec3 CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
-  if(code == 0)
+  if(code==0) // Default
   {
-
-  viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position X, Y, Z
-                              glm::vec3(0.0, 0.0, 0.0), //Focus point
-                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+    return;
 
   }
-  if(code == 1)
+  if(code == 1) // Sun
   {
-    viewMatrix = glm::lookAt( CameraPosition, //Eye Position X, Y, Z
-                              CameraFocus, //Focus point
-                              glm::vec3(0.0, 0.0, 1.0)); //Positive Y is up
+    // Grab Sun Model to map to camera
+    CameraFocus = glm::vec3( SunModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+
+
+  }
+  if(code == 2) // Mercury
+  {
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[0].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
 
   }
 
-  if(code == 2)
+  if(code == 3) // Venus
   {
-    viewMatrix = glm::lookAt( glm::vec3(-20.0, 8.0, -20.0), //Eye Position X, Y, Z
-                              glm::vec3(0.0, 0.0, 0.0), //Focus point
-                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[1].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
 
   }
-  if(code == 3)
+  if(code == 4) // Earth
   {
-    viewMatrix = glm::lookAt( glm::vec3(0.0, -20.0, -20.0), //Eye Position X, Y, Z
-                              glm::vec3(0.0, 0.0, 0.0), //Focus point
-                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[2].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, 0.5, -0.5 );
 
   }
-  if(code == 4)
+  if(code == 5) // Mars
   {
-    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position X, Y, Z
-                              glm::vec3(0.0, 0.0, 0.0), //Focus point
-                              glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[3].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
 
   }
-  if(code == 5)
+  if(code == 6) // Jupiter
   {
-    viewMatrix = glm::lookAt( glm::vec3(0.0, 8.0, -20.0), //Eye Position X, Y, Z
-                                  glm::vec3(0.0, 0.0, 0.0), //Focus point
-                                  glm::vec3(0.0, 1.0, 0.0));
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[4].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
 
   }
+  if(code == 7) // Saturn
+  {
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[5].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+
+  }
+  if(code == 8) // Uranus
+  {
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[6].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+
+  }
+  if(code == 9) // Neptune
+  {
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[7].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+
+  }
+  if(code == 10) // Pluto
+  {
+    // Grab Planet Model to map to camera
+    PlanetModel = Planet[8].GetModel();
+    CameraFocus = glm::vec3( PlanetModel * glm::vec4(0.0, 0.0, 0.0, 1.0));
+    CameraPosition = CameraFocus + glm::vec3( 0.0, .5, -.5 );
+
+  }
+  if(code == 11)
+  {
+
+
+  }
+  if(code == 12)
+  {
+
+
+  }
+  if(code == 13)
+  {
+
+
+  }
+
+
+  viewMatrix = glm::lookAt( CameraPosition, //Eye Position X, Y, Z
+                            CameraFocus, //Focus point
+                            glm::vec3(0.0, 0.0, 1.0)); //Positive Y is up
 }
 
 bool SolarSystem::ReadFile(char*filepath)
