@@ -28,7 +28,6 @@ SolarSystem::~SolarSystem()
 bool SolarSystem::Initialize(char* filename)
 {
   // Temporary object to allocate data
-  Object *temp = new Object;
   int lastIndex = 0;
 
   // Open configFile
@@ -45,6 +44,7 @@ bool SolarSystem::Initialize(char* filename)
   // Loop Through number of planets and set the datA
   for(int i = 1; i<SolarData.size() ;i++)
   {
+    Object *temp = new Object;
     temp->SetData(SolarData[i]);
     // Set planet data
     Planet.push_back(*temp);
