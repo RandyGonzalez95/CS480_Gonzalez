@@ -1,0 +1,46 @@
+-----------------------------------------------------------------
+PA7: Solar System Instruction Manual			   	*
+							   	*
+-----------------------------------------------------------------
+Run Program:							*
+-------								*	
+- mkdir build							*
+- cd build							*
+- cmake ..							*
+- make								*
+- ./PA7 ../SolarSystem.config					*
+								*
+-----------------------------------------------------------------
+View Control:							*
+-------								*
+- q: default arial view.					*
+- w: Sun view.							*
+- e: Mercury view.						*
+- r: Venus view.						*
+- t: Earth view.						*
+- y: Mars view.							*
+- u: Jupiter view.						*
+- i: Saturn view.						*
+- o: Uranus view.						*
+- p: Neptune view.						*
+- a: Pluto view.						*
+								*
+-----------------------------------------------------------------
+Speed Control:							*
+-------								*
+- n: Increment speed.						*
+- m: Decrement speed.						*	
+- b: Pause the sytem.						*
+								*	
+-----------------------------------------------------------------
+Configuration File Format:
+-------
+'planetname:' 'texture file path' 'obj filepath' 'rotate value' 
+'orbit value' 'distance from sun' 'size' 'number of moons'
+---
+e.g.
+---
+Sun: ../models/sun.jpg ../models/sphere.obj 0.0025 0 0 30 0
+
+-----------------------------------------------------------------
+

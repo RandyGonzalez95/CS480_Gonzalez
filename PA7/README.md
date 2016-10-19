@@ -1,12 +1,21 @@
-# PA6: Model Loading
+# PA7: Solar System
 
 ## Team Members
 - Brett Knadle  
 - Phillip Vong  
 - Randy Gonzalez  
 
+## Objective:
+- The objective of this project is to build an interactive solar system.
+- Use Assimp to load models and textures for the planets/moons.
+- Use a data file for info on each object (size, orbit radius, rotation,...).
+
+## Extra Credit
+- Live adjustment of simulation speed.
+- Configuration file.
+
 ## Dependencies, Building, and Running
-This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./Tutorial ../models/{FILENAME.obj} ../models/{FILENAME.png}  
+This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./PA7 ../SolarSystem.config
 
 ## Dependency Instructions
 For both of the operating systems to run this project installation of these three programs are required [GLEW](http://glew.sourceforge.net/), [GLM](http://glm.g-truc.net/0.9.7/index.html), and [SDL2](https://wiki.libsdl.org/Tutorials).
@@ -28,20 +37,38 @@ brew install glew glm sdl2
 ```
 
 ## Building and Running
-To run this project you need to use Makefile which makes including new libraries easier, and handles new files added automatically to the src and include directory. Makefile is a small new learning curve but makes things easier in the future.
+To run this project you need to use cmake which makes including new libraries easier, and handles new files added automatically to the src and include directory. Cmake is a small new learning curve but makes things easier in the future.
 
-### MAKEFILE instructions
+### CMake instructions
 The makefile works as expected and must be updated with new files added in.
 ```bash
 mkdir build
 cd build
-cp ../makefile .
+cmake ..
 make
-./Tutorial ../models/{FILENAME.obj} ../models/{FILENAME.png}
+./PA7 ../SolarSystem.config
 ```
+
+### View Control:
+- q: default arial view.
+- w: Sun view.
+- e: Mercury view.
+- r: Venus view.
+- t: Earth view.
+- y: Mars view.
+- u: Jupiter view.
+- i: Saturn view.
+- o: Uranus view.
+- p: Neptune view.
+- a: Pluto view.
+
+### Speed Control:
+- n: Increment speed.
+- m: Decrement speed.
+- b: Pause the sytem.
 
 ## Ubuntu.cse.unr.edu
 OpenGL 3.3 will run on the [ubuntu.cse.unr.edu](https://ubuntu.cse.unr.edu/) website. To do so follow the build instructions, but when running the Tutorial executable use this line to execute.
 ```bash
-/usr/NX/scripts/vgl/vglrun ./Tutorial ../models/{FILENAME.obj} ../models/{FILENAME.png}
+/usr/NX/scripts/vgl/vglrun ./PA7 ../SolarSystem.config
 ```
