@@ -23,6 +23,10 @@ class Physics
     // Physical World
     btDiscreteDynamicsWorld *dynamicsWorld;
 
+    // Collision Shapes
+    btCollisionShape *shape;
+
+
 
 };
 
