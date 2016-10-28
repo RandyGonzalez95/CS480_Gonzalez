@@ -6,7 +6,7 @@ UNAME_S := $(shell uname -s)
 # Linux
 ifeq ($(UNAME_S), Linux)
 	CC=g++
-	LIBS=-lSDL2 -lGLEW -lGL -lassimp `Magick++-config --cppflags --cxxflags --ldflags --libs`
+	LIBS=-lSDL2 -lGLEW -lGL -lassimp -I/user/include/bullet -lBulletDynamics -lBulletSoftBody -lBulletCollision -lLinearMath `Magick++-config --cppflags --cxxflags --ldflags --libs`
 else
 	CC=clang++
 	LIBS=-lSDL2 -framework OpenGL -framework Cocoa -lGLEW -stdlib=libc++
