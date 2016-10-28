@@ -42,10 +42,21 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   if(!m_camera->Initialize(width, height))
   {
     printf("Camera Failed to Initialize\n");
-    return false;
+    return false;bbqqqbqwer
   }
 
   // Create the SolarSystem
+  Data bgData;
+  bgData.objFile = "../models/sphere.obj";
+  bgData.texFile = "../models/background.jpg";
+  bgData.rAngle = 0.0;
+  bgData.oAngle = 0.0;
+  bgData.distance = 0.0;
+  bgData.size = 10;
+  bgData.numberMoons = 0;
+
+
+  Background.SetData(bgData);
 
   MilkyWay = new SolarSystem(configFile);
 
@@ -142,6 +153,9 @@ void Graphics::Render()
   // Render Sun Object
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(MilkyWay->GetSun()->GetModel()));
   MilkyWay->GetSun()->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(Background.GetModel()*glm::scale(glm::mat4(1.0f), glm::vec3(25.0))*glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(0.0, 1.0, 0.0))));
+  Background.Render();
 
   // Handle ALL other models, Planets and respective Moon models
     // for all planets in the solar system
