@@ -8,7 +8,7 @@
 class Object
 {
   public:
-    Object(char *objFile, char *textureFile);
+    Object();
     ~Object();
 
     bool Initialize(char *objFile);

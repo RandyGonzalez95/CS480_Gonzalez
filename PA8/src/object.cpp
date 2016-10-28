@@ -3,10 +3,12 @@
 #include <cstring>
 
 
-Object::Object(char * objFile, char * textureFile)
+Object::Object()
 {
   // Initialize
   myScene = NULL;
+  char *objFile = NULL;
+  char *textureFile = NULL;
 
   // Open File Data
   if(!Initialize(objFile))

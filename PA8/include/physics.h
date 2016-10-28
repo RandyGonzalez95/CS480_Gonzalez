@@ -6,6 +6,22 @@
 class Physics
 {
 
+  public:
+    Physics();
+    ~Physics();
+
+    bool Initialize();
+    bool CreateWorld();
+
+  private:
+    // Initialize World
+    btBroadphaseInterface *broadphase;
+    btDefaultCollisionConfiguration *collisionConfiguration;
+    btCollisionDispatcher *dispatcher;
+    btSequentialImpulseConstraintSolver *solver;
+
+    // Physical World
+    btDiscreteDynamicsWorld *dynamicsWorld;
 
 
 };

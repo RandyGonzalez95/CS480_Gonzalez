@@ -42,7 +42,7 @@ bool Graphics::Initialize(int width, int height, char* configFile)
   if(!m_camera->Initialize(width, height))
   {
     printf("Camera Failed to Initialize\n");
-    return false;bbqqqbqwer
+    return false;
   }
 
   // Create the SolarSystem

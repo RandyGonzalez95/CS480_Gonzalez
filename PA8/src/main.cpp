@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv)
 {
-  char *objFile;
+  /*char *objFile;
   char *textureFile;
 
   // Check for file input in command line
@@ -16,11 +16,11 @@ int main(int argc, char **argv)
   }
   //else save the obj file
   objFile = argv[1];
-  textureFile = argv[2];
+  textureFile = argv[2];*/
 
   // Start an engine and run it then cleanup after
-  Engine *engine = new Engine("Tutorial Window Name", 800, 600);
-  if(!engine->Initialize(objFile, textureFile)) // pass object through
+  Engine *engine = new Engine("Physics World", 800, 600);
+  if(!engine->Initialize())// pass object through
   {
     printf("The engine failed to start.\n");
     delete engine;

@@ -24,7 +24,7 @@ Engine::~Engine()
   m_graphics = NULL;
 }
 
-bool Engine::Initialize(char * objFile, char* textureFile)
+bool Engine::Initialize()
 {
   // Start a window
   m_window = new Window();
@@ -36,7 +36,7 @@ bool Engine::Initialize(char * objFile, char* textureFile)
 
   // Start the graphics
   m_graphics = new Graphics();
-  if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, objFile, textureFile))
+  if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT))
   {
     printf("The graphics failed to initialize.\n");
     return false;
