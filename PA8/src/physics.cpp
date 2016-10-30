@@ -32,6 +32,7 @@ bool Physics::Initialize()
   dispatcher = new btCollisionDispatcher(collisionConfiguration);
   solver = new btSequentialImpulseConstraintSolver;
 
+
   // check if any are NULL
   if( (broadphase == NULL) || (collisionConfiguration == NULL)
       || (dispatcher==NULL) || (solver==NULL) )

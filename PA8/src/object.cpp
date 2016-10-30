@@ -3,7 +3,7 @@
 #include <cstring>
 
 
-Object::Object(char *objFile, char *textureFile)
+Object::Object(std::string objFile, std::string textureFile)
 {
   // Initialize
   myScene = NULL;
@@ -34,10 +34,10 @@ Object::~Object()
   Indices.clear();
 }
 
-bool Object::Initialize(char *objFile)
+bool Object::Initialize(std::string objFile)
 {
   // Open File
-  myScene = importer.ReadFile(objFile, aiProcess_Triangulate);
+  myScene = importer.ReadFile(objFile.c_str(), aiProcess_Triangulate);
 
   // check if file exits
   if(myScene == NULL)
@@ -98,9 +98,9 @@ glm::mat4 Object::GetModel()
   return model;
 }
 
-void Object::getTextures(char* textureFile)
+void Object::getTextures(std::string textureFile)
 {
-  InitializeMagick(textureFile);
+  InitializeMagick(textureFile.c_str());
   Image myImage;
 
   myImage.read(textureFile);

@@ -45,7 +45,10 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  object = new Object();
+  std::string objFile = "../models/colorbox.obj";
+  std::string textureFile = "../models/image.jpg";
+
+  object = new Object(objFile, textureFile);
 
   // Set up the shaders
   m_shader = new Shader();

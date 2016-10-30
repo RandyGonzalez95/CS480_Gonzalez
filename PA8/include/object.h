@@ -8,12 +8,12 @@
 class Object
 {
   public:
-    Object(char *objFile, char *textureFile);
+    Object(std::string objFile, std::string stextureFile);
     ~Object();
 
-    bool Initialize(char *objFile);
+    bool Initialize(std::string objFile);
     void SetVertices();
-    void getTextures(char* textureFile);
+    void getTextures(std::string textureFile);
     void Render();
     glm::mat4 GetModel();
 
