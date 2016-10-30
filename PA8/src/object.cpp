@@ -2,7 +2,6 @@
 #include <fstream>
 #include <cstring>
 
-
 Object::Object(std::string objFile, std::string textureFile)
 {
   // Initialize
@@ -34,19 +33,48 @@ Object::~Object()
   Indices.clear();
 }
 
+void Object::Update(unsigned int dt, bool *code)
+{
+  angle += dt * M_PI/1000;
+  btTransform trans;
+  btScalar m[16];
+  physicsWorld.dynamicsWorld->stepSimulation(dt, 10);
+  rigidBody->getMotionState()->getWorldTransform(trans);
+  trans.getOpenGLMatrix(m);
+  glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(0.0, 1.0, 0.0));
+  model = glm::make_mat4(m) * rotateMatrix;
+}
+
 bool Object::Initialize(std::string objFile)
 {
   // Open File
   myScene = importer.ReadFile(objFile.c_str(), aiProcess_Triangulate);
 
+createScene();
   // check if file exits
   if(myScene == NULL)
   {
     return false;
   }
-return true;
+
+  return true;
 }
 
+void Object::createScene()
+{
+   objTriMesh[0] = new btTriangleMesh();
+
+    physicsWorld.shape = new btStaticPlaneShape (btVector3(0,1,0), 1);
+    btDefaultMotionState *shapeMotionState = NULL;
+    shapeMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+    btScalar mass(100);
+    btVector3 inertia(1, 2, 1);
+    physicsWorld.shape->calculateLocalInertia(mass, inertia);
+    btRigidBody::btRigidBodyConstructionInfo shapeRigidBodyCI(mass, shapeMotionState, physicsWorld.shape, inertia);
+    rigidBody = new btRigidBody(shapeRigidBodyCI);
+    physicsWorld.dynamicsWorld->addRigidBody(rigidBody);
+
+}
 void Object::SetVertices()
 {
   // Declare variables
@@ -73,7 +101,7 @@ void Object::SetVertices()
         if(model->HasTextureCoords(0))
         {
           temp.uv[0] = model->mTextureCoords[0][index].x;
-          temp.uv[1] = model->mTextureCoords[0][index].y;
+          temp.uv[1] = 1 - model->mTextureCoords[0][index].y;
         }
 
         // Load Vertex Position
@@ -93,8 +121,6 @@ void Object::SetVertices()
 
 glm::mat4 Object::GetModel()
 {
-
-  //model = glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(1.0,0.0,0.0));
   return model;
 }
 
@@ -121,7 +147,6 @@ void Object::getTextures(std::string textureFile)
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 }
 
 void Object::Render()

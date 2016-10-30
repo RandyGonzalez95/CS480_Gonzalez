@@ -8,6 +8,7 @@ using namespace std;
 #include "camera.h"
 #include "shader.h"
 #include "object.h"
+#include "physics.h"
 
 class Graphics
 {
@@ -16,6 +17,10 @@ class Graphics
     ~Graphics();
     bool Initialize(int width, int height);
     void Render();
+    void Update(unsigned int dt, bool *code);
+
+    Physics physicsWorld;
+    btRigidBody *rigidBody;
 
   private:
     std::string ErrorString(GLenum error);

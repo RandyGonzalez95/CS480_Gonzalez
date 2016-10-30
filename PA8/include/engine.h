@@ -16,6 +16,8 @@ class Engine
     bool Initialize();
     void Run();
     void Keyboard();
+    unsigned int getDT();
+    long long GetCurrentTimeMillis();
 
   private:
     // Window related variables
@@ -28,6 +30,8 @@ class Engine
 
     Graphics *m_graphics;
     bool m_running;
+    unsigned int m_DT;
+    long long m_currentTimeMillis;
 };
 
 #endif // ENGINE_H

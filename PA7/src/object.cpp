@@ -88,7 +88,7 @@ void Object::Update(unsigned int dt, Data SolarData, int speedValue)
   glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(distance, 0.0, 0.0));
   glm::mat4 spinRotation = glm::rotate(glm::mat4(1.0f), rotateAngle, glm::vec3(0.0, 1.0, 0.0));
 
-  //glm::mat4 tilt = glm::rotate(glm::mat4(1.0f), 90.0f, glm::vec3(-1.6, 0.0, 0.0));
+  //glm::mat4 tilt = glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(1.0, 0.0, 0.0));
 
   // Return Planets
   model =  (orbitRotation * translateMatrix* spinRotation) * glm::scale(glm::mat4(1.0f), glm::vec3(size / 10));

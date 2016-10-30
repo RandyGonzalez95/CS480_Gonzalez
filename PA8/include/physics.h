@@ -13,7 +13,6 @@ class Physics
     bool Initialize();
     bool CreateWorld();
 
-  private:
     // Initialize World
     btBroadphaseInterface *broadphase;
     btDefaultCollisionConfiguration *collisionConfiguration;
@@ -25,6 +24,9 @@ class Physics
 
     // Collision Shapes
     btCollisionShape *shape;
+
+  private:
+
 
 
 

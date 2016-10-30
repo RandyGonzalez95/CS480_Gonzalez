@@ -41,6 +41,10 @@ bool Engine::Initialize()
     printf("The graphics failed to initialize.\n");
     return false;
   }
+
+  // Set the time
+  m_currentTimeMillis = GetCurrentTimeMillis();
+
   // No errors
   return true;
 }
@@ -48,15 +52,19 @@ bool Engine::Initialize()
 void Engine::Run()
 {
   m_running = true;
+  bool code[10];
 
   while(m_running)
   {
+    m_DT = getDT();
+    
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
       Keyboard();
     }
 
+    m_graphics->Update(m_DT, code);
     m_graphics->Render();
 
     // Swap to the Window
@@ -78,5 +86,21 @@ void Engine::Keyboard()
       m_running = false;
     }
   }
+}
 
+unsigned int Engine::getDT()
+{
+  long long TimeNowMillis = GetCurrentTimeMillis();
+  assert(TimeNowMillis >= m_currentTimeMillis);
+  unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
+  m_currentTimeMillis = TimeNowMillis;
+  return DeltaTimeMillis;
+}
+
+long long Engine::GetCurrentTimeMillis()
+{
+  timeval t;
+  gettimeofday(&t, NULL);
+  long long ret = t.tv_sec * 1000 + t.tv_usec / 1000;
+  return ret;
 }

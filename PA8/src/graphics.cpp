@@ -45,7 +45,7 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  std::string objFile = "../models/colorbox.obj";
+  std::string objFile = "../models/buddha.obj";
   std::string textureFile = "../models/image.jpg";
 
   object = new Object(objFile, textureFile);
@@ -109,6 +109,11 @@ bool Graphics::Initialize(int width, int height)
   glDepthFunc(GL_LESS);
 
   return true;
+}
+
+void Graphics::Update(unsigned int dt, bool *code)
+{
+  object->Update(dt, code);
 }
 
 void Graphics::Render()

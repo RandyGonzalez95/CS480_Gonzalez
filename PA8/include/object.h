@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "graphics_headers.h"
-
+#include "physics.h"
 
 class Object
 {
@@ -16,6 +16,8 @@ class Object
     void getTextures(std::string textureFile);
     void Render();
     glm::mat4 GetModel();
+    void Update(unsigned int dt, bool *code);
+    void createScene();
 
   private:
     glm::mat4 model;
@@ -28,6 +30,11 @@ class Object
     // assimp
     Assimp::Importer importer;
     const aiScene *myScene;
+
+    Physics physicsWorld;
+    btRigidBody *rigidBody;
+    btTriangleMesh *objTriMesh[3];
+    float angle = 0;
 };
 
 

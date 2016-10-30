@@ -1,9 +1,20 @@
 #include "physics.h"
+#include <iostream>
 
 Physics::Physics()
 {
+  std::cout << "/* In constructor */" << std::endl;
+  // Allocate memory for each
+  broadphase = new btDbvtBroadphase();
+  collisionConfiguration = new btDefaultCollisionConfiguration();
+  dispatcher = new btCollisionDispatcher(collisionConfiguration);
+  solver = new btSequentialImpulseConstraintSolver;
 
+  // Initialize the physics world
+  dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
+  // Set Gravity
+  dynamicsWorld->setGravity(btVector3(0,-9.81,0));
 }
 
 Physics::~Physics()

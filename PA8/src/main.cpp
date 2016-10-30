@@ -5,19 +5,6 @@
 
 int main(int argc, char **argv)
 {
-  /*char *objFile;
-  char *textureFile;
-
-  // Check for file input in command line
-  if(argc != 3) // if no more than two arguments
-  {
-    printf("ERROR: Provide necessary model files: object, and texture.\n");
-    return 1;
-  }
-  //else save the obj file
-  objFile = argv[1];
-  textureFile = argv[2];*/
-
   // Start an engine and run it then cleanup after
   Engine *engine = new Engine("Physics World", 800, 600);
   if(!engine->Initialize())// pass object through

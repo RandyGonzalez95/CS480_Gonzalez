@@ -24,7 +24,7 @@ bool Shader::Initialize()
 {
   m_shaderProg = glCreateProgram();
 
-  if (m_shaderProg == 0) 
+  if (m_shaderProg == 0)
   {
     std::cerr << "Error creating shader program\n";
     return false;
@@ -77,7 +77,7 @@ bool Shader::AddShader(GLenum ShaderType)
 
   GLuint ShaderObj = glCreateShader(ShaderType);
 
-  if (ShaderObj == 0) 
+  if (ShaderObj == 0)
   {
     std::cerr << "Error creating shader type " << ShaderType << std::endl;
     return false;
@@ -97,7 +97,7 @@ bool Shader::AddShader(GLenum ShaderType)
   GLint success;
   glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
 
-  if (!success) 
+  if (!success)
   {
     GLchar InfoLog[1024];
     glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
@@ -157,11 +157,11 @@ void Shader::Enable()
 
 GLint Shader::GetUniformLocation(const char* pUniformName)
 {
-    GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+  GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if (Location == INVALID_UNIFORM_LOCATION) {
-        fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
-    }
+  if (Location == INVALID_UNIFORM_LOCATION) {
+      fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
+  }
 
-    return Location;
+  return Location;
 }
