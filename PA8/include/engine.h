@@ -7,6 +7,7 @@
 #include "window.h"
 #include "graphics.h"
 
+
 class Engine
 {
   public:
@@ -15,7 +16,9 @@ class Engine
     ~Engine();
     bool Initialize();
     void Run();
-    void Keyboard();
+    void Keyboard(int &code);
+    unsigned int getDT();
+    long long GetCurrentTimeMillis();
 
   private:
     // Window related variables
@@ -26,8 +29,14 @@ class Engine
     bool m_FULLSCREEN;
     SDL_Event m_event;
 
+    //time
+    unsigned int m_DT;
+    long long m_currentTimeMillis;
+
+    // Graphics
     Graphics *m_graphics;
     bool m_running;
+
 };
 
 #endif // ENGINE_H

@@ -7,6 +7,7 @@ Object::Object(std::string objFile, std::string textureFile)
 {
   // Initialize
   myScene = NULL;
+  angle = 0;
 
   // Open File Data
   if(!Initialize(objFile))
@@ -73,7 +74,7 @@ void Object::SetVertices()
         if(model->HasTextureCoords(0))
         {
           temp.uv[0] = model->mTextureCoords[0][index].x;
-          temp.uv[1] = model->mTextureCoords[0][index].y;
+          temp.uv[1] = 1-model->mTextureCoords[0][index].y;
         }
 
         // Load Vertex Position
@@ -91,10 +92,22 @@ void Object::SetVertices()
   }
 }
 
+void Object::Update(unsigned int dt, int code)
+{
+  //angle += dt * M_PI/400;
+  //angle += 0.01;
+
+  //model = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0));
+
+}
+
+void Object::SetModel(glm::mat4 temp)
+{
+  model = temp;
+}
+
 glm::mat4 Object::GetModel()
 {
-
-  //model = glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(1.0,0.0,0.0));
   return model;
 }
 

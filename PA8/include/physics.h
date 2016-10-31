@@ -2,6 +2,7 @@
 #define PHYSICS_H
 
 #include <btBulletDynamicsCommon.h>
+#include <vector>
 
 class Physics
 {
@@ -12,6 +13,9 @@ class Physics
 
     bool Initialize();
     bool CreateWorld();
+    void Pinball();
+    btDiscreteDynamicsWorld *getWorld();
+    btRigidBody* getRigidBody(int index);
 
   private:
     // Initialize World
@@ -24,10 +28,10 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *shape;
+    btCollisionShape *plane, *cylinder, *sphere;
+    btTriangleMesh *objTriMesh[3];
 
-
-
+    std::vector<btRigidBody*> rigidBody;
 };
 
 #endif

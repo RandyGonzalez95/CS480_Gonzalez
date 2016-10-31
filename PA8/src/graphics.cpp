@@ -45,7 +45,7 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  std::string objFile = "../models/colorbox.obj";
+  std::string objFile = "../models/cube.obj";
   std::string textureFile = "../models/image.jpg";
 
   object = new Object(objFile, textureFile);
@@ -109,6 +109,26 @@ bool Graphics::Initialize(int width, int height)
   glDepthFunc(GL_LESS);
 
   return true;
+}
+
+void Graphics::Update(unsigned int dt, int code)
+{
+  // Initialize Physics
+  btTransform trans;
+
+  btScalar m[16];
+
+  physicsWorld.getWorld()->stepSimulation(dt, 10);
+  physicsWorld.getRigidBody(0)->getMotionState()->getWorldTransform(trans);
+
+
+  trans.getOpenGLMatrix(m);
+
+  model = glm::make_mat4(m);
+  // Update the object
+  object->SetModel(model);
+  //object->Update(dt, code);
+
 }
 
 void Graphics::Render()

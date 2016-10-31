@@ -48,15 +48,20 @@ bool Engine::Initialize()
 void Engine::Run()
 {
   m_running = true;
+  int code = 0;
 
   while(m_running)
   {
+    // Update the DT
+    m_DT = getDT();
+
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard();
+      Keyboard(code);
     }
 
+    m_graphics->Update(m_DT, code);
     m_graphics->Render();
 
     // Swap to the Window
@@ -64,7 +69,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard()
+void Engine::Keyboard(int &code)
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -79,4 +84,21 @@ void Engine::Keyboard()
     }
   }
 
+}
+
+unsigned int Engine::getDT()
+{
+  long long TimeNowMillis = GetCurrentTimeMillis();
+  assert(TimeNowMillis >= m_currentTimeMillis);
+  unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
+  m_currentTimeMillis = TimeNowMillis;
+  return DeltaTimeMillis;
+}
+
+long long Engine::GetCurrentTimeMillis()
+{
+  timeval t;
+  gettimeofday(&t, NULL);
+  long long ret = t.tv_sec * 1000 + t.tv_usec / 1000;
+  return ret;
 }

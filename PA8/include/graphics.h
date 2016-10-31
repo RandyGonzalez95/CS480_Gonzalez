@@ -15,6 +15,7 @@ class Graphics
     Graphics();
     ~Graphics();
     bool Initialize(int width, int height);
+    void Update(unsigned int dt, int code);
     void Render();
 
   private:
@@ -29,6 +30,11 @@ class Graphics
 
 
     Object *object;
+
+    glm::mat4 model;
+
+    // Physics
+    Physics physicsWorld;
 };
 
 #endif /* GRAPHICS_H */

@@ -14,8 +14,10 @@ class Object
     bool Initialize(std::string objFile);
     void SetVertices();
     void getTextures(std::string textureFile);
+    void Update(unsigned int dt, int code);
     void Render();
     glm::mat4 GetModel();
+    void SetModel(glm::mat4 temp);
 
   private:
     glm::mat4 model;
@@ -28,6 +30,8 @@ class Object
     // assimp
     Assimp::Importer importer;
     const aiScene *myScene;
+
+    float angle;
 };
 
 
