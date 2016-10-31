@@ -2,7 +2,6 @@
 #include <fstream>
 #include <cstring>
 
-
 Object::Object(std::string objFile, std::string textureFile)
 {
   // Initialize
@@ -97,7 +96,11 @@ void Object::Update(unsigned int dt, int code, btRigidBody* rigidBodyID )
   // Initialize Physics
   btTransform trans;
   btScalar m[16];
+
   //physicsWorld.getWorld()->stepSimulation(dt, 10);
+
+  //rigidBodyID->activate(true);
+  //rigidBodyID->applyForce(btVector3(0,1,1), btVector3(0,0,0));
 
   // Move Objects
   rigidBodyID->getMotionState()->getWorldTransform(trans);

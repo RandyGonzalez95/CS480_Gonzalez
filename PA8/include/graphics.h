@@ -34,6 +34,8 @@ class Graphics
     Object *cylinder;
     Object *sphere;
 
+    float simTime = 0;
+
     // Physics
     Physics physicsWorld;
 };

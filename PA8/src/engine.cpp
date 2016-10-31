@@ -6,6 +6,7 @@ Engine::Engine(string name, int width, int height)
   m_WINDOW_WIDTH = width;
   m_WINDOW_HEIGHT = height;
   m_FULLSCREEN = false;
+  m_DT = 0;
 }
 
 Engine::Engine(string name)
@@ -55,6 +56,7 @@ void Engine::Run()
     // Update the DT
     m_DT = getDT();
 
+
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
@@ -92,6 +94,7 @@ unsigned int Engine::getDT()
   assert(TimeNowMillis >= m_currentTimeMillis);
   unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
   m_currentTimeMillis = TimeNowMillis;
+
   return DeltaTimeMillis;
 }
 

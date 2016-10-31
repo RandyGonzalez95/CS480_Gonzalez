@@ -112,7 +112,12 @@ bool Graphics::Initialize(int width, int height)
 
 void Graphics::Update(unsigned int dt, int code)
 {
-  physicsWorld.getWorld()->stepSimulation(dt, 10);
+  simTime = 0.0083;
+
+  physicsWorld.getWorld()->stepSimulation(simTime, 10);
+
+
+
   // Update all Objects
   plane->Update(dt, code, physicsWorld.getRigidBody(0));
   cylinder->Update(dt, code, physicsWorld.getRigidBody(1));

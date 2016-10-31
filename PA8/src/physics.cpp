@@ -84,7 +84,8 @@ bool Physics::CreateWorld()
 void Physics::Pinball()
 {
   // Plane
-  plane = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), 0);
+  plane = new btStaticPlaneShape(btVector3(1.0, 0.0, 0.0), 1);
+  // /plane->setLocalScaling(btVector3(5,5,5));
 
   // Object tri meshes
   objTriMesh[0] = new btTriangleMesh();
@@ -95,22 +96,22 @@ void Physics::Pinball()
   cylinder = new btCylinderShape(btVector3(1.0,1.0,1.0));
 
   // sphere
-  sphere = new btSphereShape(2);
+  sphere = new btSphereShape(1);
 
   // Create Motion state
   btDefaultMotionState *planeMS = NULL;
-  planeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 0, 0)));
+  planeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
   btDefaultMotionState *cylinderMS = NULL;
-  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,0,-5)));
+  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,5,-5)));
 
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(1, 1, 1, 1), btVector3(0,7,0)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,8,0)));
 
   // set mass
   btScalar mass(100);
   // inertia
-  btVector3 inertia(1,2,1);
+  btVector3 inertia(1,1,1);
 
   // Set inertia for each shape
   plane->calculateLocalInertia(mass,inertia);
@@ -132,15 +133,12 @@ void Physics::Pinball()
   temp = new btRigidBody(sphereRigidBodyCI);
   rigidBody.push_back(temp);
 
-  rigidBody[2]->activate(true);
-  rigidBody[2]->applyForce(btVector3(1,1,1), btVector3(1,1,1));
+//  rigidBody[0]->activate(true);
+  //rigidBody[0]->applyForce(btVector3(0,0,0), btVector3(0,0,0));
   // Add to world
   dynamicsWorld->addRigidBody(rigidBody[0]);
   dynamicsWorld->addRigidBody(rigidBody[1]);
   dynamicsWorld->addRigidBody(rigidBody[2]);
-
-
-
 }
 
 btDiscreteDynamicsWorld* Physics::getWorld()
