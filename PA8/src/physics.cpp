@@ -84,7 +84,7 @@ bool Physics::CreateWorld()
 void Physics::Pinball()
 {
   // Plane
-  plane = new btStaticPlaneShape(btVector3(1.0, 0.0, 0.0), 1);
+  plane = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), -1);
   // /plane->setLocalScaling(btVector3(5,5,5));
 
   // Object tri meshes
@@ -103,10 +103,10 @@ void Physics::Pinball()
   planeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
   btDefaultMotionState *cylinderMS = NULL;
-  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,5,-5)));
+  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,0,0)));
 
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,8,0)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(1,8,0)));
 
   // set mass
   btScalar mass(100);
@@ -119,9 +119,9 @@ void Physics::Pinball()
   sphere->calculateLocalInertia(mass,inertia);
 
   // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(mass, planeMS, plane, inertia);
+  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, planeMS, plane, inertia);
   btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(mass, cylinderMS, cylinder, inertia);
-  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
+  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass/2, sphereMS, sphere, inertia);
 
   // Add RigidBody
   btRigidBody *temp = new btRigidBody(planeRigidBodyCI);

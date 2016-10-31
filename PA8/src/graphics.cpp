@@ -47,7 +47,7 @@ bool Graphics::Initialize(int width, int height)
   // Create the object
   plane = new Object("../models/box.obj", "../models/image.jpg");
   cylinder = new Object("../models/cylinder.obj", "../models/image.jpg");
-  sphere = new Object("../models/sphere.obj", "../models/image.jpg");
+  sphere = new Object("../models/sphere.obj", "../models/earth.jpg");
 
   // Set up the shaders
   m_shader = new Shader();
@@ -78,7 +78,7 @@ bool Graphics::Initialize(int width, int height)
     return false;
   }
 
-  // Locate the projection matrix in the shader
+  // Locate the projection matrix in the shadersphere
   m_projectionMatrix = m_shader->GetUniformLocation("projectionMatrix");
   if (m_projectionMatrix == INVALID_UNIFORM_LOCATION)
   {
@@ -128,7 +128,7 @@ void Graphics::Update(unsigned int dt, int code)
 void Graphics::Render()
 {
   //clear the screen
-  glClearColor(0.0, 0.0, 0.2, 1.0);
+  glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Start the correct program
