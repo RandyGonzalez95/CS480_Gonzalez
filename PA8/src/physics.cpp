@@ -99,24 +99,47 @@ void Physics::Pinball()
 
   // Create Motion state
   btDefaultMotionState *planeMS = NULL;
-  planeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+  planeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 0, 0)));
+
+  btDefaultMotionState *cylinderMS = NULL;
+  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0,0,-5)));
+
+  btDefaultMotionState *sphereMS = NULL;
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(1, 1, 1, 1), btVector3(0,7,0)));
 
   // set mass
-  btScalar mass(50);
+  btScalar mass(100);
   // inertia
   btVector3 inertia(1,2,1);
 
   // Set inertia for each shape
   plane->calculateLocalInertia(mass,inertia);
+  cylinder->calculateLocalInertia(mass,inertia);
+  sphere->calculateLocalInertia(mass,inertia);
 
   // Create RigidBody
   btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(mass, planeMS, plane, inertia);
+  btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(mass, cylinderMS, cylinder, inertia);
+  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
 
   // Add RigidBody
   btRigidBody *temp = new btRigidBody(planeRigidBodyCI);
   rigidBody.push_back(temp);
 
+  temp = new btRigidBody(cylinderRigidBodyCI);
+  rigidBody.push_back(temp);
+
+  temp = new btRigidBody(sphereRigidBodyCI);
+  rigidBody.push_back(temp);
+
+  rigidBody[2]->activate(true);
+  rigidBody[2]->applyForce(btVector3(1,1,1), btVector3(1,1,1));
+  // Add to world
   dynamicsWorld->addRigidBody(rigidBody[0]);
+  dynamicsWorld->addRigidBody(rigidBody[1]);
+  dynamicsWorld->addRigidBody(rigidBody[2]);
+
+
 
 }
 

@@ -45,10 +45,9 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  std::string objFile = "../models/cylinder.obj";
-  std::string textureFile = "../models/image.jpg";
-
-  object = new Object(objFile, textureFile);
+  plane = new Object("../models/box.obj", "../models/image.jpg");
+  cylinder = new Object("../models/cylinder.obj", "../models/image.jpg");
+  sphere = new Object("../models/sphere.obj", "../models/image.jpg");
 
   // Set up the shaders
   m_shader = new Shader();
@@ -113,21 +112,11 @@ bool Graphics::Initialize(int width, int height)
 
 void Graphics::Update(unsigned int dt, int code)
 {
-  // Initialize Physics
-  btTransform trans;
-
-  btScalar m[16];
-
   physicsWorld.getWorld()->stepSimulation(dt, 10);
-  physicsWorld.getRigidBody(0)->getMotionState()->getWorldTransform(trans);
-
-
-  trans.getOpenGLMatrix(m);
-
-  model = glm::make_mat4(m);
-  // Update the object
-  object->SetModel(model);
-  object->Update(dt, code);
+  // Update all Objects
+  plane->Update(dt, code, physicsWorld.getRigidBody(0));
+  cylinder->Update(dt, code, physicsWorld.getRigidBody(1));
+  sphere->Update(dt,code, physicsWorld.getRigidBody(2));
 
 }
 
@@ -144,10 +133,17 @@ void Graphics::Render()
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
-  // Render the cube and the moon
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object->GetModel()));
+  // Render the objects
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
+  plane->Render();
 
-  object->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cylinder->GetModel()));
+  cylinder->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(sphere->GetModel()));
+  sphere->Render();
+
+
 
 
   // Get any errors from OpenGL

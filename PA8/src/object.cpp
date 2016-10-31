@@ -92,12 +92,18 @@ void Object::SetVertices()
   }
 }
 
-void Object::Update(unsigned int dt, int code)
+void Object::Update(unsigned int dt, int code, btRigidBody* rigidBodyID )
 {
-  //angle += dt * M_PI/400;
-  angle += 0.01;
+  // Initialize Physics
+  btTransform trans;
+  btScalar m[16];
+  //physicsWorld.getWorld()->stepSimulation(dt, 10);
 
-  model = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0));
+  // Move Objects
+  rigidBodyID->getMotionState()->getWorldTransform(trans);
+  trans.getOpenGLMatrix(m);
+  model = glm::make_mat4(m);
+
 
 }
 

@@ -8,6 +8,7 @@ using namespace std;
 #include "camera.h"
 #include "shader.h"
 #include "object.h"
+#include <vector>
 
 class Graphics
 {
@@ -29,9 +30,9 @@ class Graphics
     GLint m_modelMatrix;
 
 
-    Object *object;
-
-    glm::mat4 model;
+    Object *plane;
+    Object *cylinder;
+    Object *sphere;
 
     // Physics
     Physics physicsWorld;
