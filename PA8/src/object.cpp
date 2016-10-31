@@ -95,9 +95,9 @@ void Object::SetVertices()
 void Object::Update(unsigned int dt, int code)
 {
   //angle += dt * M_PI/400;
-  //angle += 0.01;
+  angle += 0.01;
 
-  //model = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0));
+  model = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0));
 
 }
 

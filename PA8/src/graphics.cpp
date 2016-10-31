@@ -45,7 +45,7 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  std::string objFile = "../models/cube.obj";
+  std::string objFile = "../models/cylinder.obj";
   std::string textureFile = "../models/image.jpg";
 
   object = new Object(objFile, textureFile);
@@ -127,7 +127,7 @@ void Graphics::Update(unsigned int dt, int code)
   model = glm::make_mat4(m);
   // Update the object
   object->SetModel(model);
-  //object->Update(dt, code);
+  object->Update(dt, code);
 
 }
 
