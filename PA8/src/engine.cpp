@@ -84,6 +84,31 @@ void Engine::Keyboard(int &code)
     {
       m_running = false;
     }
+    if(m_event.key.keysym.sym == SDLK_w)
+    {
+      code = 1;
+    }
+    if(m_event.key.keysym.sym == SDLK_a)
+    {
+      code = 2;
+    }
+    if(m_event.key.keysym.sym == SDLK_s)
+    {
+      code = 3;
+    }
+    if(m_event.key.keysym.sym == SDLK_d)
+    {
+      code = 4;
+    }
+    if(m_event.key.keysym.sym == SDLK_p)
+    {
+      code = 5;
+    }
+    if(m_event.key.keysym.sym == SDLK_r)
+    {
+      code = 6;
+    }
+
   }
 
 }

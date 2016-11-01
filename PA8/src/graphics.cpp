@@ -46,8 +46,9 @@ bool Graphics::Initialize(int width, int height)
 
   // Create the object
   plane = new Object("../models/box.obj", "../models/image.jpg");
-  cylinder = new Object("../models/cylinder.obj", "../models/image.jpg");
+  cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
   sphere = new Object("../models/sphere.obj", "../models/earth.jpg");
+  cube = new Object("../models/cube.obj", "../models/brick.jpeg");
 
   // Set up the shaders
   m_shader = new Shader();
@@ -116,12 +117,43 @@ void Graphics::Update(unsigned int dt, int code)
 
   physicsWorld.getWorld()->stepSimulation(simTime, 10);
 
+  if(code == 1)
+  {
+    z += 0.05;
+  }
+  if(code == 2)
+  {
+    x += 0.05;
+  }
+  if(code == 3)
+  {
+    z -= 0.05;
+  }
+  if(code ==4)
+  {
+    x -= 0.05;
+  }
+  if(code == 5)
+  {
+
+  }
+  if(code == 6)
+  {
+    x = 0;
+    z = 0;
+  }
+
 
 
   // Update all Objects
   plane->Update(dt, code, physicsWorld.getRigidBody(0));
+  plane->Scale(8);
+  plane->TranslateBack(1);
   cylinder->Update(dt, code, physicsWorld.getRigidBody(1));
   sphere->Update(dt,code, physicsWorld.getRigidBody(2));
+  cube->Update(dt,code, physicsWorld.getRigidBody(4));
+  cube->Move(x, y, z, physicsWorld.getRigidBody(4));
+  cube->Scale(1);
 
 }
 
@@ -147,6 +179,9 @@ void Graphics::Render()
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(sphere->GetModel()));
   sphere->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
+  cube->Render();
 
 
 

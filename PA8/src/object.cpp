@@ -107,12 +107,22 @@ void Object::Update(unsigned int dt, int code, btRigidBody* rigidBodyID )
   trans.getOpenGLMatrix(m);
   model = glm::make_mat4(m);
 
-
 }
 
-void Object::SetModel(glm::mat4 temp)
+void Object::Move(float x, float y, float z, btRigidBody* rigidBodyID)
 {
-  model = temp;
+
+  rigidBodyID->getMotionState()->setWorldTransform(btTransform(btQuaternion(0,0,0,1),btVector3(x,y,z)));
+}
+
+void Object::Scale(float size)
+{
+  model *= glm::scale(glm::mat4(1.0f), glm::vec3(size));
+}
+
+void Object::TranslateBack(float distance)
+{
+  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0, distance));
 }
 
 glm::mat4 Object::GetModel()

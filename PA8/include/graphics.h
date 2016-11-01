@@ -33,6 +33,9 @@ class Graphics
     Object *plane;
     Object *cylinder;
     Object *sphere;
+    Object *cube;
+
+    float x = 0, y = 0, z = 0;
 
     float simTime = 0;
 

@@ -17,7 +17,9 @@ class Object
     void Update(unsigned int dt, int code, btRigidBody* rigidBodyID);
     void Render();
     glm::mat4 GetModel();
-    void SetModel(glm::mat4 temp);
+    void Move(float x, float y, float z, btRigidBody* rigidBodyID);
+    void Scale(float size);
+    void TranslateBack(float distance);
 
   private:
     glm::mat4 model;
