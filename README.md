@@ -34,5 +34,5 @@ This program's focus is to use Assimp to load models and textures for those mode
 ## PA7: Solar System
 This program's is a solar system use Assimp to load models and textures. To run this project ```cd PA7``` then follow the instructions in the README.md.
 
-## PA8: 
-This program is to become familiar with Bullet Physics, a 3D physics simulation engine. To run this project ```cd PA8``` then follow the instruction in the README.md. 
+## PA8: Bullet
+This program is to become familiar with Bullet Physics, a 3D physics simulation engine. To run this project ```cd PA8``` then follow the instructions in the README.md. 
