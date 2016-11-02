@@ -91,7 +91,7 @@ void Object::SetVertices()
   }
 }
 
-void Object::Update(unsigned int dt, int code, btRigidBody* rigidBodyID )
+void Object::Update(btRigidBody* rigidBodyID)
 {
   // Initialize Physics
   btTransform trans;
@@ -111,8 +111,9 @@ void Object::Update(unsigned int dt, int code, btRigidBody* rigidBodyID )
 
 void Object::Move(float x, float y, float z, btRigidBody* rigidBodyID)
 {
-
-  rigidBodyID->getMotionState()->setWorldTransform(btTransform(btQuaternion(0,0,0,1),btVector3(x,y,z)));
+  rigidBodyID->clearForces();
+  //rigidBodyID->getMotionState()->setWorldTransform(btTransform(btQuaternion(0,0,0,1),btVector3(x,y,z)));
+  rigidBodyID->applyForce(btVector3(x,y,z), btVector3(0,0,0));
 }
 
 void Object::Scale(float size)
@@ -122,7 +123,8 @@ void Object::Scale(float size)
 
 void Object::TranslateBack(float distance)
 {
-  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0, distance));
+  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,distance));
+  model *= glm::translate(glm::mat4(1.0f), glm::vec3(-1.25, 0.0, 0.0));
 }
 
 glm::mat4 Object::GetModel()

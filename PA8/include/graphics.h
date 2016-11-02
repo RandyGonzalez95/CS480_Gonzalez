@@ -16,7 +16,7 @@ class Graphics
     Graphics();
     ~Graphics();
     bool Initialize(int width, int height);
-    void Update(unsigned int dt, int code);
+    void Update(unsigned int dt, bool codes[]);
     void Render();
 
   private:
@@ -34,6 +34,8 @@ class Graphics
     Object *cylinder;
     Object *sphere;
     Object *cube;
+    Object *left;
+    Object *right;
 
     float x = 0, y = 0, z = 0;
 

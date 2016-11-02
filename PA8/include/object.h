@@ -14,7 +14,7 @@ class Object
     bool Initialize(std::string objFile);
     void SetVertices();
     void getTextures(std::string textureFile);
-    void Update(unsigned int dt, int code, btRigidBody* rigidBodyID);
+    void Update(btRigidBody* rigidBodyID);
     void Render();
     glm::mat4 GetModel();
     void Move(float x, float y, float z, btRigidBody* rigidBodyID);

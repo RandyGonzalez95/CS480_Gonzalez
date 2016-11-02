@@ -38,6 +38,7 @@ bool Graphics::Initialize(int width, int height)
 
   // Init Camera
   m_camera = new Camera();
+
   if(!m_camera->Initialize(width, height))
   {
     printf("Camera Failed to Initialize\n");
@@ -47,8 +48,9 @@ bool Graphics::Initialize(int width, int height)
   // Create the object
   plane = new Object("../models/box.obj", "../models/image.jpg");
   cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
-  sphere = new Object("../models/sphere.obj", "../models/earth.jpg");
+  sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
   cube = new Object("../models/cube.obj", "../models/brick.jpeg");
+
 
   // Set up the shaders
   m_shader = new Shader();
@@ -90,7 +92,8 @@ bool Graphics::Initialize(int width, int height)
   // Locate the view matrix in the shader
   m_viewMatrix = m_shader->GetUniformLocation("viewMatrix");
   if (m_viewMatrix == INVALID_UNIFORM_LOCATION)
-  {
+  {    Object *left;
+    Object *right;
     printf("m_viewMatrix not found\n");
     return false;
   }
@@ -111,49 +114,63 @@ bool Graphics::Initialize(int width, int height)
   return true;
 }
 
-void Graphics::Update(unsigned int dt, int code)
+void Graphics::Update(unsigned int dt, bool codes[])
 {
   simTime = 0.0083;
 
   physicsWorld.getWorld()->stepSimulation(simTime, 10);
 
-  if(code == 1)
-  {
-    z += 0.05;
-  }
-  if(code == 2)
-  {
-    x += 0.05;
-  }
-  if(code == 3)
-  {
-    z -= 0.05;
-  }
-  if(code ==4)
-  {
-    x -= 0.05;
-  }
-  if(code == 5)
+  if(codes[0])
   {
 
+    z = 1000;
+    x = 0;
+
+    codes[0] = false;
   }
-  if(code == 6)
+  if(codes[1])
+  {
+    x = 1000;
+    z = 0;
+    codes[1] = false;
+  }
+  if(codes[2])
+  {
+    z = -1000;
+    x = 0;
+    codes[2] = false;
+  }
+  if(codes[3])
+  {
+    x = -1000;
+    z = 0;
+    codes[3] = false;
+  }
+  if(codes[4])
+  {
+physicsWorld.getRigidBody(2)->clearForces();
+    physicsWorld.getRigidBody(2)->applyForce(btVector3(200000,0,500000),btVector3(-5,0,-8));
+
+codes[4] = false;
+  }
+  if(codes[5])
   {
     x = 0;
     z = 0;
+    codes[5] = false;
   }
 
-
-
   // Update all Objects
-  plane->Update(dt, code, physicsWorld.getRigidBody(0));
+  plane->Update(physicsWorld.getRigidBody(0));
   plane->Scale(8);
-  plane->TranslateBack(1);
-  cylinder->Update(dt, code, physicsWorld.getRigidBody(1));
-  sphere->Update(dt,code, physicsWorld.getRigidBody(2));
-  cube->Update(dt,code, physicsWorld.getRigidBody(4));
-  cube->Move(x, y, z, physicsWorld.getRigidBody(4));
-  cube->Scale(1);
+  plane->TranslateBack(0);
+
+  cylinder->Update(physicsWorld.getRigidBody(1));
+  sphere->Update(physicsWorld.getRigidBody(2));
+
+  cube->Update(physicsWorld.getRigidBody(5));
+  cube->Move(x, y, z, physicsWorld.getRigidBody(5));
+  sphere->Scale(0.5);
 
 }
 
@@ -166,7 +183,7 @@ void Graphics::Render()
   // Start the correct program
   m_shader->Enable();
 
-  // Send in the projection and view to the shader
+  // Send in the projection and vie
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
@@ -182,9 +199,6 @@ void Graphics::Render()
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
   cube->Render();
-
-
-
 
   // Get any errors from OpenGL
   auto error = glGetError();

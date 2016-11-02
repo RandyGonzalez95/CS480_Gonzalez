@@ -49,7 +49,7 @@ bool Engine::Initialize()
 void Engine::Run()
 {
   m_running = true;
-  int code = 0;
+  bool codes[10] = {false};
 
   while(m_running)
   {
@@ -60,10 +60,10 @@ void Engine::Run()
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
     {
-      Keyboard(code);
+      Keyboard(codes);
     }
 
-    m_graphics->Update(m_DT, code);
+    m_graphics->Update(m_DT, codes);
     m_graphics->Render();
 
     // Swap to the Window
@@ -71,7 +71,7 @@ void Engine::Run()
   }
 }
 
-void Engine::Keyboard(int &code)
+void Engine::Keyboard(bool codes[])
 {
   if(m_event.type == SDL_QUIT)
   {
@@ -86,27 +86,27 @@ void Engine::Keyboard(int &code)
     }
     if(m_event.key.keysym.sym == SDLK_w)
     {
-      code = 1;
+      codes[0] = true;
     }
     if(m_event.key.keysym.sym == SDLK_a)
     {
-      code = 2;
+      codes[1] = true;
     }
     if(m_event.key.keysym.sym == SDLK_s)
     {
-      code = 3;
+      codes[2] = true;
     }
     if(m_event.key.keysym.sym == SDLK_d)
     {
-      code = 4;
+      codes[3] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_p)
+    if(m_event.key.keysym.sym == SDLK_SPACE)
     {
-      code = 5;
+      codes[4] = true;
     }
     if(m_event.key.keysym.sym == SDLK_r)
     {
-      code = 6;
+      codes[5] = true;
     }
 
   }
@@ -119,7 +119,7 @@ unsigned int Engine::getDT()
   assert(TimeNowMillis >= m_currentTimeMillis);
   unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
   m_currentTimeMillis = TimeNowMillis;
-
+  //std::cout<< "time: "<< m_currentTimeMillis<< "\n";
   return DeltaTimeMillis;
 }
 
