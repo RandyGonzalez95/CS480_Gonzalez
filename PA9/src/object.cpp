@@ -76,6 +76,14 @@ void Object::SetVertices()
           temp.uv[1] = 1-model->mTextureCoords[0][index].y;
         }
 
+        // check for normal vectorss
+        if(model->mNormals != NULL)
+        {
+          temp.normal[0] = model->mNormals[index].x;
+          temp.normal[1] = model->mNormals[index].y;
+          temp.normal[2] = model->mNormals[index].z;
+        }
+
         // Load Vertex Position
         for(int j = 0; j < 3; j++)  // iterate through each face
         {
@@ -164,10 +172,12 @@ void Object::Render()
   glBindTexture(GL_TEXTURE_2D, Textures);
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
 
   glBindBuffer(GL_ARRAY_BUFFER, VB);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,uv));
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,uv));
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,normal));
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
 
@@ -176,4 +186,5 @@ void Object::Render()
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(2);
 }

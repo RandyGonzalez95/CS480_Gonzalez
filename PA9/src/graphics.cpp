@@ -106,6 +106,38 @@ bool Graphics::Initialize(int width, int height)
     return false;
   }
 
+  // Locate the Light Position
+  m_LightPosition = m_shader->GetUniformLocation("LightPosition");
+  if (m_LightPosition == INVALID_UNIFORM_LOCATION)
+  {
+    printf("m_LightPosition not found\n");
+    return false;
+  }
+
+  // Locate Ambient lighting location
+  m_AmbientProduct = m_shader->GetUniformLocation("AmbientProduct");
+  if (m_AmbientProduct == INVALID_UNIFORM_LOCATION)
+  {
+    printf("m_AmbientProduct not found\n");
+    return false;
+  }
+
+  // Locate Diffuse Lighting Location
+  m_DiffuseProduct = m_shader->GetUniformLocation("DiffuseProduct");
+  if (m_DiffuseProduct == INVALID_UNIFORM_LOCATION)
+  {
+    printf("m_DiffuseProduct not found\n");
+    return false;
+  }
+
+  // Locate Specular Lighting
+  m_SpecularProduct = m_shader->GetUniformLocation("SpecularProduct");
+  if (m_SpecularProduct == INVALID_UNIFORM_LOCATION)
+  {
+    printf("m_SpecularProduct not found\n");
+    return false;
+  }
+
 
   //enable depth testing
   glEnable(GL_DEPTH_TEST);
@@ -148,10 +180,10 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
   if(codes[4])
   {
-physicsWorld.getRigidBody(2)->clearForces();
+    physicsWorld.getRigidBody(2)->clearForces();
     physicsWorld.getRigidBody(2)->applyForce(btVector3(200000,0,500000),btVector3(-5,0,-8));
 
-codes[4] = false;
+    codes[4] = false;
   }
   if(codes[5])
   {
@@ -183,9 +215,15 @@ void Graphics::Render()
   // Start the correct program
   m_shader->Enable();
 
-  // Send in the projection and vie
+  // Send in the projection and view
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
+  // Send in the locations of the lighting
+
+  //glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr() );
+  //glUniform4fv(m_SpecularProduct, 1, glm::value_ptr() );
+
 
   // Render the objects
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
@@ -199,6 +237,10 @@ void Graphics::Render()
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
   cube->Render();
+
+  glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec4(5.0, 5.0, 5.0, 0.0 )));
+  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(m_camera->GetView()) );
+
 
   // Get any errors from OpenGL
   auto error = glGetError();

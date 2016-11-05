@@ -25,9 +25,17 @@ class Graphics
     Camera *m_camera;
     Shader *m_shader;
 
+    // Location of MVP matrix
     GLint m_projectionMatrix;
     GLint m_viewMatrix;
     GLint m_modelMatrix;
+
+    // Light Sources
+    GLint m_LightPosition;
+    GLint m_AmbientProduct;
+    GLint m_DiffuseProduct;
+    GLint m_SpecularProduct;
+
 
 
     Object *plane;
