@@ -50,7 +50,7 @@ class Graphics
     float simTime = 0;
 
     // Physics
-    Physics physicsWorld;
+    //Physics physicsWorld;
 };
 
 #endif /* GRAPHICS_H */

@@ -72,7 +72,7 @@ bool Shader::AddShader(GLenum ShaderType)
   else if(ShaderType == GL_FRAGMENT_SHADER)
   {
     // Read fragment shader file to string
-    s = readShaderFile( "../shaders/fShader.glsl" );
+    s = readShaderFile( "../shaders/fLight.glsl" );
   }
 
   GLuint ShaderObj = glCreateShader(ShaderType);

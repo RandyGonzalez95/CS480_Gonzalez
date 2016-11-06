@@ -20,6 +20,7 @@ class Object
     void Move(float x, float y, float z, btRigidBody* rigidBodyID);
     void Scale(float size);
     void TranslateBack(float distance);
+  
 
   private:
     glm::mat4 model;
