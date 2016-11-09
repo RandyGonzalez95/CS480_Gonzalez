@@ -67,7 +67,7 @@ bool Shader::AddShader(GLenum ShaderType)
   if(ShaderType == GL_VERTEX_SHADER)
   {
     // Read vertex shader file to string
-    s = readShaderFile( "../shaders/vLight.glsl" );
+    s = readShaderFile( "../shaders/vShader.glsl" );
   }
   else if(ShaderType == GL_FRAGMENT_SHADER)
   {

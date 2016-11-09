@@ -35,6 +35,7 @@ class Graphics
     GLint m_AmbientProduct;
     GLint m_DiffuseProduct;
     GLint m_SpecularProduct;
+    GLfloat m_shininess;
 
     Object *plane;
     Object *cylinder;

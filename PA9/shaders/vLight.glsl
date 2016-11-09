@@ -13,11 +13,12 @@
 
           uniform vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
           uniform vec4 LightPosition;
-          uniform float Shininess;
+          float Shininess;
 
           void main(void)
           {
             vec4 v = vec4(v_position, 1.0);
+            Shininess = 80.0f;
 
             // Transform vector position into eye coordinates
             vec3 pos = ((viewMatrix * modelMatrix) * v).xyz;
