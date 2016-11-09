@@ -36,3 +36,6 @@ This program's is a solar system use Assimp to load models and textures. To run 
 
 ## PA8: Bullet
 This program is to become familiar with Bullet Physics, a 3D physics simulation engine. To run this project ```cd PA8``` then follow the instructions in the README.md. 
+
+## PA9: Lighting
+This program is to become familiar with Lighting, per vertex lighting and per fragment lighting. To run this project ```cd PA9``` then follow the instructions in the README.md. 
