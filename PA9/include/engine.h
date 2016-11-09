@@ -37,7 +37,7 @@ class Engine
     // Graphics
     Graphics *m_graphics;
     bool m_running;
-
+    bool codes[10] = {false};
 };
 
 #endif // ENGINE_H

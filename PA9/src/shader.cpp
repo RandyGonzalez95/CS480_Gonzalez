@@ -60,19 +60,30 @@ std::string Shader::readShaderFile( const char* fileName )
 }
 
 // Use this method to add shaders to the program. When finished - call finalize()
-bool Shader::AddShader(GLenum ShaderType)
+bool Shader::AddShader(GLenum ShaderType, bool flag)
 {
   std::string s;
 
-  if(ShaderType == GL_VERTEX_SHADER)
+  if(ShaderType == GL_VERTEX_SHADER && !flag)
   {
     // Read vertex shader file to string
     s = readShaderFile( "../shaders/vShader.glsl" );
   }
-  else if(ShaderType == GL_FRAGMENT_SHADER)
+  else if(ShaderType == GL_FRAGMENT_SHADER && !flag)
   {
     // Read fragment shader file to string
     s = readShaderFile( "../shaders/fLight.glsl" );
+  }
+
+  if(ShaderType == GL_VERTEX_SHADER && flag)
+  {
+    // Read vertex shader file to string
+    s = readShaderFile( "../shaders/vLight.glsl" );
+  }
+  else if(ShaderType == GL_FRAGMENT_SHADER && flag)
+  {
+    // Read fragment shader file to string
+    s = readShaderFile( "../shaders/fShader.glsl" );
   }
 
   GLuint ShaderObj = glCreateShader(ShaderType);

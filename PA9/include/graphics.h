@@ -15,7 +15,7 @@ class Graphics
   public:
     Graphics();
     ~Graphics();
-    bool Initialize(int width, int height);
+    bool Initialize(int width, int height, bool flag);
     void Update(unsigned int dt, bool codes[]);
     void Render();
 

@@ -10,7 +10,7 @@ Graphics::~Graphics()
 
 }
 
-bool Graphics::Initialize(int width, int height)
+bool Graphics::Initialize(int width, int height, bool flag)
 {
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
@@ -46,10 +46,10 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  //plane = new Object("../models/box.obj", "../models/image.jpg");
-  //cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
-  //sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
-  cube = new Object("../models/sphere.obj", "../models/earth.jpg");
+  plane = new Object("../models/box.obj", "../models/image.jpg");
+  cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
+  sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
+  cube = new Object("../models/cube.obj", "../models/brick.jpeg");
 
 
   // Set up the shaders
@@ -61,14 +61,14 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Add the vertex shader
-  if(!m_shader->AddShader(GL_VERTEX_SHADER))
+  if(!m_shader->AddShader(GL_VERTEX_SHADER, flag))
   {
     printf("Vertex Shader failed to Initialize\n");
     return false;
   }
 
   // Add the fragment shader
-  if(!m_shader->AddShader(GL_FRAGMENT_SHADER))
+  if(!m_shader->AddShader(GL_FRAGMENT_SHADER, flag))
   {
     printf("Fragment Shader failed to Initialize\n");
     return false;
@@ -92,8 +92,7 @@ bool Graphics::Initialize(int width, int height)
   // Locate the view matrix in the shader
   m_viewMatrix = m_shader->GetUniformLocation("viewMatrix");
   if (m_viewMatrix == INVALID_UNIFORM_LOCATION)
-  {    Object *left;
-    Object *right;
+  {
     printf("m_viewMatrix not found\n");
     return false;
   }
@@ -138,7 +137,7 @@ bool Graphics::Initialize(int width, int height)
     return false;
   }
 
-  // get Shininess
+  // get ShininessAddShader
   m_shininess= m_shader->GetUniformLocation("Shininess");
   if (m_shininess == INVALID_UNIFORM_LOCATION)
   {
@@ -159,7 +158,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 {
   simTime = 0.0083;
 
-  /*physicsWorld.getWorld()->stepSimulation(simTime, 10);
+  physicsWorld.getWorld()->stepSimulation(simTime, 10);
 
   if(codes[0])
   {
@@ -211,7 +210,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   cube->Update(physicsWorld.getRigidBody(5));
   cube->Move(x, y, z, physicsWorld.getRigidBody(5));
-  sphere->Scale(0.5);*/
+  sphere->Scale(0.5);
 
 
 }
@@ -236,7 +235,7 @@ void Graphics::Render()
 
 
   // Render the objects
-  /*glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
   plane->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cylinder->GetModel()));
@@ -246,17 +245,15 @@ void Graphics::Render()
   sphere->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
-  cube->Render();*/
+  cube->Render();
 
   //glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(10.0,10.0, 0.0)));
   //glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(10.0,10.0, 10.0)));
   glUniform4fv(m_LightPosition, 1, glm::value_ptr(m_camera->GetView()));
-  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(0.5)));
+  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(1.0)));
   glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(glm::vec3(0.5) ));
   glUniform4fv(m_SpecularProduct, 1, glm::value_ptr(glm::vec4(1.0, 1.0, 1.0, 0.0)));
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
-  cube->Render();
 
   // Get any errors from OpenGL
   auto error = glGetError();

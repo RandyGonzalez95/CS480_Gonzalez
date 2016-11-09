@@ -37,19 +37,29 @@ bool Engine::Initialize()
 
   // Start the graphics
   m_graphics = new Graphics();
-  if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT))
+
+  if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
   {
     printf("The graphics failed to initialize.\n");
     return false;
   }
-  // No errors
+
+  else
+  {
+    if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
+    {
+      printf("The graphics failed to initialize.\n");
+      return false;
+    }
+  }
+
   return true;
 }
 
 void Engine::Run()
 {
   m_running = true;
-  bool codes[10] = {false};
+
 
   while(m_running)
   {
@@ -108,7 +118,25 @@ void Engine::Keyboard(bool codes[])
     {
       codes[5] = true;
     }
+    if(m_event.key.keysym.sym == SDLK_p)
+    {
+      codes[6] = !codes[6];
+      if(codes[6])
+      {
+        if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
+        {
+          printf("The graphics failed to initialize.\n");
+        }
+      }
 
+      else
+      {
+        if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
+        {
+          printf("The graphics failed to initialize.\n");
+        }
+      }
+    }
   }
 
 }
