@@ -19,8 +19,8 @@ class Object
     glm::mat4 GetModel();
     void Move(float x, float y, float z, btRigidBody* rigidBodyID);
     void Scale(float size);
-    void TranslateBack(float distance);
-  
+    void TranslateBack();
+
 
   private:
     glm::mat4 model;

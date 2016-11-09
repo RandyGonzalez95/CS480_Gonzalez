@@ -46,10 +46,10 @@ bool Graphics::Initialize(int width, int height)
   }
 
   // Create the object
-  //plane = new Object("../models/box.obj", "../models/image.jpg");
-  //cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
-  //sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
-  cube = new Object("../models/sphere.obj", "../models/earth.jpg");
+  plane = new Object("../models/box.obj", "../models/image.jpg");
+  cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
+  sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
+  cube = new Object("../models/cube.obj", "../models/brick.jpeg");
 
 
   // Set up the shaders
@@ -150,7 +150,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 {
   simTime = 0.0083;
 
-  /*physicsWorld.getWorld()->stepSimulation(simTime, 10);
+  physicsWorld.getWorld()->stepSimulation(simTime, 10);
 
   if(codes[0])
   {
@@ -195,14 +195,14 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Update all Objects
   plane->Update(physicsWorld.getRigidBody(0));
   plane->Scale(8);
-  plane->TranslateBack(0);
+  plane->TranslateBack();
 
   cylinder->Update(physicsWorld.getRigidBody(1));
   sphere->Update(physicsWorld.getRigidBody(2));
 
   cube->Update(physicsWorld.getRigidBody(5));
   cube->Move(x, y, z, physicsWorld.getRigidBody(5));
-  sphere->Scale(0.5);*/
+  sphere->Scale(0.5);
 
 
 }
@@ -227,7 +227,7 @@ void Graphics::Render()
 
 
   // Render the objects
-  /*glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
   plane->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cylinder->GetModel()));
@@ -239,19 +239,15 @@ void Graphics::Render()
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
   cube->Render();
 
-  glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec4(5.0, 5.0, 5.0, 0.0 )));
-  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(m_camera->GetView()) );*/
+  //glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(10.0,10.0, 0.0)));
+  //glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(10.0,10.0, 10.0)));
+  glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(0.0, 0.0, 0.0)));
+  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(0.50)));
+  glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(glm::vec3(0.05) ));
+  glUniform4fv(m_SpecularProduct, 1, glm::value_ptr(glm::vec3(1.0,1.0,1.0)));
 
-
-  glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec4(1.0, 1.0, 1.0, 0.0 )));
-
-  //glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(cube->GetModel()) );
-  //glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(cube->GetModel() ));
-  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(m_camera->GetProjection() ));
-  glUniform4fv(m_SpecularProduct, 1, glm::value_ptr(glm::vec4(1.0, 1.0,1.0, 1000.0)));
-
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
-  cube->Render();
+  //glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
+//  cube->Render();
 
   // Get any errors from OpenGL
   auto error = glGetError();

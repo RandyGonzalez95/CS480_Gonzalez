@@ -36,8 +36,6 @@ class Graphics
     GLint m_DiffuseProduct;
     GLint m_SpecularProduct;
 
-
-
     Object *plane;
     Object *cylinder;
     Object *sphere;
@@ -50,7 +48,7 @@ class Graphics
     float simTime = 0;
 
     // Physics
-    //Physics physicsWorld;
+    Physics physicsWorld;
 };
 
 #endif /* GRAPHICS_H */
