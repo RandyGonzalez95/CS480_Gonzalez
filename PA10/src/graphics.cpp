@@ -46,8 +46,8 @@ bool Graphics::Initialize(int width, int height, bool flag)
   }
 
   // Create the object
-  plane = new Object("../models/box.obj", "../models/image.jpg");
-  cylinder = new Object("../models/cylinder.obj", "../models/water.jpg");
+  plane = new Object("../models/table.obj", "../models/image.jpg");
+  cylinder = new Object("../models/bumper.obj", "../models/water.jpg");
   sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
   cube = new Object("../models/cube.obj", "../models/brick.jpeg");
 

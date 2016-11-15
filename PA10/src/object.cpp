@@ -131,8 +131,10 @@ void Object::Scale(float size)
 
 void Object::TranslateBack()
 {
-  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0));
+  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.2,0.0));
   model *= glm::translate(glm::mat4(1.0f), glm::vec3(-1.25, 0.0, 0.0));
+  model *= glm::rotate(glm::mat4(1.0f), -29.839f, glm::vec3(0.0, 1.0, 0.0));
+  //model *= glm::rotate(glm::mat4(1.0f), 25.1f, glm::vec3(0.0, 1.0, 0.0));
 }
 
 glm::mat4 Object::GetModel()
