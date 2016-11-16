@@ -197,17 +197,17 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
 
   // Update all Objects
-  physicsWorld->board->Update(physicsWorld->getRigidBody(0));
+  //physicsWorld->board->Update(physicsWorld->getRigidBody(0));
   //physicsWorld->board->Scale(8);
   //physicsWorld->board->TranslateBack();
 
-  physicsWorld->bumper->Update(physicsWorld->getRigidBody(1));
+//  physicsWorld->bumper->Update(physicsWorld->getRigidBody(1));
 
-  physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
-  physicsWorld->ball->Scale(0.5);
+//  physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
+  //physicsWorld->ball->Scale(0.5);
 
-  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
-  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
+//  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
+//  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
 
 
 
@@ -236,12 +236,23 @@ void Graphics::Render()
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->board->GetModel()));
   physicsWorld->board->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
-  physicsWorld->bumper->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftPaddle->GetModel()));
+  physicsWorld->leftPaddle->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightPaddle->GetModel()));
+  physicsWorld->rightPaddle->Render();
+
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->ball->GetModel()));
   physicsWorld->ball->Render();
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->cubeObject->GetModel()));
-  physicsWorld->cubeObject->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper1->GetModel()));
+  physicsWorld->bumper1->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper2->GetModel()));
+  physicsWorld->bumper2->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper3->GetModel()));
+  physicsWorld->bumper3->Render();
 
 
   // Light Stuff
