@@ -91,7 +91,7 @@ bool Physics::CreateWorld()
 void Physics::Pinball()
 {
   // Plane
-  //ground = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), -1);
+
   /*rightWall = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), -4);
   leftWall = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), -6);
   topWall = new btStaticPlaneShape(btVector3(1.0, 0.0, 0.0), -17.5);
@@ -119,12 +119,11 @@ void Physics::Pinball()
   // cube
   cube = new btBoxShape(btVector3(1.0,1.0,1.0));
 
+  glass = new btStaticPlaneShape(btVector3(0.0, -1.0, 0.0), 0);
+
   // Create Motion state
   btDefaultMotionState *tableMS = NULL;
   tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
-
-  //btDefaultMotionState *groundMS = NULL;
-  //groundMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 0, 0)));
 
   /*btDefaultMotionState *rightWallMS= NULL;
   rightWallMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, -1, 1), btVector3(-2, 0, 0)));
@@ -142,10 +141,13 @@ void Physics::Pinball()
   cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(3,1,9)));
 
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-5,0,-8)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-5, 0,-8)));
 
   btDefaultMotionState *cubeMS = NULL;
   cubeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  btDefaultMotionState *glassMS = NULL;
+  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
 
   // set mass
   btScalar mass(100);
@@ -159,7 +161,6 @@ void Physics::Pinball()
 
   // Create RigidBody
   btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, tableMS, table, inertia);
-  //btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, groundMS, ground, inertia);
   /*btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI2(0, rightWallMS, rightWall, inertia);
   btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI3(0, leftWallMS, leftWall, inertia);
   btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI4(0, topWallMS, topWall, inertia);
@@ -167,6 +168,7 @@ void Physics::Pinball()
   btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(0, cylinderMS, cylinder, inertia);
   btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
   btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
+  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, glassMS, glass, inertia);
 
   // Add RigidBody
   //btRigidBody *temp = new btRigidBody(planeRigidBodyCI);
@@ -190,8 +192,8 @@ void Physics::Pinball()
   temp = new btRigidBody(cubeRigidBodyCI);
   rigidBody.push_back(temp);
 
-  //temp = new btRigidBody(planeRigidBodyCI);
-  //rigidBody.push_back(temp);
+  temp = new btRigidBody(planeRigidBodyCI);
+  rigidBody.push_back(temp);
   //temp = new btRigidBody(planeRigidBodyCI4);
   //rigidBody.push_back(temp);
 
@@ -205,7 +207,7 @@ void Physics::Pinball()
   dynamicsWorld->addRigidBody(rigidBody[1]); // bumper
   dynamicsWorld->addRigidBody(rigidBody[2]); // ball
   dynamicsWorld->addRigidBody(rigidBody[3]); // cube
-  //dynamicsWorld->addRigidBody(rigidBody[4]); // ground
+  dynamicsWorld->addRigidBody(rigidBody[4]); // ground
   //dynamicsWorld->addRigidBody(rigidBody[4]); // left wall
   //dynamicsWorld->addRigidBody(rigidBody[5]); // cube
   //dynamicsWorld->addRigidBody(rigidBody[6]); // top wall

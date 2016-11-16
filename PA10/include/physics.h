@@ -35,7 +35,7 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *table, *ground, *cylinder, *sphere, *rightWall, *leftWall, *topWall, *bottomWall, *cube;
+    btCollisionShape *table, *glass, *cylinder, *sphere, *rightWall, *leftWall, *topWall, *bottomWall, *cube;
     btTriangleMesh *objTriMesh[3];
 
     std::vector<btRigidBody*> rigidBody;
