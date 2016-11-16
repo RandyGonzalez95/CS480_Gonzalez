@@ -38,7 +38,7 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *table, *tableBall, *bumperOne, *bumperTwo, *bumperThree, *paddleLeft, *paddleRight;
+    btCollisionShape *glass, *table, *tableBall, *bumperOne, *bumperTwo, *bumperThree, *paddleLeft, *paddleRight;
     btTriangleMesh *objTriMesh[7];
 
     std::vector<btRigidBody*> rigidBody;

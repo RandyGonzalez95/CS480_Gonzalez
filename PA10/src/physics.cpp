@@ -43,6 +43,7 @@ Physics::~Physics()
   delete bumper3;
   delete leftPaddle;
   delete rightPaddle;
+  delete glass;
   delete objTriMesh[0];
   delete objTriMesh[1];
   delete objTriMesh[2];
@@ -132,13 +133,15 @@ void Physics::Pinball()
   bumper3->CreateObject("../models/UsableModels/bumper3.obj", "../models/steel.jpg", objTriMesh[6]);
   bumperThree = new btBvhTriangleMeshShape(objTriMesh[6], true);
 
+  glass = new btStaticPlaneShape(btVector3(0.0, -1.0, 0.0), 0);
 
   // Create Motion state
   btDefaultMotionState *tableMS = NULL;
   tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-//  btDefaultMotionState *groundMS = NULL;
-//  groundMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 0, 0)));
+
+  btDefaultMotionState *glassMS = NULL;
+  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
 
   /*btDefaultMotionState *rightWallMS= NULL;
   rightWallMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, -1, 1), btVector3(-2, 0, 0)));
@@ -174,6 +177,7 @@ void Physics::Pinball()
   btRigidBody::btRigidBodyConstructionInfo bumperOneRigidBodyCI(0, tableMS, bumperOne, inertia);
   btRigidBody::btRigidBodyConstructionInfo bumperTwoRigidBodyCI(0, tableMS, bumperTwo, inertia);
   btRigidBody::btRigidBodyConstructionInfo bumperThreeRigidBodyCI(0, tableMS, bumperThree, inertia);
+  btRigidBody::btRigidBodyConstructionInfo glassRigidBodyCI(0, glassMS, glass, inertia);
 
   btRigidBody *temp = new btRigidBody(tableRigidBodyCI);
   rigidBody.push_back(temp);
@@ -196,6 +200,9 @@ void Physics::Pinball()
   temp = new btRigidBody(bumperThreeRigidBodyCI);
   rigidBody.push_back(temp);
 
+  temp = new btRigidBody(glassRigidBodyCI);
+  rigidBody.push_back(temp);
+
   dynamicsWorld->addRigidBody(rigidBody[0]); // table
   dynamicsWorld->addRigidBody(rigidBody[1]); // bumper
   dynamicsWorld->addRigidBody(rigidBody[2]); // ball
@@ -203,7 +210,7 @@ void Physics::Pinball()
   dynamicsWorld->addRigidBody(rigidBody[4]); // ground
   dynamicsWorld->addRigidBody(rigidBody[5]); // cube
   dynamicsWorld->addRigidBody(rigidBody[6]); // top wall
-
+  dynamicsWorld->addRigidBody(rigidBody[7]); // top wall
 }
 
 btDiscreteDynamicsWorld* Physics::getWorld()
