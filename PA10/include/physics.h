@@ -23,6 +23,8 @@ class Physics
     Object *ball;
     Object *bumper;
     Object *cubeObject;
+    Object *leftPaddle;
+    Object *rightPaddle;
 
   private:
     // Initialize World
@@ -35,7 +37,7 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *table, *glass, *cylinder, *sphere, *rightWall, *leftWall, *topWall, *bottomWall, *cube;
+    btCollisionShape *table, *glass, *cylinder, *sphere, *left, *right, *cube;
     btTriangleMesh *objTriMesh[3];
 
     std::vector<btRigidBody*> rigidBody;

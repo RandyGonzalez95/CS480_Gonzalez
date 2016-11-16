@@ -20,6 +20,8 @@ Physics::Physics()
   bumper = new Object();
   ball = new Object();
   cubeObject = new Object();
+  leftPaddle = new Object();
+  rightPaddle = new Object();
 
   Pinball();
 
@@ -33,7 +35,7 @@ Physics::~Physics()
   delete dispatcher;
   delete solver;
   delete table;
-  delete ground;
+  delete glass;
   delete cylinder;
   delete sphere;
   delete objTriMesh[0];
@@ -103,9 +105,11 @@ void Physics::Pinball()
   objTriMesh[2] = new btTriangleMesh();
 
   board->CreateObject("../models/table2.obj", "../models/image.jpg", objTriMesh[0]);
-  bumper->CreateObject("../models/bumper.obj", "../models/water.jpg", NULL);
+  bumper->CreateObject("../models/bumper.obj", "../models/bumper.jpeg", NULL);
   cubeObject->CreateObject("../models/cube.obj", "../models/brick.jpeg", NULL);
   ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
+  leftPaddle->CreateObject("../models/leftPaddle2.obj", "../models/steel.jpg", objTriMesh[1]);
+  rightPaddle->CreateObject("../models/rightPaddle2.obj", "../models/steel.jpg", objTriMesh[2]);
 
   // Table
   table = new btBvhTriangleMeshShape(objTriMesh[0], true);
@@ -119,35 +123,33 @@ void Physics::Pinball()
   // cube
   cube = new btBoxShape(btVector3(1.0,1.0,1.0));
 
+  // paddles
+  left = new btBvhTriangleMeshShape(objTriMesh[1], true);
+  right = new btBvhTriangleMeshShape(objTriMesh[2], true);
+
   glass = new btStaticPlaneShape(btVector3(0.0, -1.0, 0.0), 0);
 
   // Create Motion state
   btDefaultMotionState *tableMS = NULL;
   tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  /*btDefaultMotionState *rightWallMS= NULL;
-  rightWallMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, -1, 1), btVector3(-2, 0, 0)));
-
-  btDefaultMotionState *leftWallMS= NULL;
-  leftWallMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 1, 1), btVector3(0, 0, 0)));
-
-  btDefaultMotionState *topWallMS = NULL;
-  topWallMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 0, 0)));
-
-  btDefaultMotionState *bottomWallMS = NULL;
-  bottomWallMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 1, 1), btVector3(0, 0, 0)));*/
-
   btDefaultMotionState *cylinderMS = NULL;
   cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(3,1,9)));
 
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-5, 0,-8)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-9, 0,-12)));
 
   btDefaultMotionState *cubeMS = NULL;
   cubeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
   btDefaultMotionState *glassMS = NULL;
   glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
+
+  btDefaultMotionState *leftMS = NULL;
+  leftMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  btDefaultMotionState *rightMS = NULL;
+  rightMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
   // set mass
   btScalar mass(100);
@@ -158,60 +160,52 @@ void Physics::Pinball()
   cylinder->calculateLocalInertia(mass,inertia);
   sphere->calculateLocalInertia(mass,inertia);
   cube->calculateLocalInertia(mass,inertia);
+  table->calculateLocalInertia(mass,inertia);
+  left->calculateLocalInertia(mass,inertia);
+  right->calculateLocalInertia(mass,inertia);
 
   // Create RigidBody
   btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, tableMS, table, inertia);
-  /*btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI2(0, rightWallMS, rightWall, inertia);
-  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI3(0, leftWallMS, leftWall, inertia);
-  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI4(0, topWallMS, topWall, inertia);
-  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI5(0, bottomWallMS, bottomWall, inertia);*/
   btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(0, cylinderMS, cylinder, inertia);
   btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
   btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
   btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, glassMS, glass, inertia);
 
+  btRigidBody::btRigidBodyConstructionInfo leftRigidBodyCI(0, leftMS, left, inertia);
+  btRigidBody::btRigidBodyConstructionInfo rightRigidBodyCI(0, rightMS, right, inertia);
+
   // Add RigidBody
-  //btRigidBody *temp = new btRigidBody(planeRigidBodyCI);
-  //rigidBody.push_back(temp);
-
-  btRigidBody *temp = new btRigidBody(tableRigidBodyCI);
+  btRigidBody *temp = new btRigidBody(tableRigidBodyCI); // table
   rigidBody.push_back(temp);
 
-  temp = new btRigidBody(cylinderRigidBodyCI);
+  temp = new btRigidBody(cylinderRigidBodyCI); // bumper
   rigidBody.push_back(temp);
 
-  temp = new btRigidBody(sphereRigidBodyCI);
+  temp = new btRigidBody(sphereRigidBodyCI); // ball
   rigidBody.push_back(temp);
 
-  //temp = new btRigidBody(planeRigidBodyCI2);
-  //rigidBody.push_back(temp);
-
-  //temp = new btRigidBody(planeRigidBodyCI3);
-  //rigidBody.push_back(temp);
-
-  temp = new btRigidBody(cubeRigidBodyCI);
+  temp = new btRigidBody(cubeRigidBodyCI); // cube
   rigidBody.push_back(temp);
 
-  temp = new btRigidBody(planeRigidBodyCI);
+  temp = new btRigidBody(planeRigidBodyCI); // glass
   rigidBody.push_back(temp);
-  //temp = new btRigidBody(planeRigidBodyCI4);
-  //rigidBody.push_back(temp);
 
-  //temp = new btRigidBody(planeRigidBodyCI5);
-  //rigidBody.push_back(temp);
+  temp = new btRigidBody(leftRigidBodyCI); // left
+  rigidBody.push_back(temp);
 
-//  rigidBody[0]->activate(true);
-  //rigidBody[0]->applyForce(btVector3(0,0,0), btVector3(dt,code, 0,0,0));
-  // Add to world
+  temp = new btRigidBody(rightRigidBodyCI); // right
+  rigidBody.push_back(temp);
+
+
+  // Add to World
   dynamicsWorld->addRigidBody(rigidBody[0]); // table
   dynamicsWorld->addRigidBody(rigidBody[1]); // bumper
   dynamicsWorld->addRigidBody(rigidBody[2]); // ball
   dynamicsWorld->addRigidBody(rigidBody[3]); // cube
   dynamicsWorld->addRigidBody(rigidBody[4]); // ground
-  //dynamicsWorld->addRigidBody(rigidBody[4]); // left wall
-  //dynamicsWorld->addRigidBody(rigidBody[5]); // cube
-  //dynamicsWorld->addRigidBody(rigidBody[6]); // top wall
-  //dynamicsWorld->addRigidBody(rigidBody[7]); // bot wall
+  dynamicsWorld->addRigidBody(rigidBody[5]); // leftPaddle
+  dynamicsWorld->addRigidBody(rigidBody[6]); // rightPaddle
+
 }
 
 btDiscreteDynamicsWorld* Physics::getWorld()

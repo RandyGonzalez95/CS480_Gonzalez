@@ -185,7 +185,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[4])
   {
     physicsWorld->getRigidBody(2)->clearForces();
-    physicsWorld->getRigidBody(2)->applyForce(btVector3(200000,0,500000),btVector3(-5,0,-8));
+    physicsWorld->getRigidBody(2)->applyForce(btVector3(-200000,0,800000),btVector3(-5,0,-8));
 
     codes[4] = false;
   }
@@ -239,10 +239,18 @@ void Graphics::Render()
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
   physicsWorld->bumper->Render();
+
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->ball->GetModel()));
   physicsWorld->ball->Render();
+
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->cubeObject->GetModel()));
   physicsWorld->cubeObject->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftPaddle->GetModel()));
+  physicsWorld->leftPaddle->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightPaddle->GetModel()));
+  physicsWorld->rightPaddle->Render();
 
 
   // Light Stuff
