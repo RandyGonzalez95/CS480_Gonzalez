@@ -75,7 +75,7 @@ void Object::SetVertices(btTriangleMesh *triMesh)
       // for each indice in the mesh
       for(int i = 0; i < 3; i++)
       {
-
+        aiVector3D position = model->mVertices[model->mFaces[iFaces].mIndices[i]];
         // Grab index info of the faces
         index = model->mFaces[iFaces].mIndices[i];
 
@@ -101,19 +101,19 @@ void Object::SetVertices(btTriangleMesh *triMesh)
           temp.position[j] = model->mVertices[index][j];
         }
 
-        triArray[i] = btVector3( temp.position[0], temp.position[1], temp.position[2]);
+        triArray[i] = btVector3( position.x, position.y, position.z);
 
         // Push back Index and Geomtry info
         Indices.push_back(index);
         Geometry.push_back(temp);
       }
-    }
-
-    if(triMesh != NULL)
-    {
-      triMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
+      if(triMesh != NULL)
+      {
+        triMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
+      }
     }
   }
+
 }
 
 void Object::Update(btRigidBody* rigidBodyID)

@@ -198,6 +198,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   // Update all Objects
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
+
   //physicsWorld->board->Scale(8);
   //physicsWorld->board->TranslateBack();
 
