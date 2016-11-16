@@ -199,9 +199,6 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Update all Objects
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
 
-  //physicsWorld->board->Scale(8);
-  //physicsWorld->board->TranslateBack();
-
   physicsWorld->bumper->Update(physicsWorld->getRigidBody(1));
 
   physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
@@ -210,6 +207,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
   physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
 
+  physicsWorld->leftPaddle->Animate();
 
 
 }

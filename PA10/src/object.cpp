@@ -141,17 +141,17 @@ void Object::Move(float x, float y, float z, btRigidBody* rigidBodyID)
   rigidBodyID->applyForce(btVector3(x,y,z), btVector3(0,0,0));
 }
 
+void Object::Animate()
+{
+  angle += 0.01;
+  model = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 1.0, 0.0));//*glm::scale(glm::mat4(1.0f), glm::vec3(0.5));
+  //model *= glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0, 0.0, 0.0));
+
+}
+
 void Object::Scale(float size)
 {
   model *= glm::scale(glm::mat4(1.0f), glm::vec3(size));
-}
-
-void Object::TranslateBack()
-{
-  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.2,0.0));
-  model *= glm::translate(glm::mat4(1.0f), glm::vec3(-1.25, 0.0, 0.0));
-  model *= glm::rotate(glm::mat4(1.0f), -29.839f, glm::vec3(0.0, 1.0, 0.0));
-  //model *= glm::rotate(glm::mat4(1.0f), 25.1f, glm::vec3(0.0, 1.0, 0.0));
 }
 
 glm::mat4 Object::GetModel()

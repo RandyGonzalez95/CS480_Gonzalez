@@ -202,7 +202,7 @@ void Physics::Pinball()
   dynamicsWorld->addRigidBody(rigidBody[1]); // bumper
   dynamicsWorld->addRigidBody(rigidBody[2]); // ball
   dynamicsWorld->addRigidBody(rigidBody[3]); // cube
-  dynamicsWorld->addRigidBody(rigidBody[4]); // ground
+  dynamicsWorld->addRigidBody(rigidBody[4]); // glass
   dynamicsWorld->addRigidBody(rigidBody[5]); // leftPaddle
   dynamicsWorld->addRigidBody(rigidBody[6]); // rightPaddle
 
