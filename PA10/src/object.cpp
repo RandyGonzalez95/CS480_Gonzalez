@@ -2,11 +2,22 @@
 #include <fstream>
 #include <cstring>
 
-Object::Object(std::string objFile, std::string textureFile)
+Object::Object()
 {
   // Initialize
   myScene = NULL;
   angle = 0;
+
+}
+
+Object::~Object()
+{
+  Geometry.clear();
+  Indices.clear();
+}
+
+void Object::CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh)
+{
 
   // Open File Data
   if(!Initialize(objFile))
@@ -15,9 +26,10 @@ Object::Object(std::string objFile, std::string textureFile)
     exit(1);
   }
 
-  SetVertices();
+  SetVertices(triMesh);
 
   getTextures(textureFile);
+
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -28,14 +40,9 @@ Object::Object(std::string objFile, std::string textureFile)
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
 }
 
-Object::~Object()
-{
-  Geometry.clear();
-  Indices.clear();
-}
-
 bool Object::Initialize(std::string objFile)
 {
+
   // Open File
   myScene = importer.ReadFile(objFile.c_str(), aiProcess_Triangulate);
 
@@ -47,13 +54,15 @@ bool Object::Initialize(std::string objFile)
 return true;
 }
 
-void Object::SetVertices()
+void Object::SetVertices(btTriangleMesh *triMesh)
 {
   // Declare variables
     // myScene currently holds all .obj data
     // grab the number of meshes
   int index = 0;
   Vertex temp;
+
+  btVector3 triArray[3];
 
   // Iterate through Meshes
   for(unsigned int iMesh = 0; iMesh < myScene->mNumMeshes; iMesh++) // mesh index iterator
@@ -66,6 +75,7 @@ void Object::SetVertices()
       // for each indice in the mesh
       for(int i = 0; i < 3; i++)
       {
+
         // Grab index info of the faces
         index = model->mFaces[iFaces].mIndices[i];
 
@@ -91,10 +101,17 @@ void Object::SetVertices()
           temp.position[j] = model->mVertices[index][j];
         }
 
+        triArray[i] = btVector3( temp.position[0], temp.position[1], temp.position[2]);
+
         // Push back Index and Geomtry info
         Indices.push_back(index);
         Geometry.push_back(temp);
       }
+    }
+
+    if(triMesh != NULL)
+    {
+      triMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
     }
   }
 }

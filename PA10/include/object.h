@@ -3,16 +3,18 @@
 
 #include <vector>
 #include "graphics_headers.h"
+#include <btBulletDynamicsCommon.h>
 
 
 class Object
 {
   public:
-    Object(std::string objFile, std::string stextureFile);
+    Object();
     ~Object();
 
+    void CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh);
     bool Initialize(std::string objFile);
-    void SetVertices();
+    void SetVertices(btTriangleMesh *triMesh);
     void getTextures(std::string textureFile);
     void Update(btRigidBody* rigidBodyID);
     void Render();

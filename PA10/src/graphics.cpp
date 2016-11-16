@@ -45,12 +45,8 @@ bool Graphics::Initialize(int width, int height, bool flag)
     return false;
   }
 
-  // Create the object
-  plane = new Object("../models/table.obj", "../models/image.jpg");
-  cylinder = new Object("../models/bumper.obj", "../models/water.jpg");
-  sphere = new Object("../models/sphere.obj", "../models/steel.jpg");
-  cube = new Object("../models/cube.obj", "../models/brick.jpeg");
-
+  // Create board
+  physicsWorld = new Physics();
 
   // Set up the shaders
   m_shader = new Shader();
@@ -158,7 +154,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 {
   simTime = 0.0083;
 
-  physicsWorld.getWorld()->stepSimulation(simTime, 10);
+  physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
   if(codes[0])
   {
@@ -188,8 +184,8 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
   if(codes[4])
   {
-    physicsWorld.getRigidBody(2)->clearForces();
-    physicsWorld.getRigidBody(2)->applyForce(btVector3(200000,0,500000),btVector3(-5,0,-8));
+    physicsWorld->getRigidBody(2)->clearForces();
+    physicsWorld->getRigidBody(2)->applyForce(btVector3(200000,0,500000),btVector3(-5,0,-8));
 
     codes[4] = false;
   }
@@ -201,16 +197,18 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
 
   // Update all Objects
-  plane->Update(physicsWorld.getRigidBody(0));
-  plane->Scale(8);
-  plane->TranslateBack();
+  physicsWorld->board->Update(physicsWorld->getRigidBody(0));
+  //physicsWorld->board->Scale(8);
+  //physicsWorld->board->TranslateBack();
 
-  cylinder->Update(physicsWorld.getRigidBody(1));
-  sphere->Update(physicsWorld.getRigidBody(2));
+  physicsWorld->bumper->Update(physicsWorld->getRigidBody(1));
 
-  cube->Update(physicsWorld.getRigidBody(5));
-  cube->Move(x, y, z, physicsWorld.getRigidBody(5));
-  sphere->Scale(0.5);
+  physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
+  physicsWorld->ball->Scale(0.5);
+
+  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
+  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
+
 
 
 }
@@ -235,20 +233,18 @@ void Graphics::Render()
 
 
   // Render the objects
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(plane->GetModel()));
-  plane->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->board->GetModel()));
+  physicsWorld->board->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cylinder->GetModel()));
-  cylinder->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
+  physicsWorld->bumper->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->ball->GetModel()));
+  physicsWorld->ball->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->cubeObject->GetModel()));
+  physicsWorld->cubeObject->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(sphere->GetModel()));
-  sphere->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(cube->GetModel()));
-  cube->Render();
-
-  //glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(10.0,10.0, 0.0)));
-  //glUniform4fv(m_LightPosition, 1, glm::value_ptr(glm::vec3(10.0,10.0, 10.0)));
+  // Light Stuff
   glUniform4fv(m_LightPosition, 1, glm::value_ptr(m_camera->GetView()));
   glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(1.0)));
   glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(glm::vec3(0.5) ));

@@ -3,6 +3,8 @@
 
 #include <btBulletDynamicsCommon.h>
 #include <vector>
+#include "object.h"
+
 
 class Physics
 {
@@ -17,6 +19,11 @@ class Physics
     btDiscreteDynamicsWorld *getWorld();
     btRigidBody* getRigidBody(int index);
 
+    Object *board;
+    Object *ball;
+    Object *bumper;
+    Object *cubeObject;
+
   private:
     // Initialize World
     btBroadphaseInterface *broadphase;
@@ -28,7 +35,7 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *ground, *cylinder, *sphere, *rightWall, *leftWall, *topWall, *bottomWall, *cube;
+    btCollisionShape *table, *ground, *cylinder, *sphere, *rightWall, *leftWall, *topWall, *bottomWall, *cube;
     btTriangleMesh *objTriMesh[3];
 
     std::vector<btRigidBody*> rigidBody;

@@ -7,8 +7,9 @@ using namespace std;
 #include "graphics_headers.h"
 #include "camera.h"
 #include "shader.h"
-#include "object.h"
 #include <vector>
+
+#include "physics.h"
 
 class Graphics
 {
@@ -37,19 +38,13 @@ class Graphics
     GLint m_SpecularProduct;
     GLfloat m_shininess;
 
-    Object *plane;
-    Object *cylinder;
-    Object *sphere;
-    Object *cube;
-    Object *left;
-    Object *right;
-
     float x = 0, y = 0, z = 0;
 
     float simTime = 0;
 
-    // Physics
-    Physics physicsWorld;
+
+
+    Physics *physicsWorld;
 };
 
 #endif /* GRAPHICS_H */

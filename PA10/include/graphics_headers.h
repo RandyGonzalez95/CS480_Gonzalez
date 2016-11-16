@@ -28,7 +28,6 @@
 #include <assimp/postprocess.h>
 #include <assimp/color4.h>
 #include <Magick++.h>
-#include "physics.h"
 
 using namespace Magick;
 
