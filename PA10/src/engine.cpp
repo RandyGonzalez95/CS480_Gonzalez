@@ -137,6 +137,17 @@ void Engine::Keyboard(bool codes[])
         }
       }
     }
+    if(m_event.key.keysym.sym == SDLK_z) // left paddle
+    {
+      codes[7] = true;
+
+    }
+    if(m_event.key.keysym.sym == SDLK_SLASH) // right paddle
+    {
+      codes[8] = true;
+
+    }
+
   }
 
 }

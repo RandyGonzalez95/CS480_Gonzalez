@@ -18,15 +18,19 @@ class Physics
     void Pinball();
     btDiscreteDynamicsWorld *getWorld();
     btRigidBody* getRigidBody(int index);
+    friend class Graphics;
 
+
+
+  private:
     Object *board;
     Object *ball;
     Object *bumper;
     Object *cubeObject;
     Object *leftPaddle;
     Object *rightPaddle;
-
-  private:
+    Object *capsule;
+    Object *capsule2;
     // Initialize World
     btBroadphaseInterface *broadphase;
     btDefaultCollisionConfiguration *collisionConfiguration;
@@ -37,7 +41,7 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *table, *glass, *cylinder, *sphere, *left, *right, *cube;
+    btCollisionShape *table, *glass, *cylinder, *sphere, *left, *right, *cube, *capsuleShape, *capsuleShape2;
     btTriangleMesh *objTriMesh[3];
 
     std::vector<btRigidBody*> rigidBody;
