@@ -185,7 +185,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[4])
   {
     physicsWorld->getRigidBody(2)->clearForces();
-    physicsWorld->getRigidBody(2)->applyForce(btVector3(-200000,0,800000),btVector3(-5,0,-8));
+    physicsWorld->getRigidBody(2)->applyForce(btVector3(-20000,0,80000),btVector3(-5,0,-8));
 
     codes[4] = false;
   }
@@ -198,16 +198,18 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   // Update all Objects
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
-
   physicsWorld->bumper->Update(physicsWorld->getRigidBody(1));
-
   physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
   physicsWorld->ball->Scale(0.5);
 
   physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
   physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
 
-  physicsWorld->leftPaddle->Animate();
+  physicsWorld->leftPaddle->Update(physicsWorld->getRigidBody(5));
+  physicsWorld->rightPaddle->Update(physicsWorld->getRigidBody(6));
+
+
+  //physicsWorld->leftPaddle->Animate();
 
 
 }

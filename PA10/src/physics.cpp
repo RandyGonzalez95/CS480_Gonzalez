@@ -80,7 +80,7 @@ bool Physics::CreateWorld()
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
   // Set Gravity
-  dynamicsWorld->setGravity(btVector3(0,-9.81,0));
+  dynamicsWorld->setGravity(btVector3(0,9.81,0));
 
   // check if the world exists
   if( dynamicsWorld == NULL)
@@ -108,7 +108,7 @@ void Physics::Pinball()
   bumper->CreateObject("../models/bumper.obj", "../models/bumper.jpeg", NULL);
   cubeObject->CreateObject("../models/cube.obj", "../models/brick.jpeg", NULL);
   ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
-  leftPaddle->CreateObject("../models/leftPaddle2.obj", "../models/steel.jpg", objTriMesh[1]);
+  leftPaddle->CreateObject("../models/left.obj", "../models/steel.jpg", objTriMesh[1]);
   rightPaddle->CreateObject("../models/rightPaddle2.obj", "../models/steel.jpg", objTriMesh[2]);
 
   // Table
@@ -146,13 +146,13 @@ void Physics::Pinball()
   glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
 
   btDefaultMotionState *leftMS = NULL;
-  leftMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+  leftMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-4, 0, -10)));
 
   btDefaultMotionState *rightMS = NULL;
   rightMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
   // set mass
-  btScalar mass(100);
+  btScalar mass(10);
   // inertia
   btVector3 inertia(1,1,1);
 
@@ -165,7 +165,7 @@ void Physics::Pinball()
   right->calculateLocalInertia(mass,inertia);
 
   // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, tableMS, table, inertia);
+  btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(mass, tableMS, table, inertia);
   btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(0, cylinderMS, cylinder, inertia);
   btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
   btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
