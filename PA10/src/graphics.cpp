@@ -195,34 +195,25 @@ void Graphics::Update(unsigned int dt, bool codes[])
     z = 0;
     codes[5] = false;
   }
-/*  if(codes[7]) // left paddle
+  if(codes[7]) // left paddle
   {
-    physicsWorld->getRigidBody(5)->clearForces();
-    physicsWorld->getRigidBody(5)->applyForce(btVector3(0, 0, 1000000), btVector3(0, 0, 0));
+
+    physicsWorld->getRigidBody(6)->setAngularVelocity(btVector3(0.0f, 10.0f, 0.0f));
 
 
     codes[7] = false;
   }
   if(codes[8]) // right paddle
   {
-    physicsWorld->getRigidBody(6)->clearForces();
-    physicsWorld->getRigidBody(6)->applyForce(btVector3(0, 0, 1000000), btVector3(0, 0, 0));
+    //physicsWorld->getRigidBody(6)->clearForces();
+
+
+    physicsWorld->getRigidBody(5)->setAngularVelocity(btVector3(0.0f, -10.0f, 0.0f));
 
     codes[8] = false;
-  }*/
+  }
 
   // Update all Objects
-  /*physicsWorld->board->Update(physicsWorld->getRigidBody(0));
-
-
-
-
-
-
-
-  */
-
-
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
 
   physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
@@ -235,6 +226,8 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   physicsWorld->capsule->Update(physicsWorld->getRigidBody(5));
   physicsWorld->capsule2->Update(physicsWorld->getRigidBody(6));
+
+  //physicsWorld->capsule2->Animate();
 
 }
 
@@ -272,7 +265,7 @@ void Graphics::Render()
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->capsule->GetModel()));
   physicsWorld->capsule->Render();
-  
+
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->capsule2->GetModel()));
   physicsWorld->capsule2->Render();
 

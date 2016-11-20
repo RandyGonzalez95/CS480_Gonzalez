@@ -96,7 +96,6 @@ bool Physics::CreateWorld()
 
 void Physics::Pinball()
 {
-
   // set mass
   btScalar mass(10);
   // inertia
@@ -109,37 +108,44 @@ void Physics::Pinball()
   CreateCube(mass, inertia ); // index = 3; cube
   CreateBumper(mass, inertia, btVector3(3,1,9)); // index = 4; bumper
   CreatePaddle(mass, inertia, btVector3(0, 1, 0)); // index = 5, right paddle
-  CreatePaddle2(mass, inertia, btVector3(5, 1, 0)); // index = 6, left paddle
+  CreatePaddle2(mass, inertia, btVector3(0, 1, -9)); // index = 6, left paddle
 
 
 
   // hinge constraint
-  /*rigidBody[5]->setDamping( 0.05f, 0.85f );
+  rigidBody[5]->setDamping( 0.05f, 0.85f );
   rigidBody[6]->setDamping( 0.05f, 0.85f );
 
 
-  const btVector3 btPivotA(0.0f, 0.0f, 3.0f );
+  const btVector3 btPivotA(0.0f, 0.0f, 5.0f );
   btVector3 btAxisA( 0.0f, 0.0f, 1.0f );
 
-  const btVector3 btPivotB(0.0f, 0.0f, 3.0f );
-  btVector3 btAxisB( 0.0f, 0.0f, 1.0f );
+  const btVector3 btPivotB(0.0f, 10.0f, 0.0f );
+  btVector3 btAxisB( 0.0f, 1.0f, 0.0f );
 
 
-  btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5], btPivotA, btAxisA );
-  btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[6], btPivotA, btAxisA );
+  //btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5], btPivotA, btAxisA );
+  //btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[6], btPivotB, btAxisB );
 
-/*btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5],
-   *rigidBody[6],
-   btVector3( btScalar( 0.0 ), btScalar( -0.3 / 2.0 ), btScalar( 0.0 ) ),
-   btVector3( btScalar( 0.0 ), btScalar( 0.3 / 2.0 ), btScalar( 0.0 ) ),
-   btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 1.0 ) ),
-     btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 1.0 ) ) );*/
+  btHingeConstraint *joint = new btHingeConstraint( *rigidBody[0],
+   *rigidBody[5],
+   btVector3( btScalar( -3.0 ), btScalar( 1.0 ), btScalar( -9.0 ) ),
+   btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ),
+   btVector3( btScalar( 0.0 ), btScalar( 1.0 ), btScalar( 0.0 ) ),
+   btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ) );
+
+   btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[0],
+      *rigidBody[6],
+      btVector3( btScalar( 3.0 ), btScalar( 1.0 ), btScalar( -9.0 ) ),
+      btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ),
+      btVector3( btScalar( 0.0 ), btScalar( 1.0 ), btScalar( 0.0 ) ),
+      btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ) );
 
   //joint->setLimit( btScalar( 30 ), btScalar( 60 ) );
   //joint2->setLimit( btScalar( 30 ), btScalar( 60 ) );
 
-  //dynamicsWorld->addConstraint( joint, true );
-  //dynamicsWorld->addConstraint( joint2, true );
+  dynamicsWorld->addConstraint( joint, true );
+  dynamicsWorld->addConstraint( joint2, true );
 }
 
 void Physics::CreateSphere( btScalar mass, btVector3 inertia )
@@ -220,8 +226,8 @@ void Physics::CreateTable(btScalar mass, btVector3 inertia)
 void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &position)
 {
   // Create capsule object
-  capsule->CreateObject( "../models/capsule.obj", "../models/capsule0.jpg", NULL);
-  capsuleShape = new btCapsuleShape( btScalar(1), btScalar(1.0));
+  capsule->CreateObject( "../models/test1.obj", "../models/steel.jpg", NULL);
+  capsuleShape = new btBoxShape(btVector3(0.5,0.5,1.5));
 
   // Set Motion State
   btDefaultMotionState *capsuleMS = NULL;
@@ -243,8 +249,8 @@ void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &po
 void Physics::CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &position)
 {
   // Create capsule object
-  capsule2->CreateObject( "../models/capsule.obj", "../models/capsule0.jpg", NULL);
-  capsuleShape2 = new btCapsuleShape( btScalar(1), btScalar(1.0));
+  capsule2->CreateObject( "../models/test1.obj", "../models/capsule0.jpg", NULL);
+  capsuleShape2 = new btBoxShape(btVector3(0.5,0.5,1.5));
 
   // Set Motion State
   btDefaultMotionState *capsuleMS2 = NULL;
