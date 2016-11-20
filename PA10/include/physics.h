@@ -18,19 +18,26 @@ class Physics
     void Pinball();
     btDiscreteDynamicsWorld *getWorld();
     btRigidBody* getRigidBody(int index);
+    void CreateSphere(btScalar mass, btVector3 inertia);
+    void CreateCube(btScalar mass, btVector3 inertia);
+    void CreateTable(btScalar mass, btVector3 inertia);
+    void CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &position);
+    void CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &position);
+    void CreateBumper(btScalar mass, btVector3 inertia, const btVector3 &position);
+    void CreateGlass(btScalar mass, btVector3 inertia);
+
+
     friend class Graphics;
 
 
 
   private:
-    Object *board;
-    Object *ball;
-    Object *bumper;
-    Object *cubeObject;
-    Object *leftPaddle;
-    Object *rightPaddle;
-    Object *capsule;
-    Object *capsule2;
+
+    // Objects
+    Object *board, *ball, *bumper, *cubeObject, *leftPaddle, *rightPaddle, *capsule, *capsule2;
+
+    int index; // to keep trach which rigidBody we are adding to dynamic world
+
     // Initialize World
     btBroadphaseInterface *broadphase;
     btDefaultCollisionConfiguration *collisionConfiguration;

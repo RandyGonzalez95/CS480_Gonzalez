@@ -3,6 +3,8 @@
 
 Physics::Physics()
 {
+  index = 0;
+
   if(!Initialize())
   {
     std::cerr<<"Physics Engine failed to initialize. Ending.\n";
@@ -94,167 +96,211 @@ bool Physics::CreateWorld()
 
 void Physics::Pinball()
 {
-  // Plane
-
-  /*rightWall = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), -4);
-  leftWall = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), -6);
-  topWall = new btStaticPlaneShape(btVector3(1.0, 0.0, 0.0), -17.5);
-  bottomWall = new btStaticPlaneShape(btVector3(0.0, 0.0, 1.0), -8.5);*/
-
-  // Object tri meshes
-  objTriMesh[0] = new btTriangleMesh();
-  objTriMesh[1] = new btTriangleMesh();
-  objTriMesh[2] = new btTriangleMesh();
-
-  board->CreateObject("../models/table2.obj", "../models/image.jpg", objTriMesh[0]);
-  bumper->CreateObject("../models/bumper.obj", "../models/bumper.jpeg", NULL);
-  cubeObject->CreateObject("../models/cube.obj", "../models/brick.jpeg", NULL);
-  ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
-  //leftPaddle->CreateObject("../models/cube.obj", "../models/steel.jpg", NULL);
-  //rightPaddle->CreateObject("../models/rightPaddle2.obj", "../models/steel.jpg", objTriMesh[2]);
-  capsule->CreateObject( "../models/capsule.obj", "../models/capsule0.jpg", NULL);
-  capsule2->CreateObject( "../models/capsule.obj", "../models/steel.jpg", NULL);
-
-
-
-  // Table
-  table = new btBvhTriangleMeshShape(objTriMesh[0], true);
-
-  // Cylinder
-  cylinder = new btCylinderShape(btVector3(1.0,1.0,1.0));
-
-  // sphere
-  sphere = new btSphereShape(0.5);
-
-  // cube
-  cube = new btBoxShape(btVector3(1.0,1.0,1.0));
-  //left = new btBoxShape(btVector3(1.0,1.0,1.0));
-
-  // capsule
-  capsuleShape = new btCapsuleShapeZ( btScalar(1), btScalar(2.0));
-  capsuleShape2 = new btCapsuleShapeZ( btScalar(1), btScalar(2.0));
-
-
-  // paddles
-  //left = new btBvhTriangleMeshShape(objTriMesh[1], true);
-//  right = new btBvhTriangleMeshShape(objTriMesh[2], true);
-
-  glass = new btStaticPlaneShape(btVector3(0.0, -1.0, 0.0), 0);
-
-  // Create Motion state
-  btDefaultMotionState *tableMS = NULL;
-  tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
-
-  btDefaultMotionState *cylinderMS = NULL;
-  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(3,1,9)));
-
-  btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-9, 0,-12)));
-
-  btDefaultMotionState *cubeMS = NULL;
-  cubeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 1, 0)));
-
-  btDefaultMotionState *glassMS = NULL;
-  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
-
-  //btDefaultMotionState *leftMS = NULL;
-  //leftMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(3, 1, -12)));
-
-  // capsule motion state30
-  btDefaultMotionState *capsuleMS = NULL;
-  capsuleMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-5, 0, 0)));
-
-  btDefaultMotionState *capsuleMS2 = NULL;
-  capsuleMS2 = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
-  /*btDefaultMotionState *rightMS = NULL;
-  rightMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));*/
 
   // set mass
   btScalar mass(10);
   // inertia
   btVector3 inertia(1,1,1);
 
-  // Set inertia for each shape
-  cylinder->calculateLocalInertia(mass,inertia);
-  sphere->calculateLocalInertia(mass,inertia);
-  cube->calculateLocalInertia(mass,inertia);
-  table->calculateLocalInertia(mass,inertia);
-  //left->calculateLocalInertia(mass,inertia);
-  capsuleShape->calculateLocalInertia(mass,inertia);
-  capsuleShape2->calculateLocalInertia(mass,inertia);
-  //right->calculateLocalInertia(mass,inertia);
 
-  // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, tableMS, table, inertia);
-  btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(0, cylinderMS, cylinder, inertia);
-  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
-  btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
-  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, glassMS, glass, inertia);
+  CreateTable(0, inertia); // index = 0, table
+  CreateGlass(0, inertia); // index = 1; glass
+  CreateSphere(mass, inertia ); // index = 2;, ball
+  CreateCube(mass, inertia ); // index = 3; cube
+  CreateBumper(mass, inertia, btVector3(3,1,9)); // index = 4; bumper
+  CreatePaddle(mass, inertia, btVector3(0, 1, 0)); // index = 5, right paddle
+  CreatePaddle2(mass, inertia, btVector3(5, 1, 0)); // index = 6, left paddle
 
-  //btRigidBody::btRigidBodyConstructionInfo leftRigidBodyCI(mass, leftMS, left, inertia);
-
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(0, capsuleMS, capsuleShape, inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(mass, capsuleMS2, capsuleShape2, inertia);
-  //btRigidBody::btRigidBodyConstructionInfo rightRigidBodyCI(0, rightMS, right, inertia);
-
-  // Add RigidBody
-  btRigidBody *temp = new btRigidBody(tableRigidBodyCI); // table
-  rigidBody.push_back(temp);
-
-  temp = new btRigidBody(cylinderRigidBodyCI); // bumper
-  rigidBody.push_back(temp);
-
-  temp = new btRigidBody(sphereRigidBodyCI); // ball
-  rigidBody.push_back(temp);
-
-  temp = new btRigidBody(cubeRigidBodyCI); // cube
-  rigidBody.push_back(temp);
-
-  temp = new btRigidBody(planeRigidBodyCI); // glass
-  rigidBody.push_back(temp);
-
-  //temp = new btRigidBody(leftRigidBodyCI); // left
-  //rigidBody.push_back(temp);
-
-  temp = new btRigidBody(capsuleRigidBodyCI); // left capsule
-  rigidBody.push_back(temp);
-
-  temp = new btRigidBody(capsuleRigidBodyCI2); // capsule
-  rigidBody.push_back(temp);
 
 
   // hinge constraint
-  rigidBody[5]->setDamping( 0.05f, 0.85f );
+  /*rigidBody[5]->setDamping( 0.05f, 0.85f );
   rigidBody[6]->setDamping( 0.05f, 0.85f );
 
-  btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5],
-     *rigidBody[6],
-     btVector3( btScalar( 0.0 ), btScalar( -0.3 / 2.0 ), btScalar( 0.0 ) ),
-     btVector3( btScalar( 0.0 ), btScalar( 0.3 / 2.0 ), btScalar( 0.0 ) ),
-     btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 1.0 ) ),
-     btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 1.0 ) ) );
 
-  joint->setLimit( btScalar( (1/6)*M_PI ), btScalar( (1/3)*M_PI ) );
+  const btVector3 btPivotA(0.0f, 0.0f, 3.0f );
+  btVector3 btAxisA( 0.0f, 0.0f, 1.0f );
 
-  dynamicsWorld->addConstraint( joint, true );
+  const btVector3 btPivotB(0.0f, 0.0f, 3.0f );
+  btVector3 btAxisB( 0.0f, 0.0f, 1.0f );
 
-/*
 
-  temp = new btRigidBody(rightRigidBodyCI); // right
-  rigidBody.push_back(temp);*/
+  btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5], btPivotA, btAxisA );
+  btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[6], btPivotA, btAxisA );
 
+/*btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5],
+   *rigidBody[6],
+   btVector3( btScalar( 0.0 ), btScalar( -0.3 / 2.0 ), btScalar( 0.0 ) ),
+   btVector3( btScalar( 0.0 ), btScalar( 0.3 / 2.0 ), btScalar( 0.0 ) ),
+   btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 1.0 ) ),
+     btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 1.0 ) ) );*/
+
+  //joint->setLimit( btScalar( 30 ), btScalar( 60 ) );
+  //joint2->setLimit( btScalar( 30 ), btScalar( 60 ) );
+
+  //dynamicsWorld->addConstraint( joint, true );
+  //dynamicsWorld->addConstraint( joint2, true );
+}
+
+void Physics::CreateSphere( btScalar mass, btVector3 inertia )
+{
+  ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
+
+  // sphere
+  sphere = new btSphereShape(0.5);
+
+  // Create Motion State
+  btDefaultMotionState *sphereMS = NULL;
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-9, 0,-12)));
+
+  // Set Mass and inertia
+  sphere->calculateLocalInertia(mass,inertia);
+  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
+
+
+  btRigidBody *temp = new btRigidBody(sphereRigidBodyCI); // ball
+  rigidBody.push_back(temp);
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+  index++;
+}
+
+void Physics::CreateCube( btScalar mass, btVector3 inertia )
+{
+  // cube
+  cubeObject->CreateObject("../models/cube.obj", "../models/brick.jpeg", NULL);
+  cube = new btBoxShape(btVector3(1.0,1.0,1.0));
+
+  // Set Motion State
+  btDefaultMotionState *cubeMS = NULL;
+  cubeMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 1, 0)));
+
+  // Create Rigid Bodys
+  cube->calculateLocalInertia(mass,inertia);
+  btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
 
   // Add to World
-  dynamicsWorld->addRigidBody(rigidBody[0]); // table
-  dynamicsWorld->addRigidBody(rigidBody[1]); // bumper
-  dynamicsWorld->addRigidBody(rigidBody[2]); // ball
-  dynamicsWorld->addRigidBody(rigidBody[3]); // cube
-  dynamicsWorld->addRigidBody(rigidBody[4]); // glass
-  //dynamicsWorld->addRigidBody(rigidBody[5]); // leftPaddle
-  dynamicsWorld->addRigidBody(rigidBody[5]); // capsule
-  dynamicsWorld->addRigidBody(rigidBody[6]); // capsule2
-  //dynamicsWorld->addRigidBody(rigidBody[6]); // rightPaddle
+  btRigidBody *temp = new btRigidBody(cubeRigidBodyCI); // cube
+  rigidBody.push_back(temp);
 
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+  index++;
+}
+
+void Physics::CreateTable(btScalar mass, btVector3 inertia)
+{
+
+  // Table
+  objTriMesh[0] = new btTriangleMesh();
+
+  board->CreateObject("../models/table2.obj", "../models/image.jpg", objTriMesh[0]);
+
+  table = new btBvhTriangleMeshShape(objTriMesh[0], true);
+
+    // Create Motion state
+  btDefaultMotionState *tableMS = NULL;
+  tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  // Set mass and inertia
+  table->calculateLocalInertia(mass,inertia);
+
+  // Create RigidBody
+  btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, tableMS, table, inertia);
+
+  // Add to World
+  btRigidBody *temp = new btRigidBody(tableRigidBodyCI); // table
+  rigidBody.push_back(temp);
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+
+  index++;
+
+}
+
+void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &position)
+{
+  // Create capsule object
+  capsule->CreateObject( "../models/capsule.obj", "../models/capsule0.jpg", NULL);
+  capsuleShape = new btCapsuleShape( btScalar(1), btScalar(1.0));
+
+  // Set Motion State
+  btDefaultMotionState *capsuleMS = NULL;
+  capsuleMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), position));
+
+  // Set Rigid Body
+  capsuleShape->calculateLocalInertia(mass,inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(mass, capsuleMS, capsuleShape, inertia);
+
+  // Add to world
+  btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI); // left capsule
+  rigidBody.push_back(temp);
+
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+  index++;
+}
+
+void Physics::CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &position)
+{
+  // Create capsule object
+  capsule2->CreateObject( "../models/capsule.obj", "../models/capsule0.jpg", NULL);
+  capsuleShape2 = new btCapsuleShape( btScalar(1), btScalar(1.0));
+
+  // Set Motion State
+  btDefaultMotionState *capsuleMS2 = NULL;
+  capsuleMS2 = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), position));
+
+  // Set Rigid Body
+  capsuleShape2->calculateLocalInertia(mass,inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(mass, capsuleMS2, capsuleShape2, inertia);
+
+  // Add to world
+  btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI2); // left capsule
+  rigidBody.push_back(temp);
+
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+  index++;
+}
+
+void Physics::CreateBumper(btScalar mass, btVector3 inertia, const btVector3 &position)
+{
+  // Create Cylinder Object
+  bumper->CreateObject("../models/bumper.obj", "../models/bumper.jpeg", NULL);
+  cylinder = new btCylinderShape(btVector3(1.0,1.0,1.0));
+
+  // Set Motion State
+  btDefaultMotionState *cylinderMS = NULL;
+  cylinderMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), position));
+
+  // Add Rigid Body
+  cylinder->calculateLocalInertia(mass,inertia);
+
+  btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(0, cylinderMS, cylinder, inertia);
+  btRigidBody *temp = new btRigidBody(cylinderRigidBodyCI); // bumper
+  rigidBody.push_back(temp);
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+  index++;
+}
+
+void Physics::CreateGlass(btScalar mass, btVector3 inertia)
+{
+  // Place Glass object
+  glass = new btStaticPlaneShape(btVector3(0.0, -1.0, 0.0), 0);
+  btDefaultMotionState *glassMS = NULL;
+  // Motion State
+  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
+  // rigidBody
+  btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, glassMS, glass, inertia);
+
+  // Add to world
+  btRigidBody *temp = new btRigidBody(planeRigidBodyCI); // glass
+  rigidBody.push_back(temp);
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+
+  index++;
 }
 
 btDiscreteDynamicsWorld* Physics::getWorld()
