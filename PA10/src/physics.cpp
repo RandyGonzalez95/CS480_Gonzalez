@@ -167,6 +167,8 @@ void Physics::CreateSphere( btScalar mass, btVector3 inertia )
   btRigidBody *temp = new btRigidBody(sphereRigidBodyCI); // ball
   rigidBody.push_back(temp);
 
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+
   dynamicsWorld->addRigidBody(rigidBody[index]);
   index++;
 }
@@ -188,6 +190,8 @@ void Physics::CreateCube( btScalar mass, btVector3 inertia )
   // Add to World
   btRigidBody *temp = new btRigidBody(cubeRigidBodyCI); // cube
   rigidBody.push_back(temp);
+
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
 
   dynamicsWorld->addRigidBody(rigidBody[index]);
   index++;
@@ -241,6 +245,8 @@ void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &po
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI); // left capsule
   rigidBody.push_back(temp);
 
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+
 
   dynamicsWorld->addRigidBody(rigidBody[index]);
   index++;
@@ -264,6 +270,7 @@ void Physics::CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &p
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI2); // left capsule
   rigidBody.push_back(temp);
 
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
 
   dynamicsWorld->addRigidBody(rigidBody[index]);
   index++;

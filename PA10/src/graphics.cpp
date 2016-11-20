@@ -198,7 +198,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[7]) // left paddle
   {
 
-    physicsWorld->getRigidBody(6)->setAngularVelocity(btVector3(0.0f, 10.0f, 0.0f));
+    physicsWorld->getRigidBody(6)->setAngularVelocity(btVector3(0.0f, 100.0f, 0.0f));
 
 
     codes[7] = false;
