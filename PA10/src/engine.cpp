@@ -129,7 +129,7 @@ void Engine::Keyboard(bool codes[])
     {
       codes[3] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_SPACE && !codes[12])
+    if(m_event.key.keysym.sym == SDLK_SPACE )
     {
       codes[4] = true;
       codes[12] = true;
