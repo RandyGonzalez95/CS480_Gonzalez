@@ -19,6 +19,7 @@ Object::~Object()
 void Object::CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh)
 {
 
+
   // Open File Data
   if(!Initialize(objFile))
   {
@@ -27,6 +28,7 @@ void Object::CreateObject(std::string objFile, std::string textureFile, btTriang
   }
 
   SetVertices(triMesh);
+  
 
   getTextures(textureFile);
 

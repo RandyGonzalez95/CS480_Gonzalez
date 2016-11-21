@@ -4,6 +4,8 @@
 Physics::Physics()
 {
   index = 0;
+  mass = btScalar(10);
+  inertia = btVector3(1,1,1);
 
   if(!Initialize())
   {
@@ -26,7 +28,17 @@ Physics::Physics()
   rightPaddle = new Object();
   capsule = new Object();
   capsule2 = new Object();
-
+  bigIslandObj = new Object();
+  leftArmObj = new Object();
+  leftIslandObj = new Object();
+  rightArmObj = new Object();
+  small_island_leftObj = new Object();
+  small_island_rightObj = new Object();
+  thing_1Obj = new Object();
+  thing_2Obj = new Object();
+  thing_3Obj = new Object();
+  thing_4Obj = new Object();
+  upper_islandObj = new Object();
   Pinball();
 
 }
@@ -84,7 +96,7 @@ bool Physics::CreateWorld()
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
   // Set Gravity
-  dynamicsWorld->setGravity(btVector3(0,-9.81,-9.81));
+  dynamicsWorld->setGravity(btVector3(0, -9.81, 9.81));
 
   // check if the world exists
   if( dynamicsWorld == NULL)
@@ -97,18 +109,99 @@ bool Physics::CreateWorld()
 void Physics::Pinball()
 {
   // set mass
-  btScalar mass(10);
+//  btScalar mass(10);
   // inertia
-  btVector3 inertia(1,1,1);
+//  btVector3 inertia(1,1,1);
+  objTriMesh[triIndex] = new btTriangleMesh();
 
+  btDefaultMotionState *tableMS = NULL;
+  tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTable(0, inertia); // index = 0, table
-  CreateGlass(0, inertia); // index = 1; glass
-  CreateSphere(mass, inertia ); // index = 2;, ball
-  CreateCube(mass, inertia ); // index = 3; cube
-  CreateBumper(mass, inertia, btVector3(3,1,9)); // index = 4; bumper
-  CreatePaddle(mass, inertia, btVector3(0, 1, 0)); // index = 5, right paddle
-  CreatePaddle2(mass, inertia, btVector3(0, 1, -9)); // index = 6, left paddle
+  CreateTableItem("../FinalModels/table.obj", "../models/image.jpg", board, objTriMesh[triIndex], table, tableMS); // index = 0, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *bigIslandMS = NULL;
+  bigIslandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/bigIsland.obj", "../models/image.jpg", bigIslandObj, objTriMesh[triIndex], bigIsland, bigIslandMS); // index = 1, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *leftArmMS = NULL;
+  leftArmMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/leftArm.obj", "../models/image.jpg", leftArmObj, objTriMesh[triIndex], leftArm, leftArmMS); // index = 2, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *leftIslandMS = NULL;
+  leftIslandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/leftIsland.obj", "../models/image.jpg", leftIslandObj, objTriMesh[triIndex], leftIsland, leftIslandMS); // index = 3, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *rightArmMS = NULL;
+  rightArmMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/rightArm.obj", "../models/image.jpg", rightArmObj, objTriMesh[triIndex], rightArm, rightArmMS); // index = 4, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *small_island_leftMS = NULL;
+  small_island_leftMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/small_island_left.obj", "../models/image.jpg", small_island_leftObj, objTriMesh[triIndex], small_island_left, small_island_leftMS); // index = 5, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *small_island_rightMS = NULL;
+  small_island_rightMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/small_island_right.obj", "../models/image.jpg", small_island_rightObj, objTriMesh[triIndex], small_island_right, small_island_rightMS); // index = 6, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *thing1MS = NULL;
+  thing1MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/thing_1.obj", "../models/image.jpg", thing_1Obj, objTriMesh[triIndex], thing_1, thing1MS); // index = 7, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *thing2MS = NULL;
+  thing2MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/thing_2.obj", "../models/image.jpg", thing_2Obj, objTriMesh[triIndex], thing_2, thing2MS); // index = 8, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *thing3MS = NULL;
+  thing3MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/thing_3.obj", "../models/image.jpg", thing_3Obj, objTriMesh[triIndex], thing_3, thing3MS); // index = 9, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *thing4MS = NULL;
+  thing4MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/thing_4.obj", "../models/image.jpg", thing_4Obj, objTriMesh[triIndex], thing_4, thing4MS); // index = 10, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *upper_islandMS = NULL;
+  upper_islandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../FinalModels/upper_island.obj", "../models/image.jpg", upper_islandObj, objTriMesh[triIndex], upper_island, upper_islandMS); // index = 11, table
+
+  CreateGlass(); // index = 12; glass
+  CreateSphere(); // index = 13;, ball
+  CreateCube(); // index = 14; cube
+  //CreateBumper(btVector3(0,0,12)); // index = 15; bumper
+  CreatePaddle(btVector3(0, 0.2, 0)); // index = 16, right paddle
+  CreatePaddle2(btVector3(0.5, 1, -3)); // index = 17, left paddle
 
 
 
@@ -117,47 +210,73 @@ void Physics::Pinball()
   rigidBody[6]->setDamping( 0.05f, 0.85f );
 
 
-  const btVector3 btPivotA(0.0f, 0.0f, 5.0f );
+  /*const btVector3 btPivotA(0.0f, 0.0f, 5.0f );
   btVector3 btAxisA( 0.0f, 0.0f, 1.0f );
-
+  // set mass
+  btScalar mass(10);
+  // inertia
+  btVector3 inertia(1,1,1);
   const btVector3 btPivotB(0.0f, 10.0f, 0.0f );
-  btVector3 btAxisB( 0.0f, 1.0f, 0.0f );
+  btVector3 btAxisB( 0.0f, 1.0f, 0.0f );*/
 
 
-  //btHingeConstraint *joint = new btHingeConstraint( *rigidBody[5], btPivotA, btAxisA );
-  //btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[6], btPivotB, btAxisB );
+  const btVector3 btPivotA(0.1f, 1.0f, 0.0f ); // right next to the door slightly outside
+  		btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
 
-  btHingeConstraint *joint = new btHingeConstraint( *rigidBody[0],
+
+  //const btVector3 btPivotA( 0.0f, 0.0f, .0f ); // right next to the door slightly outside
+	//btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
+
+
+	btHingeConstraint *joint = new btHingeConstraint( *rigidBody[15], btPivotA, btAxisA );
+
+	joint->setLimit(  -SIMD_PI/8 , SIMD_PI*.2f  );
+
+
+	dynamicsWorld->addConstraint(joint);
+
+
+
+
+	//btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[16], btPivotA, btAxisA );
+
+	//joint2->setLimit( -SIMD_PI / 8, SIMD_PI * 0.2f);
+
+
+	//dynamicsWorld->addConstraint(joint2);
+
+
+  /*btHingeConstraint *joint = new btHingeConstraint( *rigidBody[0],
    *rigidBody[5],
    btVector3( btScalar( -3.0 ), btScalar( 1.0 ), btScalar( -9.0 ) ),
    btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ),
    btVector3( btScalar( 0.0 ), btScalar( 1.0 ), btScalar( 0.0 ) ),
    btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ) );
-
+table
    btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[0],
       *rigidBody[6],
       btVector3( btScalar( 3.0 ), btScalar( 1.0 ), btScalar( -9.0 ) ),
       btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ),
       btVector3( btScalar( 0.0 ), btScalar( 1.0 ), btScalar( 0.0 ) ),
-      btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ) );
+      btVector3( btScalar( 0.0 ), btScalar( 0.0 ), btScalar( 0.0 ) ) );*/
 
-  //joint->setLimit( btScalar( 30 ), btScalar( 60 ) );
-  //joint2->setLimit( btScalar( 30 ), btScalar( 60 ) );
+  //joint->setLimit( -SIMD_PI*0.8f, SIMD_PI, 0.9f, 0.01f, 0.0f);
+  //joint2->setLimit( btScabtDefaultMotionState* defaulMotionlar( 30 ), btScalar( 60 ) );
 
-  dynamicsWorld->addConstraint( joint, true );
-  dynamicsWorld->addConstraint( joint2, true );
+  //dynamicsWorld->addConstraint( joint, true );
+  //dynamicsWorld->addConstraint( joint2, true );
 }
 
-void Physics::CreateSphere( btScalar mass, btVector3 inertia )
+void Physics::CreateSphere()
 {
-  ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
+  ball->CreateObject("../FinalModels/sphere.obj", "../models/steel.jpg", NULL);
 
   // sphere
   sphere = new btSphereShape(0.5);
 
-  // Create Motion State
+  // Create Motion StateleftPaddle
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-9, 0,-12)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
   // Set Mass and inertia
   sphere->calculateLocalInertia(mass,inertia);
@@ -173,11 +292,11 @@ void Physics::CreateSphere( btScalar mass, btVector3 inertia )
   index++;
 }
 
-void Physics::CreateCube( btScalar mass, btVector3 inertia )
+void Physics::CreateCube()
 {
   // cube
   cubeObject->CreateObject("../models/cube.obj", "../models/brick.jpeg", NULL);
-  cube = new btBoxShape(btVector3(1.0,1.0,1.0));
+  cube = new btBoxShape(btVector3(0.2,0.2,0.2));
 
   // Set Motion State
   btDefaultMotionState *cubeMS = NULL;
@@ -185,7 +304,7 @@ void Physics::CreateCube( btScalar mass, btVector3 inertia )
 
   // Create Rigid Bodys
   cube->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
+  btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass*3, cubeMS, cube, inertia);
 
   // Add to World
   btRigidBody *temp = new btRigidBody(cubeRigidBodyCI); // cube
@@ -197,13 +316,13 @@ void Physics::CreateCube( btScalar mass, btVector3 inertia )
   index++;
 }
 
-void Physics::CreateTable(btScalar mass, btVector3 inertia)
+void Physics::CreateTable()
 {
 
   // Table
-  objTriMesh[0] = new btTriangleMesh();
+  objTriMesh[triIndex] = new btTriangleMesh();
 
-  board->CreateObject("../models/table2.obj", "../models/image.jpg", objTriMesh[0]);
+  board->CreateObject("../FinalModels/table.obj", "../models/image.jpg", objTriMesh[0]);
 
   table = new btBvhTriangleMeshShape(objTriMesh[0], true);
 
@@ -224,14 +343,39 @@ void Physics::CreateTable(btScalar mass, btVector3 inertia)
   dynamicsWorld->addRigidBody(rigidBody[index]);
 
   index++;
+  triIndex++;
 
 }
 
-void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &position)
+void Physics::CreateTableItem(std::string objectFile, std::string textureFile, Object* obj, btTriangleMesh *triMesh, btCollisionShape *collShape, btDefaultMotionState* defaultMotion)
+{
+  obj->CreateObject(objectFile, textureFile, triMesh);
+
+  collShape = new btBvhTriangleMeshShape(triMesh, true);
+
+  // Set mass and inertia
+  collShape->calculateLocalInertia(mass,inertia);
+
+  // Create RigidBody
+  btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, defaultMotion, collShape, inertia);
+
+  // Add to World
+  btRigidBody *temp = new btRigidBody(tableRigidBodyCI); // table
+  rigidBody.push_back(temp);
+
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+
+  index++;
+  triIndex++;
+
+
+}
+
+void Physics::CreatePaddle(const btVector3 &position)
 {
   // Create capsule object
-  capsule->CreateObject( "../models/test1.obj", "../models/steel.jpg", NULL);
-  capsuleShape = new btBoxShape(btVector3(0.5,0.5,1.5));
+  capsule->CreateObject( "../models/test.obj", "../models/steel.jpg", NULL);
+  capsuleShape = new btBoxShape(btVector3(0.2,0.2,0.2));
 
   // Set Motion State
   btDefaultMotionState *capsuleMS = NULL;
@@ -239,7 +383,7 @@ void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &po
 
   // Set Rigid Body
   capsuleShape->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(mass, capsuleMS, capsuleShape, inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(mass * 10, capsuleMS, capsuleShape, inertia);
 
   // Add to world
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI); // left capsule
@@ -252,11 +396,11 @@ void Physics::CreatePaddle(btScalar mass, btVector3 inertia, const btVector3 &po
   index++;
 }
 
-void Physics::CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &position)
+void Physics::CreatePaddle2(const btVector3 &position)
 {
   // Create capsule object
-  capsule2->CreateObject( "../models/test1.obj", "../models/capsule0.jpg", NULL);
-  capsuleShape2 = new btBoxShape(btVector3(0.5,0.5,1.5));
+  capsule2->CreateObject( "../FinalModels/rightpaddle.obj", "../models/steel.jpg", NULL);
+  capsuleShape2 = new btBoxShape(btVector3(0.2,0.2,0.2));
 
   // Set Motion State
   btDefaultMotionState *capsuleMS2 = NULL;
@@ -264,7 +408,7 @@ void Physics::CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &p
 
   // Set Rigid Body
   capsuleShape2->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(mass, capsuleMS2, capsuleShape2, inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(0, capsuleMS2, capsuleShape2, inertia);
 
   // Add to world
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI2); // left capsule
@@ -276,7 +420,7 @@ void Physics::CreatePaddle2(btScalar mass, btVector3 inertia, const btVector3 &p
   index++;
 }
 
-void Physics::CreateBumper(btScalar mass, btVector3 inertia, const btVector3 &position)
+void Physics::CreateBumper(const btVector3 &position)
 {
   // Create Cylinder Object
   bumper->CreateObject("../models/bumper.obj", "../models/bumper.jpeg", NULL);
@@ -297,13 +441,13 @@ void Physics::CreateBumper(btScalar mass, btVector3 inertia, const btVector3 &po
   index++;
 }
 
-void Physics::CreateGlass(btScalar mass, btVector3 inertia)
+void Physics::CreateGlass()
 {
   // Place Glass object
-  glass = new btStaticPlaneShape(btVector3(0.0, -1.0, 0.0), 0);
+  glass = new btStaticPlaneShape(btVector3(0.0, 0.0, 0.0), 0);
   btDefaultMotionState *glassMS = NULL;
   // Motion State
-  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 2.5, 0)));
+  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 1.5, 0)));
   // rigidBody
   btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, glassMS, glass, inertia);
 

@@ -159,26 +159,26 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[0])
   {
 
-    z = 1000;
+    z = -1000;
     x = 0;
 
     codes[0] = false;
   }
   if(codes[1])
   {
-    x = 1000;
+    x = -1000;
     z = 0;
     codes[1] = false;
   }
   if(codes[2])
   {
-    z = -1000;
+    z = 1000;
     x = 0;
     codes[2] = false;
   }
   if(codes[3])
   {
-    x = -1000;
+    x = 1000;
     z = 0;
     codes[3] = false;
   }
@@ -198,7 +198,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[7]) // left paddle
   {
 
-    physicsWorld->getRigidBody(6)->setAngularVelocity(btVector3(0.0f, 100.0f, 0.0f));
+    physicsWorld->getRigidBody(15)->setAngularVelocity(btVector3(0.0f, 100.0f, 0.0f));
 
 
     codes[7] = false;
@@ -208,7 +208,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
     //physicsWorld->getRigidBody(6)->clearForces();
 
 
-    physicsWorld->getRigidBody(5)->setAngularVelocity(btVector3(0.0f, -10.0f, 0.0f));
+    physicsWorld->getRigidBody(16)->setAngularVelocity(btVector3(0.0f, -50.0f, 0.0f));
 
     codes[8] = false;
   }
@@ -216,16 +216,36 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Update all Objects
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
 
-  physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
+  physicsWorld->ball->Update(physicsWorld->getRigidBody(13));
   physicsWorld->ball->Scale(0.5);
 
-  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
-  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
+  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(14));
+  physicsWorld->cubeObject->Scale(0.2);
+  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(14));
 
-  physicsWorld->bumper->Update(physicsWorld->getRigidBody(4));
+  //physicsWorld->bumper->Update(physicsWorld->getRigidBody(15));
 
-  physicsWorld->capsule->Update(physicsWorld->getRigidBody(5));
-  physicsWorld->capsule2->Update(physicsWorld->getRigidBody(6));
+  physicsWorld->capsule->Update(physicsWorld->getRigidBody(15));
+  physicsWorld->capsule->Scale(0.3);
+  //physicsWorld->capsule->Animate();
+  physicsWorld->capsule2->Update(physicsWorld->getRigidBody(16));
+
+
+  physicsWorld->bigIslandObj->Update(physicsWorld->getRigidBody(1));
+  physicsWorld->leftArmObj->Update(physicsWorld->getRigidBody(2));
+  physicsWorld->leftIslandObj->Update(physicsWorld->getRigidBody(3));
+  physicsWorld->rightArmObj->Update(physicsWorld->getRigidBody(4));
+  physicsWorld->small_island_leftObj->Update(physicsWorld->getRigidBody(5));
+  physicsWorld->small_island_rightObj->Update(physicsWorld->getRigidBody(6));
+  physicsWorld->thing_1Obj->Update(physicsWorld->getRigidBody(7));
+  physicsWorld->thing_2Obj->Update(physicsWorld->getRigidBody(8));
+  physicsWorld->thing_3Obj->Update(physicsWorld->getRigidBody(9));
+  physicsWorld->thing_4Obj->Update(physicsWorld->getRigidBody(10));
+  physicsWorld->upper_islandObj->Update(physicsWorld->getRigidBody(11));
+
+
+
+
 
   //physicsWorld->capsule2->Animate();
 
@@ -260,14 +280,49 @@ void Graphics::Render()
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->cubeObject->GetModel()));
   physicsWorld->cubeObject->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
-  physicsWorld->bumper->Render();
+  //glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
+  //physicsWorld->bumper->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->capsule->GetModel()));
   physicsWorld->capsule->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->capsule2->GetModel()));
   physicsWorld->capsule2->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bigIslandObj->GetModel()));
+  physicsWorld->bigIslandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftArmObj->GetModel()));
+  physicsWorld->leftArmObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftIslandObj->GetModel()));
+  physicsWorld->leftIslandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightArmObj->GetModel()));
+  physicsWorld->rightArmObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->small_island_leftObj->GetModel()));
+  physicsWorld->small_island_leftObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->small_island_rightObj->GetModel()));
+  physicsWorld->small_island_rightObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_1Obj->GetModel()));
+  physicsWorld->thing_1Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_2Obj->GetModel()));
+  physicsWorld->thing_2Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_3Obj->GetModel()));
+  physicsWorld->thing_3Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_4Obj->GetModel()));
+  physicsWorld->thing_4Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->upper_islandObj->GetModel()));
+  physicsWorld->upper_islandObj->Render();
+
+
 
   /*
 
