@@ -21,6 +21,7 @@ class Graphics
     void Render();
     friend class Physics;
 
+    glm::mat4 viewMatrix;
   private:
     std::string ErrorString(GLenum error);
 

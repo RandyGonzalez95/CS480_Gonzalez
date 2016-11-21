@@ -27,6 +27,8 @@ class Physics
     void CreateBumper(const btVector3 &position);
     void CreateGlass();
 
+    void GetView();
+
 
     friend class Graphics;
 

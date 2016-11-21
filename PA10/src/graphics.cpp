@@ -153,6 +153,11 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
 void Graphics::Update(unsigned int dt, bool codes[])
 {
+
+  viewMatrix = glm::lookAt( glm::vec3(0.0, 12.0, 14.0), //Eye Position
+                      glm::vec3(0.0, 0.0, 0.0), //Focus point
+                      glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
   simTime = 0.0083;
 
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
@@ -215,6 +220,24 @@ void Graphics::Update(unsigned int dt, bool codes[])
     codes[8] = false;
   }
 
+  if (codes[9])
+  {
+    viewMatrix = glm::lookAt( glm::vec3(25.0, 12.0, -4.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+                            m_camera->SetView(viewMatrix);
+  }
+  if (codes[10])
+  {
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 12.0, 34.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+    m_camera->SetView(viewMatrix);
+  }
+
+
   // Update all Objects
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
   physicsWorld->board2->Update(physicsWorld->getRigidBody(17));
@@ -261,7 +284,10 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   //physicsWorld->capsule2->Animate();
 
+
+
 }
+
 
 void Graphics::Render()
 {
@@ -272,6 +298,7 @@ void Graphics::Render()
   // Start the correct program
   m_shader->Enable();
 
+  m_camera->SetView(viewMatrix);
   // Send in the projection and view
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));

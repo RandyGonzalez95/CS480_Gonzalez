@@ -36,3 +36,7 @@ glm::mat4 Camera::GetView()
 {
   return view;
 }
+void Camera::SetView(glm::mat4 viewMatrix)
+{
+  view = viewMatrix;
+}

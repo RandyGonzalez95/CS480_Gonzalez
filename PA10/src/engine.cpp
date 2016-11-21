@@ -147,6 +147,16 @@ void Engine::Keyboard(bool codes[])
       codes[8] = true;
 
     }
+    if(m_event.key.keysym.sym == SDLK_t) // view 1
+    {
+    codes[9] = !codes[9];
+
+    }
+    if(m_event.key.keysym.sym == SDLK_y) // view 1
+    {
+    codes[10] = !codes[10];
+
+    }
 
   }
 
