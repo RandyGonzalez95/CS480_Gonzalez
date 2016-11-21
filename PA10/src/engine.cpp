@@ -74,8 +74,27 @@ void Engine::Run()
     }
 
     m_graphics->Update(m_DT, codes);
+
     m_graphics->Render();
 
+    if(codes[15])
+    {
+      codes[15] = false;
+      codes[12] = false;
+      if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
+      {
+        printf("The graphics failed to initialize.\n");
+      }
+
+      else
+      {
+        if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
+        {
+          printf("The graphics failed to initialize.\n");
+        }
+      }
+
+    }
     // Swap to the Window
     m_window->Swap();
   }
@@ -110,9 +129,10 @@ void Engine::Keyboard(bool codes[])
     {
       codes[3] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_SPACE)
+    if(m_event.key.keysym.sym == SDLK_SPACE && !codes[12])
     {
       codes[4] = true;
+      codes[12] = true;
     }
     if(m_event.key.keysym.sym == SDLK_r)
     {
@@ -136,6 +156,32 @@ void Engine::Keyboard(bool codes[])
           printf("The graphics failed to initialize.\n");
         }
       }
+    }
+    if(m_event.key.keysym.sym == SDLK_z) // left paddle
+    {
+      codes[7] = true;
+
+    }
+    if(m_event.key.keysym.sym == SDLK_SLASH) // right paddle
+    {
+      codes[8] = true;
+
+    }
+
+    if(m_event.key.keysym.sym == SDLK_t) // left paddle
+    {
+      codes[9] = true;
+
+    }
+    if(m_event.key.keysym.sym == SDLK_y) // right paddle
+    {
+      codes[10] = true;
+
+    }
+    if(m_event.key.keysym.sym == SDLK_r) // right paddle
+    {
+      codes[11] = true;
+
     }
   }
 

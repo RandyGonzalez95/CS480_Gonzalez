@@ -19,6 +19,7 @@ Object::~Object()
 void Object::CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh)
 {
 
+
   // Open File Data
   if(!Initialize(objFile))
   {
@@ -27,6 +28,7 @@ void Object::CreateObject(std::string objFile, std::string textureFile, btTriang
   }
 
   SetVertices(triMesh);
+
 
   getTextures(textureFile);
 
@@ -75,13 +77,9 @@ void Object::SetVertices(btTriangleMesh *triMesh)
       // for each indice in the mesh
       for(int i = 0; i < 3; i++)
       {
-
+        aiVector3D position = model->mVertices[model->mFaces[iFaces].mIndices[i]];
         // Grab index info of the faces
         index = model->mFaces[iFaces].mIndices[i];
-
-        aiVector3D position = model->mVertices[model->mFaces[iFaces].mIndices[i]];
-
-        triArray[i] = btVector3( position.x, position.y, position.z);
 
         // check for texture coodinates
         if(model->HasTextureCoords(0))
@@ -105,19 +103,19 @@ void Object::SetVertices(btTriangleMesh *triMesh)
           temp.position[j] = model->mVertices[index][j];
         }
 
-
+        triArray[i] = btVector3( position.x, position.y, position.z);
 
         // Push back Index and Geomtry info
         Indices.push_back(index);
         Geometry.push_back(temp);
       }
-
       if(triMesh != NULL)
       {
         triMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
       }
     }
   }
+
 }
 
 void Object::Update(btRigidBody* rigidBodyID)
@@ -145,17 +143,17 @@ void Object::Move(float x, float y, float z, btRigidBody* rigidBodyID)
   rigidBodyID->applyForce(btVector3(x,y,z), btVector3(0,0,0));
 }
 
+void Object::Animate()
+{
+  ///angle += 0.01;
+  model *= glm::rotate(glm::mat4(1.0f), 89.5f, glm::vec3(0.0, 1.0, 0.0));//*glm::scale(glm::mat4(1.0f), glm::vec3(0.5));
+  //model *= glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0, 0.0, 0.0));
+
+}
+
 void Object::Scale(float size)
 {
   model *= glm::scale(glm::mat4(1.0f), glm::vec3(size));
-}
-
-void Object::TranslateBack()
-{
-  model *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.2,0.0));
-  model *= glm::translate(glm::mat4(1.0f), glm::vec3(-1.25, 0.0, 0.0));
-  model *= glm::rotate(glm::mat4(1.0f), -29.839f, glm::vec3(0.0, 1.0, 0.0));
-  //model *= glm::rotate(glm::mat4(1.0f), 25.1f, glm::vec3(0.0, 1.0, 0.0));
 }
 
 glm::mat4 Object::GetModel()

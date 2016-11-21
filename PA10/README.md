@@ -1,4 +1,4 @@
-# PA8: Bullet 
+# PA10: Pinball 
 
 ## Team Members
 - Brett Knadle  
@@ -6,16 +6,15 @@
 - Randy Gonzalez  
 
 ## Objective:
-- To become familiar with Bullet Physics
-- Be able to integrate 3D physics using Bullet into OpenGL program with user interaction.
+- To build an interactive Pinball Game.
+- Use Assimp to load models and textures.
+- Use Bullet to handle the physics.
 
-#Assignment:
-- Build a simple board (bottom with side walls) with 3 objects on it (a sphere, a cube, and a cylindar).
-- Make the Cylindar a static object and the sphere and cube dynamic objects.
-- provide input so that they can move ... in particular you want to be able to have the cube hit the ball and make it move...and then bounce off the walls and the cylindar.
+# Assignment:
+- Building an interactive Pinball Game with models and textures loading. Use Bullet library to handle the physics of the game.
 
 ## Dependencies, Building, and Running
-This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./PA8
+This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./PA10
 
 ## Dependency Instructions
 For both of the operating systems to run this project installation of these three programs are required [GLEW](http://glew.sourceforge.net/), [GLM](http://glm.g-truc.net/0.9.7/index.html), and [SDL2](https://wiki.libsdl.org/Tutorials).
@@ -23,7 +22,10 @@ For both of the operating systems to run this project installation of these thre
 This project uses OpenGL 3.3. Some computers, such as virtual machines in the ECC, can not run this version. In in order to run OpenGL 2.7 follow the instructions at [Using OpenGL 2.7](https://github.com/HPC-Vis/computer-graphics/wiki/Using-OpenGL-2.7)
 
 For Assimp and libmagick++ use this sudo  
-On Ubuntu: apt-get install g++ freeglut3-dev glew1.5-dev libmagick++-dev libassimp-dev libglfw-dev
+On Ubuntu: 
+```bash
+apt-get install g++ freeglut3-dev glew1.5-dev libmagick++-dev libassimp-dev libglfw-dev
+```
 
 ### Ubuntu/Linux
 ```bash
@@ -46,20 +48,24 @@ mkdir build
 cd build
 cmake ..
 make
-./PA8 
+./PA10 
 ```
 
 ### Controls:
-- 'w': move cube up
-- 's': move cube down
-- 'a': move cube left
-- 'd': move cube right
-- 'r': reset cube to origin(middle)
-- 'p': pause the cube. 
-- 'space bar': apply force to the sphere.
+	- ‘z’---------- Left Paddle
+	- ‘/’ --------- Right Paddle
+	- ‘space’----launch the ball (start the game)
+	- ‘p’--------- Change per Vertex between Per Fragment Lighting
+	- ‘t’ --------- Side View
+	- ‘y’--------- zoom out view
+	- ‘r’--------- default view
+	- ‘a’-------- decrement specular light
+	- ‘d’-------- increment specular light  
+	- ‘w’-------- decrement ambient light
+	- ‘s’ -------- increment ambient light 
 
 ## Ubuntu.cse.unr.edu
 OpenGL 3.3 will run on the [ubuntu.cse.unr.edu](https://ubuntu.cse.unr.edu/) website. To do so follow the build instructions, but when running the Tutorial executable use this line to execute.
 ```bash
-/usr/NX/scripts/vgl/vglrun ./PA8
+/usr/NX/scripts/vgl/vglrun ./PA10
 ```

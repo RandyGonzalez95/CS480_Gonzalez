@@ -2,7 +2,7 @@
 
 Graphics::Graphics()
 {
-
+  ballCount = 3;
 }
 
 Graphics::~Graphics()
@@ -12,6 +12,7 @@ Graphics::~Graphics()
 
 bool Graphics::Initialize(int width, int height, bool flag)
 {
+
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
     // cout << glewGetString(GLEW_VERSION) << endl;
@@ -47,6 +48,7 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
   // Create board
   physicsWorld = new Physics();
+
 
   // Set up the shaders
   m_shader = new Shader();
@@ -146,46 +148,69 @@ bool Graphics::Initialize(int width, int height, bool flag)
   //enable depth testing
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
+  ballCount--;
 
   return true;
+
 }
 
 void Graphics::Update(unsigned int dt, bool codes[])
 {
+  /*const char* string = "Score: ";
+  glColor3f( 1, 1, 1 );
+  glRasterPos2f(0, 0);
+  int len, i;
+  len = (int)strlen(string);
+  for (i = 0; i < len; i++) {
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, string[i]);
+  }*/
+
+  score += 0.01;
+
+
+  std::cout<< "Score: "<< (int)score<<std::endl;
+
+
   simTime = 0.0083;
+
+  viewMatrix = glm::lookAt( glm::vec3(0.0, 12.0, 14.0), //Eye Position
+                      glm::vec3(0.0, 0.0, 0.0), //Focus point
+                      glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
 
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
   if(codes[0])
   {
+    light -= 0.1;
 
-    z = 1000;
-    x = 0;
 
     codes[0] = false;
   }
   if(codes[1])
   {
-    x = 1000;
-    z = 0;
+    light2 -= 0.5;
     codes[1] = false;
   }
   if(codes[2])
   {
-    z = -1000;
+    light += 0.1;
+
+    z = 500;
     x = 0;
     codes[2] = false;
   }
   if(codes[3])
   {
-    x = -1000;
-    z = 0;
+    light2 += 0.5;
     codes[3] = false;
   }
   if(codes[4])
   {
-    physicsWorld->getRigidBody(2)->clearForces();
-    physicsWorld->getRigidBody(2)->applyForce(btVector3(200000,0,500000),btVector3(-5,0,-8));
+    physicsWorld->getRigidBody(13)->clearForces();
+
+    physicsWorld->getRigidBody(13)->applyForce(btVector3(0,0,-15000),btVector3(0,0,0));
+
+    physicsWorld->getRigidBody(23)->setLinearVelocity(btVector3(0.0f, 0.0f, -100.0f));
 
     codes[4] = false;
   }
@@ -195,21 +220,125 @@ void Graphics::Update(unsigned int dt, bool codes[])
     z = 0;
     codes[5] = false;
   }
+  if(codes[7]) // left paddle
+  {
+
+    physicsWorld->getRigidBody(15)->setAngularVelocity(btVector3(0.0f, 50.0f, 0.0f));
+
+
+    codes[7] = false;
+  }
+  if(codes[8]) // right paddle
+  {
+    //physicsWorld->getRigidBody(6)->clearForces();
+
+
+    physicsWorld->getRigidBody(16)->setAngularVelocity(btVector3(0.0f, -50.0f, 0.0f));
+
+    codes[8] = false;
+  }
+  if(codes[9]) // view, t
+  {
+
+
+    viewMatrix = glm::lookAt( glm::vec3(25.0, 12.0, -4.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+    m_camera->SetView(viewMatrix);
+
+    codes[9] = false;
+  }
+  if(codes[10]) // view, y
+  {
+
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 12.0, 34.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+    m_camera->SetView(viewMatrix);
+
+
+    codes[10] = false;
+  }
+
+  if(codes[11]) // view, r
+  {
+    viewMatrix = glm::lookAt( glm::vec3(0.0, 12.0, 14.0), //Eye Position
+                        glm::vec3(0.0, 0.0, 0.0), //Focus point
+                        glm::vec3(0.0, 1.0, 0.0)); //Positive Y is up
+
+    m_camera->SetView(viewMatrix);
+
+
+    codes[11] = false;
+  }
+
+
+  btTransform ballPos;
+  physicsWorld->getRigidBody(13)->getMotionState()->getWorldTransform(ballPos);
+
+  btVector3 ballPosAngle = ballPos.getOrigin();
+
+  if(ballCount == -5)
+  {
+    exit(1);
+  }
+
+  if(ballPosAngle.z() >= 9.8 )
+  {
+    codes[15] = true;
+  }
+
+
 
   // Update all Objects
-  //physicsWorld->board->Update(physicsWorld->getRigidBody(0));
-  //physicsWorld->board->Scale(8);
-  //physicsWorld->board->TranslateBack();
+  physicsWorld->board->Update(physicsWorld->getRigidBody(0));
+  physicsWorld->board2->Update(physicsWorld->getRigidBody(17));
 
-//  physicsWorld->bumper->Update(physicsWorld->getRigidBody(1));
+  physicsWorld->ball->Update(physicsWorld->getRigidBody(13));
+  physicsWorld->ball->Scale(0.2);
 
-//  physicsWorld->ball->Update(physicsWorld->getRigidBody(2));
-  //physicsWorld->ball->Scale(0.5);
+  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(14));
+  physicsWorld->cubeObject->Scale(0.2);
+  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(14));
 
-//  physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(3));
-//  physicsWorld->cubeObject->Move(x, y, z, physicsWorld->getRigidBody(3));
+  //physicsWorld->bumper->Update(physicsWorld->getRigidBody(15));
+
+  physicsWorld->capsule->Update(physicsWorld->getRigidBody(15));
+//  physicsWorld->capsule->Scale(0.3);
+//  physicsWorld->capsule->Animate();
+  physicsWorld->capsule2->Update(physicsWorld->getRigidBody(16));
 
 
+  physicsWorld->bigIslandObj->Update(physicsWorld->getRigidBody(1));
+  physicsWorld->leftArmObj->Update(physicsWorld->getRigidBody(2));
+  physicsWorld->leftIslandObj->Update(physicsWorld->getRigidBody(3));
+  physicsWorld->rightArmObj->Update(physicsWorld->getRigidBody(4));
+  physicsWorld->small_island_leftObj->Update(physicsWorld->getRigidBody(5));
+  physicsWorld->small_island_rightObj->Update(physicsWorld->getRigidBody(6));
+  physicsWorld->thing_1Obj->Update(physicsWorld->getRigidBody(7));
+  physicsWorld->thing_2Obj->Update(physicsWorld->getRigidBody(8));
+  physicsWorld->thing_3Obj->Update(physicsWorld->getRigidBody(9));
+  physicsWorld->thing_4Obj->Update(physicsWorld->getRigidBody(10));
+  physicsWorld->upper_islandObj->Update(physicsWorld->getRigidBody(11));
+  physicsWorld->topIslandObj->Update(physicsWorld->getRigidBody(18));
+
+
+
+
+  physicsWorld->bumper->Update(physicsWorld->getRigidBody(19));
+  physicsWorld->bumper2->Update(physicsWorld->getRigidBody(20));
+  physicsWorld->bumper3->Update(physicsWorld->getRigidBody(21));
+  physicsWorld->spring->Update(physicsWorld->getRigidBody(22));
+  physicsWorld->stick->Update(physicsWorld->getRigidBody(23));
+
+  physicsWorld->stick->Animate();
+
+
+
+
+  //physicsWorld->capsule2->Animate();
 
 }
 
@@ -236,17 +365,65 @@ void Graphics::Render()
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->board->GetModel()));
   physicsWorld->board->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftPaddle->GetModel()));
-  physicsWorld->leftPaddle->Render();
-
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightPaddle->GetModel()));
-  physicsWorld->rightPaddle->Render();
-
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->ball->GetModel()));
   physicsWorld->ball->Render();
 
-  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper1->GetModel()));
-  physicsWorld->bumper1->Render();
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->cubeObject->GetModel()));
+  //physicsWorld->cubeObject->Render();
+
+  //glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
+  //physicsWorld->bumper->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->capsule->GetModel()));
+  physicsWorld->capsule->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->capsule2->GetModel()));
+  physicsWorld->capsule2->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bigIslandObj->GetModel()));
+  physicsWorld->bigIslandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftArmObj->GetModel()));
+  //physicsWorld->leftArmObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftIslandObj->GetModel()));
+  physicsWorld->leftIslandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightArmObj->GetModel()));
+  //physicsWorld->rightArmObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->small_island_leftObj->GetModel()));
+  physicsWorld->small_island_leftObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->small_island_rightObj->GetModel()));
+  physicsWorld->small_island_rightObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_1Obj->GetModel()));
+  physicsWorld->thing_1Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_2Obj->GetModel()));
+  physicsWorld->thing_2Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_3Obj->GetModel()));
+  physicsWorld->thing_3Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->thing_4Obj->GetModel()));
+  physicsWorld->thing_4Obj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->upper_islandObj->GetModel()));
+  physicsWorld->upper_islandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->board2->GetModel()));
+  physicsWorld->board2->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->backBoard->GetModel()));
+  physicsWorld->backBoard->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->topIslandObj->GetModel()));
+  physicsWorld->topIslandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
+  physicsWorld->bumper->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper2->GetModel()));
   physicsWorld->bumper2->Render();
@@ -254,12 +431,38 @@ void Graphics::Render()
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper3->GetModel()));
   physicsWorld->bumper3->Render();
 
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->spring->GetModel()));
+  physicsWorld->spring->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->stick->GetModel()));
+  physicsWorld->stick->Render();
+
+
+  /*
+
+
+
+
+
+  //glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftPaddle->GetModel()));
+  //physicsWorld->leftPaddle->Render();
+
+
+
+
+
+  /*
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightPaddle->GetModel()));
+  physicsWorld->rightPaddle->Render();*/
+
+
 
   // Light Stuff
   glUniform4fv(m_LightPosition, 1, glm::value_ptr(m_camera->GetView()));
-  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(1.0)));
-  glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(glm::vec3(0.5) ));
-  glUniform4fv(m_SpecularProduct, 1, glm::value_ptr(glm::vec4(1.0, 1.0, 1.0, 0.0)));
+  glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(light)));
+  //glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(glm::vec3(0.5) ));
+  glUniform4fv(m_SpecularProduct, 1, glm::value_ptr(glm::vec4(glm::vec3(light2), 0.0)));
 
 
   // Get any errors from OpenGL

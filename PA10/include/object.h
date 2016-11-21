@@ -17,11 +17,12 @@ class Object
     void SetVertices(btTriangleMesh *triMesh);
     void getTextures(std::string textureFile);
     void Update(btRigidBody* rigidBodyID);
+    
     void Render();
     glm::mat4 GetModel();
     void Move(float x, float y, float z, btRigidBody* rigidBodyID);
+    void Animate();
     void Scale(float size);
-    void TranslateBack();
 
 
   private:
