@@ -107,7 +107,7 @@ bool Physics::CreateWorld()
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
   // Set Gravity
-  dynamicsWorld->setGravity(btVector3(0, -9.81, 9.81));
+  dynamicsWorld->setGravity(btVector3(0, -15, 9.0));
 
   // check if the world exists
   if( dynamicsWorld == NULL)
@@ -143,7 +143,7 @@ void Physics::Pinball()
   btDefaultMotionState *leftArmMS = NULL;
   leftArmMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../pinball2/leftArm.obj", "../texture/rubyred.jpg", leftArmObj, objTriMesh[triIndex], leftArm, leftArmMS); // index = 2, table
+  CreateTableItem("../pinball2/bigIsland.obj", "../texture/blue.jpg", bigIslandObj, objTriMesh[triIndex], bigIsland, bigIslandMS); // index = 1, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
@@ -157,7 +157,7 @@ void Physics::Pinball()
   btDefaultMotionState *rightArmMS = NULL;
   rightArmMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../pinball2/rightArm.obj", "../texture/blue.jpg", rightArmObj, objTriMesh[triIndex], rightArm, rightArmMS); // index = 4, table
+  CreateTableItem("../pinball2/bottomLeftIsland.obj", "../texture/rubyred.jpg", leftIslandObj, objTriMesh[triIndex], leftIsland, leftIslandMS); // index = 3, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
@@ -282,27 +282,26 @@ void Physics::Pinball()
 
 
   const btVector3 btPivotA(-0.15f, 1.0f, -0.02f ); // right next to the door slightly outside
-	btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
+  btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
 
 
   //const btVector3 btPivotA( 0.0f, 0.0f, .0f ); // right next to the door slightly outside
 	//btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
 
-
+//
 	btHingeConstraint *joint = new btHingeConstraint( *rigidBody[15], btPivotA, btAxisA );
-
-	joint->setLimit(  -SIMD_PI  / 8 , SIMD_PI * 0.2f  );
+	joint->setLimit(  -SIMD_PI  * 0.05f , SIMD_PI * 0.1f  );
 
 
 	dynamicsWorld->addConstraint(joint);
 
 
-  const btVector3 btPivotB(0.15f, 1.0f, 0.05f ); // right next to the door slightly outside
-  btVector3 btAxisV( 0.0f, 1.0f, 0.0f );
+  const btVector3 btPivotB(0.0f, 1.0f, 0.0f ); // right next to the door slightly outside
+  btVector3 btAxisB( 0.0f, 1.0f, 0.0f );
 
-	btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[16], btPivotA, btAxisA );
+	btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[16], btPivotB, btAxisB );
 
-	joint2->setLimit( -SIMD_PI / 8, SIMD_PI * 0.2f);
+	joint2->setLimit( -SIMD_PI  * 0.05f , SIMD_PI * 0.1f );
 
 
 	 dynamicsWorld->addConstraint(joint2);
@@ -343,7 +342,7 @@ void Physics::CreateSphere()
 
   // Set Mass and inertia
   sphere->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, sphereMS, sphere, inertia);
+  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass , sphereMS, sphere, inertia);
 
 
   btRigidBody *temp = new btRigidBody(sphereRigidBodyCI); // ball
@@ -367,7 +366,7 @@ void Physics::CreateCube()
 
   // Create Rigid Bodys
   cube->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass*3, cubeMS, cube, inertia);
+  btRigidBody::btRigidBodyConstructionInfo cubeRigidBodyCI(mass, cubeMS, cube, inertia);
 
   // Add to World
   btRigidBody *temp = new btRigidBody(cubeRigidBodyCI); // cube
@@ -437,16 +436,16 @@ void Physics::CreateTableItem(std::string objectFile, std::string textureFile, O
 void Physics::CreatePaddle(const btVector3 &position)
 {
   // Create capsule object
-  capsule->CreateObject( "../models/leftPaddle.obj", "../models/steel.jpg", NULL);
-  capsuleShape = new btBoxShape(btVector3(0.2,0.2,0.2));
+  capsule->CreateObject( "../pinball2/leftPaddle.obj", "../texture/silver.jpg", NULL);
+  capsuleShape = new btBoxShape(btVector3(1.2, 0.2, 0.3));
 
   // Set Motion State
   btDefaultMotionState *capsuleMS = NULL;
-  capsuleMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), position));
+  capsuleMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-1.5,0.2,7.3)));
 
   // Set Rigid Body
   capsuleShape->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(mass , capsuleMS, capsuleShape, inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(10 , capsuleMS, capsuleShape, inertia);
 
   // Add to world
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI); // left capsule
@@ -462,16 +461,16 @@ void Physics::CreatePaddle(const btVector3 &position)
 void Physics::CreatePaddle2(const btVector3 &position)
 {
   // Create capsule object
-  capsule2->CreateObject( "../models/rightPaddle.obj", "../models/steel.jpg", NULL);
-  capsuleShape2 = new btBoxShape(btVector3(0.2,0.2,0.2));
+  capsule2->CreateObject( "../pinball2/rightPaddle.obj", "../texture/silver.jpg", NULL);
+  capsuleShape2 = new btBoxShape(btVector3(1.2,0.2,0.3));
 
   // Set Motion State
   btDefaultMotionState *capsuleMS2 = NULL;
-  capsuleMS2 = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), position));
+  capsuleMS2 = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(1.6,0.2,7.3)));
 
   // Set Rigid Body
   capsuleShape2->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(mass, capsuleMS2, capsuleShape2, inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(10, capsuleMS2, capsuleShape2, inertia);
 
   // Add to world
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI2); // left capsule
@@ -510,7 +509,7 @@ void Physics::CreateGlass()
   glass = new btStaticPlaneShape(btVector3(0.0, 0.0, 0.0), 0);
   btDefaultMotionState *glassMS = NULL;
   // Motion State
-  glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 1.5, 0)));
+glassMS = new btDefaultMotionState(btTransform(btQuaternion(0, 1, 0, 1), btVector3(0, 0.4, 0)));
   // rigidBody
   btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, glassMS, glass, inertia);
 

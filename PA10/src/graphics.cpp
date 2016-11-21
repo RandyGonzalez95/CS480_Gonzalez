@@ -187,7 +187,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   {
     physicsWorld->getRigidBody(13)->clearForces();
 
-    physicsWorld->getRigidBody(13)->applyForce(btVector3(0,0,-10000),btVector3(-5,0,-8));
+    physicsWorld->getRigidBody(13)->applyForce(btVector3(0,0,-10000),btVector3(0,0,0));
 
     codes[4] = false;
   }
@@ -200,7 +200,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[7]) // left paddle
   {
 
-    physicsWorld->getRigidBody(15)->setAngularVelocity(btVector3(0.0f, 300.0f, 0.0f));
+    physicsWorld->getRigidBody(15)->setAngularVelocity(btVector3(0.0f, 50.0f, 0.0f));
 
 
     codes[7] = false;
@@ -229,10 +229,9 @@ void Graphics::Update(unsigned int dt, bool codes[])
   //physicsWorld->bumper->Update(physicsWorld->getRigidBody(15));
 
   physicsWorld->capsule->Update(physicsWorld->getRigidBody(15));
-  physicsWorld->capsule->Scale(0.3);
-  //physicsWorld->capsule->Animate();
+//  physicsWorld->capsule->Scale(0.3);
+//  physicsWorld->capsule->Animate();
   physicsWorld->capsule2->Update(physicsWorld->getRigidBody(16));
-  physicsWorld->capsule2->Scale(0.3);
 
 
   physicsWorld->bigIslandObj->Update(physicsWorld->getRigidBody(1));
@@ -306,13 +305,13 @@ void Graphics::Render()
   physicsWorld->bigIslandObj->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftArmObj->GetModel()));
-  physicsWorld->leftArmObj->Render();
+  //physicsWorld->leftArmObj->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->leftIslandObj->GetModel()));
   physicsWorld->leftIslandObj->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->rightArmObj->GetModel()));
-  physicsWorld->rightArmObj->Render();
+  //physicsWorld->rightArmObj->Render();
 
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->small_island_leftObj->GetModel()));
   physicsWorld->small_island_leftObj->Render();

@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   textureFile = argv[2];*/
 
   // Start an engine and run it then cleanup after
-  Engine *engine = new Engine("Pinball", 1024, 800);
+  Engine *engine = new Engine("Pinball", 1024, 650);
   if(!engine->Initialize())// pass object through
   {
     printf("The engine failed to start.\n");
