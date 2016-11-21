@@ -159,33 +159,34 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[0])
   {
 
-    z = -1000;
+    z = -500;
     x = 0;
 
     codes[0] = false;
   }
   if(codes[1])
   {
-    x = -1000;
+    x = -500;
     z = 0;
     codes[1] = false;
   }
   if(codes[2])
   {
-    z = 1000;
+    z = 500;
     x = 0;
     codes[2] = false;
   }
   if(codes[3])
   {
-    x = 1000;
+    x = 500;
     z = 0;
     codes[3] = false;
   }
   if(codes[4])
   {
-    physicsWorld->getRigidBody(2)->clearForces();
-    physicsWorld->getRigidBody(2)->applyForce(btVector3(0,0,1000),btVector3(-5,0,-8));
+    physicsWorld->getRigidBody(13)->clearForces();
+
+    physicsWorld->getRigidBody(13)->applyForce(btVector3(0,0,-10000),btVector3(-5,0,-8));
 
     codes[4] = false;
   }
@@ -198,7 +199,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   if(codes[7]) // left paddle
   {
 
-    physicsWorld->getRigidBody(15)->setAngularVelocity(btVector3(0.0f, 100.0f, 0.0f));
+    physicsWorld->getRigidBody(15)->setAngularVelocity(btVector3(0.0f, 300.0f, 0.0f));
 
 
     codes[7] = false;
@@ -217,7 +218,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
 
   physicsWorld->ball->Update(physicsWorld->getRigidBody(13));
-  physicsWorld->ball->Scale(0.5);
+  physicsWorld->ball->Scale(0.2);
 
   physicsWorld->cubeObject->Update(physicsWorld->getRigidBody(14));
   physicsWorld->cubeObject->Scale(0.2);
@@ -229,6 +230,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   physicsWorld->capsule->Scale(0.3);
   //physicsWorld->capsule->Animate();
   physicsWorld->capsule2->Update(physicsWorld->getRigidBody(16));
+  physicsWorld->capsule2->Scale(0.3);
 
 
   physicsWorld->bigIslandObj->Update(physicsWorld->getRigidBody(1));

@@ -196,12 +196,12 @@ void Physics::Pinball()
 
   CreateTableItem("../FinalModels/upper_island.obj", "../models/image.jpg", upper_islandObj, objTriMesh[triIndex], upper_island, upper_islandMS); // index = 11, table
 
-  CreateGlass(); // index = 12; glass
+  CreateGlass(); // index = 12; glassphysicsWorld->capsule->Scale(0.3);
   CreateSphere(); // index = 13;, ball
   CreateCube(); // index = 14; cube
   //CreateBumper(btVector3(0,0,12)); // index = 15; bumper
-  CreatePaddle(btVector3(0, 0.2, 0)); // index = 16, right paddle
-  CreatePaddle2(btVector3(0.5, 1, -3)); // index = 17, left paddle
+  CreatePaddle(btVector3(-1, 0.2, 8)); // index = 16, right paddle
+  CreatePaddle2(btVector3(1.5, 0.2, 7.8)); // index = 17, left paddle
 
 
 
@@ -220,8 +220,8 @@ void Physics::Pinball()
   btVector3 btAxisB( 0.0f, 1.0f, 0.0f );*/
 
 
-  const btVector3 btPivotA(0.1f, 1.0f, 0.0f ); // right next to the door slightly outside
-  		btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
+  const btVector3 btPivotA(-0.9f, 1.0f, -0.03f ); // right next to the door slightly outside
+	btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
 
 
   //const btVector3 btPivotA( 0.0f, 0.0f, .0f ); // right next to the door slightly outside
@@ -230,20 +230,21 @@ void Physics::Pinball()
 
 	btHingeConstraint *joint = new btHingeConstraint( *rigidBody[15], btPivotA, btAxisA );
 
-	joint->setLimit(  -SIMD_PI/8 , SIMD_PI*.2f  );
+	joint->setLimit(  -SIMD_PI  / 4 , SIMD_PI * 0.2f  );
 
 
 	dynamicsWorld->addConstraint(joint);
 
 
+  const btVector3 btPivotB(0.15f, 1.0f, 0.05f ); // right next to the door slightly outside
+  btVector3 btAxisV( 0.0f, 1.0f, 0.0f );
+
+	btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[16], btPivotA, btAxisA );
+
+	joint2->setLimit( -SIMD_PI / 8, SIMD_PI * 0.2f);
 
 
-	//btHingeConstraint *joint2 = new btHingeConstraint( *rigidBody[16], btPivotA, btAxisA );
-
-	//joint2->setLimit( -SIMD_PI / 8, SIMD_PI * 0.2f);
-
-
-	//dynamicsWorld->addConstraint(joint2);
+	 dynamicsWorld->addConstraint(joint2);
 
 
   /*btHingeConstraint *joint = new btHingeConstraint( *rigidBody[0],
@@ -269,14 +270,14 @@ table
 
 void Physics::CreateSphere()
 {
-  ball->CreateObject("../FinalModels/sphere.obj", "../models/steel.jpg", NULL);
+  ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
 
   // sphere
-  sphere = new btSphereShape(0.5);
+  sphere = new btSphereShape(0.2);
 
   // Create Motion StateleftPaddle
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(4.4, 0.2, 8.5)));
 
   // Set Mass and inertia
   sphere->calculateLocalInertia(mass,inertia);
@@ -336,7 +337,7 @@ void Physics::CreateTable()
   // Create RigidBody
   btRigidBody::btRigidBodyConstructionInfo tableRigidBodyCI(0, tableMS, table, inertia);
 
-  // Add to World
+  // Add to World 0.2f
   btRigidBody *temp = new btRigidBody(tableRigidBodyCI); // table
   rigidBody.push_back(temp);
 
@@ -374,7 +375,7 @@ void Physics::CreateTableItem(std::string objectFile, std::string textureFile, O
 void Physics::CreatePaddle(const btVector3 &position)
 {
   // Create capsule object
-  capsule->CreateObject( "../models/test.obj", "../models/steel.jpg", NULL);
+  capsule->CreateObject( "../models/leftPaddle.obj", "../models/steel.jpg", NULL);
   capsuleShape = new btBoxShape(btVector3(0.2,0.2,0.2));
 
   // Set Motion State
@@ -383,7 +384,7 @@ void Physics::CreatePaddle(const btVector3 &position)
 
   // Set Rigid Body
   capsuleShape->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(mass * 10, capsuleMS, capsuleShape, inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI(mass , capsuleMS, capsuleShape, inertia);
 
   // Add to world
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI); // left capsule
@@ -399,7 +400,7 @@ void Physics::CreatePaddle(const btVector3 &position)
 void Physics::CreatePaddle2(const btVector3 &position)
 {
   // Create capsule object
-  capsule2->CreateObject( "../FinalModels/rightpaddle.obj", "../models/steel.jpg", NULL);
+  capsule2->CreateObject( "../models/rightPaddle.obj", "../models/steel.jpg", NULL);
   capsuleShape2 = new btBoxShape(btVector3(0.2,0.2,0.2));
 
   // Set Motion State
@@ -408,7 +409,7 @@ void Physics::CreatePaddle2(const btVector3 &position)
 
   // Set Rigid Body
   capsuleShape2->calculateLocalInertia(mass,inertia);
-  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(0, capsuleMS2, capsuleShape2, inertia);
+  btRigidBody::btRigidBodyConstructionInfo capsuleRigidBodyCI2(mass, capsuleMS2, capsuleShape2, inertia);
 
   // Add to world
   btRigidBody *temp = new btRigidBody(capsuleRigidBodyCI2); // left capsule
