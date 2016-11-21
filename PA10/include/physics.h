@@ -35,7 +35,7 @@ class Physics
   private:
 
     // Objects
-    Object *board, *ball, *bumper, *cubeObject, *leftPaddle, *rightPaddle, *capsule, *capsule2,
+    Object *board, *board2, *topIslandObj, *backBoard, *ball, *bumper, *bumper2, *bumper3, *spring, *stick, *cubeObject, *leftPaddle, *rightPaddle, *capsule, *capsule2,
     *bigIslandObj, *leftArmObj, *leftIslandObj, *rightArmObj, *small_island_leftObj, *small_island_rightObj, *thing_1Obj, *thing_2Obj, *thing_3Obj, *thing_4Obj, *upper_islandObj;
 
     int index, triIndex = 0; // to keep trach which rigidBody we are adding to dynamic world
@@ -55,9 +55,13 @@ class Physics
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Collision Shapes
-    btCollisionShape *table, *glass, *cylinder, *sphere, *left, *right, *cube, *capsuleShape, *capsuleShape2,
+    btCollisionShape *table, *tableBot, *topIsland, *glass, *cylinder, *sphere, *left, *right, *cube, *capsuleShape, *capsuleShape2,
         *bigIsland, *leftArm, *leftIsland, *rightArm, *small_island_left, *small_island_right, *thing_1, *thing_2, *thing_3, *thing_4, *upper_island;
-    btTriangleMesh *objTriMesh[15];
+
+
+    btCollisionShape *btBumper, *btBumper2, *btBumper3, *btSpring, *btStick;
+
+    btTriangleMesh *objTriMesh[25];
 
     std::vector<btRigidBody*> rigidBody;
 };

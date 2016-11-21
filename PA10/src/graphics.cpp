@@ -48,6 +48,7 @@ bool Graphics::Initialize(int width, int height, bool flag)
   // Create board
   physicsWorld = new Physics();
 
+
   // Set up the shaders
   m_shader = new Shader();
   if(!m_shader->Initialize())
@@ -216,6 +217,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   // Update all Objects
   physicsWorld->board->Update(physicsWorld->getRigidBody(0));
+  physicsWorld->board2->Update(physicsWorld->getRigidBody(17));
 
   physicsWorld->ball->Update(physicsWorld->getRigidBody(13));
   physicsWorld->ball->Scale(0.2);
@@ -244,7 +246,16 @@ void Graphics::Update(unsigned int dt, bool codes[])
   physicsWorld->thing_3Obj->Update(physicsWorld->getRigidBody(9));
   physicsWorld->thing_4Obj->Update(physicsWorld->getRigidBody(10));
   physicsWorld->upper_islandObj->Update(physicsWorld->getRigidBody(11));
+  physicsWorld->topIslandObj->Update(physicsWorld->getRigidBody(18));
 
+
+
+
+//  physicsWorld->bumper->Update(physicsWorld->getRigidBody(19));
+//  physicsWorld->bumper2->Update(physicsWorld->getRigidBody(20));
+  //physicsWorld->bumper3->Update(physicsWorld->getRigidBody(21));
+  //physicsWorld->spring->Update(physicsWorld->getRigidBody(22));
+  //physicsWorld->stick->Update(physicsWorld->getRigidBody(23));
 
 
 
@@ -324,6 +335,29 @@ void Graphics::Render()
   glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->upper_islandObj->GetModel()));
   physicsWorld->upper_islandObj->Render();
 
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->board2->GetModel()));
+  physicsWorld->board2->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->backBoard->GetModel()));
+  physicsWorld->backBoard->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->topIslandObj->GetModel()));
+  physicsWorld->topIslandObj->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper->GetModel()));
+  physicsWorld->bumper->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper2->GetModel()));
+  physicsWorld->bumper2->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->bumper3->GetModel()));
+  physicsWorld->bumper3->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->spring->GetModel()));
+  physicsWorld->spring->Render();
+
+  glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(physicsWorld->stick->GetModel()));
+  physicsWorld->stick->Render();
 
 
   /*

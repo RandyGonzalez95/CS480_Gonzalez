@@ -39,6 +39,17 @@ Physics::Physics()
   thing_3Obj = new Object();
   thing_4Obj = new Object();
   upper_islandObj = new Object();
+  board2 = new Object();
+  backBoard = new Object();
+  topIslandObj = new Object();
+
+  bumper = new Object();
+  bumper2 = new Object();
+  bumper3 = new Object();
+  spring = new Object();
+  stick = new Object();
+
+
   Pinball();
 
 }
@@ -108,6 +119,7 @@ bool Physics::CreateWorld()
 
 void Physics::Pinball()
 {
+  backBoard->CreateObject( "../pinball/backBoard.obj", "../texture/backboard.jpg", NULL);
   // set mass
 //  btScalar mass(10);
   // inertia
@@ -117,84 +129,84 @@ void Physics::Pinball()
   btDefaultMotionState *tableMS = NULL;
   tableMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/table.obj", "../models/image.jpg", board, objTriMesh[triIndex], table, tableMS); // index = 0, table
+  CreateTableItem("../pinball2/tableTop.obj", "../texture/grass.jpg", board, objTriMesh[triIndex], table, tableMS); // index = 0, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *bigIslandMS = NULL;
   bigIslandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/bigIsland.obj", "../models/image.jpg", bigIslandObj, objTriMesh[triIndex], bigIsland, bigIslandMS); // index = 1, table
+  CreateTableItem("../pinball2/bigIsland.obj", "../texture/blue.jpg", bigIslandObj, objTriMesh[triIndex], bigIsland, bigIslandMS); // index = 1, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *leftArmMS = NULL;
   leftArmMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/leftArm.obj", "../models/image.jpg", leftArmObj, objTriMesh[triIndex], leftArm, leftArmMS); // index = 2, table
+  CreateTableItem("../pinball2/leftArm.obj", "../texture/rubyred.jpg", leftArmObj, objTriMesh[triIndex], leftArm, leftArmMS); // index = 2, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *leftIslandMS = NULL;
   leftIslandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/leftIsland.obj", "../models/image.jpg", leftIslandObj, objTriMesh[triIndex], leftIsland, leftIslandMS); // index = 3, table
+  CreateTableItem("../pinball2/bottomLeftIsland.obj", "../texture/rubyred.jpg", leftIslandObj, objTriMesh[triIndex], leftIsland, leftIslandMS); // index = 3, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *rightArmMS = NULL;
   rightArmMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/rightArm.obj", "../models/image.jpg", rightArmObj, objTriMesh[triIndex], rightArm, rightArmMS); // index = 4, table
+  CreateTableItem("../pinball2/rightArm.obj", "../texture/blue.jpg", rightArmObj, objTriMesh[triIndex], rightArm, rightArmMS); // index = 4, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *small_island_leftMS = NULL;
   small_island_leftMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/small_island_left.obj", "../models/image.jpg", small_island_leftObj, objTriMesh[triIndex], small_island_left, small_island_leftMS); // index = 5, table
+  CreateTableItem("../pinball2/small_Island.obj", "../texture/blue.jpg", small_island_leftObj, objTriMesh[triIndex], small_island_left, small_island_leftMS); // index = 5, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *small_island_rightMS = NULL;
   small_island_rightMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/small_island_right.obj", "../models/image.jpg", small_island_rightObj, objTriMesh[triIndex], small_island_right, small_island_rightMS); // index = 6, table
+  CreateTableItem("../pinball2/bottomRightIsland.obj", "../texture/blue.jpg", small_island_rightObj, objTriMesh[triIndex], small_island_right, small_island_rightMS); // index = 6, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *thing1MS = NULL;
   thing1MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/thing_1.obj", "../models/image.jpg", thing_1Obj, objTriMesh[triIndex], thing_1, thing1MS); // index = 7, table
+  CreateTableItem("../pinball2/thing_1.obj", "../texture/rubyred.jpg", thing_1Obj, objTriMesh[triIndex], thing_1, thing1MS); // index = 7, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *thing2MS = NULL;
   thing2MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/thing_2.obj", "../models/image.jpg", thing_2Obj, objTriMesh[triIndex], thing_2, thing2MS); // index = 8, table
+  CreateTableItem("../pinball2/thing_2.obj", "../texture/rubyred.jpg", thing_2Obj, objTriMesh[triIndex], thing_2, thing2MS); // index = 8, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *thing3MS = NULL;
   thing3MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/thing_3.obj", "../models/image.jpg", thing_3Obj, objTriMesh[triIndex], thing_3, thing3MS); // index = 9, table
+  CreateTableItem("../pinball2/thing_3.obj", "../texture/blue.jpg", thing_3Obj, objTriMesh[triIndex], thing_3, thing3MS); // index = 9, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *thing4MS = NULL;
   thing4MS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/thing_4.obj", "../models/image.jpg", thing_4Obj, objTriMesh[triIndex], thing_4, thing4MS); // index = 10, table
+  CreateTableItem("../pinball2/thing_4.obj", "../texture/blue.jpg", thing_4Obj, objTriMesh[triIndex], thing_4, thing4MS); // index = 10, table
 
   objTriMesh[triIndex] = new btTriangleMesh();
 
   btDefaultMotionState *upper_islandMS = NULL;
   upper_islandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 
-  CreateTableItem("../FinalModels/upper_island.obj", "../models/image.jpg", upper_islandObj, objTriMesh[triIndex], upper_island, upper_islandMS); // index = 11, table
+  CreateTableItem("../pinball2/topRightIsland.obj", "../texture/blue.jpg", upper_islandObj, objTriMesh[triIndex], upper_island, upper_islandMS); // index = 11, table
 
   CreateGlass(); // index = 12; glassphysicsWorld->capsule->Scale(0.3);
   CreateSphere(); // index = 13;, ball
@@ -204,6 +216,55 @@ void Physics::Pinball()
   CreatePaddle2(btVector3(1.5, 0.2, 7.8)); // index = 17, left paddle
 
 
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *tableBotMS = NULL;
+  tableBotMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball/tableBottom.obj", "../texture/tableBottom.png", board2, objTriMesh[triIndex], tableBot, tableBotMS); // index = 18, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *topIslandMS = NULL;
+  topIslandMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball2/topLeftIsland.obj", "../texture/rubyred.jpg", topIslandObj, objTriMesh[triIndex], topIsland, topIslandMS); // index = 19, table
+
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *bumperMS = NULL;
+  bumperMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball2/leftBumper.obj", "../texture/bumper.jpg", bumper, objTriMesh[triIndex], btBumper, bumperMS); // index = 20, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *bumperMS2 = NULL;
+  bumperMS2 = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball2/middleBumper.obj", "../texture/bumper.jpg", bumper2, objTriMesh[triIndex], btBumper2, bumperMS2); // index = 21, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *bumperMS3 = NULL;
+  bumperMS3 = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball2/rightBumper.obj", "../texture/bumper.jpg", bumper3, objTriMesh[triIndex], btBumper3, bumperMS3); // index = 22, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *springMS = NULL;
+  springMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball2/splungerSpring.obj", "../texture/silver.jpg", spring, objTriMesh[triIndex], btSpring, springMS); // index = 23, table
+
+  objTriMesh[triIndex] = new btTriangleMesh();
+
+  btDefaultMotionState *stickMS = NULL;
+  stickMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+
+  CreateTableItem("../pinball2/splungerStick.obj", "../texture/black.jpg", stick, objTriMesh[triIndex], btStick, stickMS); // index = 24, table
 
   // hinge constraint
   rigidBody[5]->setDamping( 0.05f, 0.85f );
@@ -220,7 +281,7 @@ void Physics::Pinball()
   btVector3 btAxisB( 0.0f, 1.0f, 0.0f );*/
 
 
-  const btVector3 btPivotA(-0.9f, 1.0f, -0.03f ); // right next to the door slightly outside
+  const btVector3 btPivotA(-0.15f, 1.0f, -0.02f ); // right next to the door slightly outside
 	btVector3 btAxisA( 0.0f, 1.0f, 0.0f );  // set mass
 
 
@@ -230,7 +291,7 @@ void Physics::Pinball()
 
 	btHingeConstraint *joint = new btHingeConstraint( *rigidBody[15], btPivotA, btAxisA );
 
-	joint->setLimit(  -SIMD_PI  / 4 , SIMD_PI * 0.2f  );
+	joint->setLimit(  -SIMD_PI  / 8 , SIMD_PI * 0.2f  );
 
 
 	dynamicsWorld->addConstraint(joint);
@@ -270,14 +331,15 @@ table
 
 void Physics::CreateSphere()
 {
-  ball->CreateObject("../models/sphere.obj", "../models/steel.jpg", NULL);
+  ball->CreateObject("../models/sphere.obj", "../texture/masterBall.jpg", NULL);
 
   // sphere
   sphere = new btSphereShape(0.2);
 
   // Create Motion StateleftPaddle
   btDefaultMotionState *sphereMS = NULL;
-  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(4.4, 0.2, 8.5)));
+  sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(4.4, 0.2, 7.5)));
+  //sphereMS = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(-2.0, 0.2, 5.0)));
 
   // Set Mass and inertia
   sphere->calculateLocalInertia(mass,inertia);
