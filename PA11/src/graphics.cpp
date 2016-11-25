@@ -184,7 +184,7 @@ void Graphics::Render()
   // Render the all objects on Pool Table
   for(int i = 0; i < numItems; i++)
   {
-    glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr( physicsWorld->objects[i]->GetModel()));
+    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr( physicsWorld->objects[i]->GetModel()));
     physicsWorld->objects[i]->Render();
 
   }
