@@ -21,6 +21,9 @@ class Physics
     void CreateSphere();
     void CreateCube();
     void CreateTable();
+    void CreateTableItem();
+    int GetNumItems();
+
 
     friend class Graphics;
 
@@ -46,7 +49,17 @@ class Physics
     // Physical World
     btDiscreteDynamicsWorld *dynamicsWorld;
 
+    // number of items
+    int numItems;
+
+    // Objects
+    std::vector<Object*> objects;
+
     // Collision Shapes
+    std::vector<btCollisionShape*> shapes;
+
+    // bt Motion states
+    std::vector<btDefaultMotionState*> shapeMS;
 
 
     btTriangleMesh *objTriMesh[25];

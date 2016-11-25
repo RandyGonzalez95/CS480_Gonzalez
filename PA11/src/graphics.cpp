@@ -2,7 +2,7 @@
 
 Graphics::Graphics()
 {
-  ballCount = 3;
+  numItems = 0;
 }
 
 Graphics::~Graphics()
@@ -48,7 +48,9 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
   // Create board
   physicsWorld = new Physics();
+  numItems = physicsWorld->GetNumItems();
 
+  std:: cout<< "number of items to render: "<< numItems<<std::endl;
 
   // Set up the shaders
   m_shader = new Shader();
@@ -158,7 +160,9 @@ void Graphics::Update(unsigned int dt, bool codes[])
 {
   simTime = 0.0083;
 
-  //physicsWorld->getWorld()->stepSimulation(simTime, 10);
+  physicsWorld->getWorld()->stepSimulation(simTime, 10);
+
+  physicsWorld->objects[0]->Update(physicsWorld->getRigidBody(0));
 
 
 }
@@ -177,7 +181,14 @@ void Graphics::Render()
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
 
-  // Render the objects
+  // Render the all objects on Pool Table
+  for(int i = 0; i < numItems; i++)
+  {
+    glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr( physicsWorld->objects[i]->GetModel()));
+    physicsWorld->objects[i]->Render();
+
+  }
+
 
   // Light Stuff
   glUniform4fv(m_LightPosition, 1, glm::value_ptr(m_camera->GetView()));

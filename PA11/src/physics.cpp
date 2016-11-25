@@ -4,6 +4,7 @@
 Physics::Physics()
 {
   index = 0;
+  numItems = 0;
   mass = btScalar(10);
   inertia = btVector3(1,1,1);
 
@@ -32,6 +33,8 @@ Physics::~Physics()
   delete collisionConfiguration;
   delete dispatcher;
   delete solver;
+  objects.clear();
+  shapes.clear();
   rigidBody.clear();
   //delete dynamicsWorld;
 
@@ -83,11 +86,41 @@ bool Physics::CreateWorld()
 
 void Physics::Pool()
 {
+  CreateSphere();
+
 
 }
 
 void Physics::CreateSphere()
 {
+  // Create Object
+  Object *temp = new Object();
+  temp->CreateObject("../models/sphere.obj", "../models/image.jpg", NULL);
+  objects.push_back(temp);
+
+  // collision shape
+  btCollisionShape *btTemp;
+  btTemp = new btSphereShape(1.0);
+  btTemp->calculateLocalInertia(mass, inertia);
+  shapes.push_back(btTemp);
+
+  // Motion State
+  btDefaultMotionState *tempMS;
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 0 ,0)));
+  shapeMS.push_back(tempMS);
+
+  // Create RigidBody
+  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
+  btRigidBody *rbTemp = new btRigidBody(sphereRigidBodyCI);
+  rigidBody.push_back(rbTemp);
+
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+
+
+  // Add to world
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+  index++;
+  numItems++;
 
 }
 
@@ -102,12 +135,23 @@ void Physics::CreateTable()
 
 }
 
+void Physics::CreateTableItem()
+{
+
+
+}
+
 btDiscreteDynamicsWorld* Physics::getWorld()
 {
   return dynamicsWorld;
 }
 
-btRigidBody* Physics::getRigidBody(int index)
+btRigidBody* Physics::getRigidBody(int i)
 {
-  return rigidBody[index];
+  return rigidBody[i];
+}
+
+int Physics::GetNumItems()
+{
+  return numItems;
 }

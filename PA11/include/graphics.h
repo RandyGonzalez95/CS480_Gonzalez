@@ -41,10 +41,12 @@ class Graphics
     GLint m_SpecularProduct;
     GLfloat m_shininess;
 
+    // number of items to render
+    int numItems;
     float x = 0, y = 0, z = 0;
 
     float simTime = 0;
-    int ballCount;
+
 
     float light = 1.0f;
     float light2 = 0.5f;
