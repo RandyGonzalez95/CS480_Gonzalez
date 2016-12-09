@@ -75,7 +75,7 @@ bool Physics::CreateWorld()
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
   // Set Gravity
-  dynamicsWorld->setGravity(btVector3(0, -15, 9.0));
+  dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
 
   // check if the world exists
   if( dynamicsWorld == NULL)
@@ -87,31 +87,33 @@ bool Physics::CreateWorld()
 
 void Physics::Pool()
 {
-  CreateSphere("../models/image.jpg");
+    CreateSphere("../models/cue.obj", "../models/image.jpg"); // cue ball index = 0;
 
-  CreateTableItem("../models/base.obj", "../models/water.jpg");
-  CreateTableItem("../models/legs.obj", "../models/water.jpg");
-  CreateTableItem("../models/table.obj", "../models/water.jpg");
+  for(int i = 1; i < 16 ; i++)
+  {
+      CreateSphere("../models/ball" + std::to_string(i) + ".obj", "../models/image.jpg"); // 15
+  }
 
 
+  CreateTable(); // All table items
 }
 
-void Physics::CreateSphere(std::string texture)
+void Physics::CreateSphere(std::string objFile, std::string texture)
 {
   // Create Object
   Object *temp = new Object();
-  temp->CreateObject("../models/sphere.obj", texture, NULL);
+  temp->CreateObject(objFile, texture, NULL);
   objects.push_back(temp);
 
   // collision shape
   btCollisionShape *btTemp;
-  btTemp = new btSphereShape(1.0);
+  btTemp = new btSphereShape(0.015);
   btTemp->calculateLocalInertia(mass, inertia);
   shapes.push_back(btTemp);
 
   // Motion State
   btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 0 ,0)));
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 1 ,0)));
   shapeMS.push_back(tempMS);
 
   // Create RigidBody
@@ -139,8 +141,10 @@ void Physics::CreateCube()
 
 void Physics::CreateTable()
 {
-
-
+  CreateTableItem("../models/frame.obj", "../models/images.jpg");
+  CreateTableItem("../models/legs.obj", "../models/steel.jpg");
+  CreateTableItem("../models/table.obj", "../models/pool.JPG");
+  CreateTableItem("../models/ledges.obj", "../models/ledges.png");
 }
 
 void Physics::CreateTableItem(std::string objFile, std::string texture)
@@ -165,12 +169,12 @@ void Physics::CreateTableItem(std::string objFile, std::string texture)
   shapeMS.push_back(tempMS);
 
   // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo tableItemsRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
+  btRigidBody::btRigidBodyConstructionInfo tableItemsRigidBodyCI(0, shapeMS[index], shapes[index], inertia);
   btRigidBody *rbTemp = new btRigidBody(tableItemsRigidBodyCI);
   rigidBody.push_back(rbTemp);
 
   // Set Active
-  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+  //rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
 
   // Add to world
   dynamicsWorld->addRigidBody(rigidBody[index]);

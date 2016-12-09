@@ -162,7 +162,8 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
-  physicsWorld->objects[0]->Update(physicsWorld->getRigidBody(0));
+  for(int i = 0; i < numItems; i++)
+  physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
 
 
 }
