@@ -7,6 +7,7 @@ Physics::Physics()
   numItems = 0;
   mass = btScalar(10);
   inertia = btVector3(1,1,1);
+  triIndex = 0;
 
   if(!Initialize())
   {
@@ -86,16 +87,16 @@ bool Physics::CreateWorld()
 
 void Physics::Pool()
 {
-  CreateSphere();
+  CreateSphere("../models/image.jpg");
 
 
 }
 
-void Physics::CreateSphere()
+void Physics::CreateSphere(std::string texture)
 {
   // Create Object
   Object *temp = new Object();
-  temp->CreateObject("../models/sphere.obj", "../models/image.jpg", NULL);
+  temp->CreateObject("../models/sphere.obj", texture, NULL);
   objects.push_back(temp);
 
   // collision shape
@@ -114,11 +115,14 @@ void Physics::CreateSphere()
   btRigidBody *rbTemp = new btRigidBody(sphereRigidBodyCI);
   rigidBody.push_back(rbTemp);
 
+  // Set Active
   rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
 
 
   // Add to world
   dynamicsWorld->addRigidBody(rigidBody[index]);
+
+  // update indeces
   index++;
   numItems++;
 
@@ -135,10 +139,38 @@ void Physics::CreateTable()
 
 }
 
-void Physics::CreateTableItem()
+void Physics::CreateTableItem(std::string objFile, std::string texture)
 {
+  // Create Object with texture
+  Object *temp = new Object();
+  temp->CreateObject(objFile, texture, objTriMesh[triIndex]);
 
+  // Collision Shape
+  btCollisionShape *btTemp;
+  btTemp = new btBvhTriangleMeshShape(objTriMesh[triIndex], true);
+  btTemp->calculateLocalInertia(mass, inertia);
+  shapes.push_back(btTemp);
 
+  // Motion State
+  btDefaultMotionState *tempMS;
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 0 ,0)));
+  shapeMS.push_back(tempMS);
+
+  // Create RigidBody
+  btRigidBody::btRigidBodyConstructionInfo tableItemsRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
+  btRigidBody *rbTemp = new btRigidBody(tableItemsRigidBodyCI);
+  rigidBody.push_back(rbTemp);
+
+  // Set Active
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+
+  // Add to world
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+
+  // update indeces
+  triIndex++;
+  index++;
+  numItems++;
 }
 
 btDiscreteDynamicsWorld* Physics::getWorld()

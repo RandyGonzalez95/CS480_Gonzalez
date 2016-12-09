@@ -18,10 +18,10 @@ class Physics
     void Pool();
     btDiscreteDynamicsWorld *getWorld();
     btRigidBody* getRigidBody(int index);
-    void CreateSphere();
+    void CreateSphere(std::string texture);
     void CreateCube();
     void CreateTable();
-    void CreateTableItem();
+    void CreateTableItem(std::string objFile, std::string texture)
     int GetNumItems();
 
 
@@ -63,6 +63,7 @@ class Physics
 
 
     btTriangleMesh *objTriMesh[25];
+    int triIndex;
 
     std::vector<btRigidBody*> rigidBody;
 };
