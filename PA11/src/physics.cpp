@@ -89,6 +89,10 @@ void Physics::Pool()
 {
   CreateSphere("../models/image.jpg");
 
+  CreateTableItem("../models/base.obj", "../models/water.jpg");
+  CreateTableItem("../models/legs.obj", "../models/water.jpg");
+  CreateTableItem("../models/table.obj", "../models/water.jpg");
+
 
 }
 
@@ -143,11 +147,15 @@ void Physics::CreateTableItem(std::string objFile, std::string texture)
 {
   // Create Object with texture
   Object *temp = new Object();
+  objTriMesh[triIndex] = new btTriangleMesh();
   temp->CreateObject(objFile, texture, objTriMesh[triIndex]);
+  objects.push_back(temp);
 
   // Collision Shape
   btCollisionShape *btTemp;
   btTemp = new btBvhTriangleMeshShape(objTriMesh[triIndex], true);
+
+
   btTemp->calculateLocalInertia(mass, inertia);
   shapes.push_back(btTemp);
 

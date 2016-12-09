@@ -21,7 +21,7 @@ class Physics
     void CreateSphere(std::string texture);
     void CreateCube();
     void CreateTable();
-    void CreateTableItem(std::string objFile, std::string texture)
+    void CreateTableItem(std::string objFile, std::string texture);
     int GetNumItems();
 
 
@@ -33,7 +33,7 @@ class Physics
 
 
 
-    int index, triIndex = 0; // to keep trach which rigidBody we are adding to dynamic world
+    int index, triIndex; // to keep track which rigidBody we are adding to dynamic world
 
     // set mass
     btScalar mass;
@@ -63,7 +63,6 @@ class Physics
 
 
     btTriangleMesh *objTriMesh[25];
-    int triIndex;
 
     std::vector<btRigidBody*> rigidBody;
 };
