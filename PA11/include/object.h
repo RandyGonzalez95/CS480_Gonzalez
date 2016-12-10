@@ -18,6 +18,7 @@ class Object
     void getTextures(std::string textureFile);
     void Update(btRigidBody* rigidBodyID);
     void Render();
+    glm::mat4 GetModel();
 
     btCollisionShape *shape;
     btMotionState *motionState;
@@ -26,9 +27,6 @@ class Object
 
     btScalar mass;
     btVector3 inertia;
-    
-    glm::mat4 GetModel();
-
 
   private:
     glm::mat4 model;
@@ -38,13 +36,10 @@ class Object
     GLuint Textures;
     GLuint VB;
     GLuint IB;
-    // assimp
+
+    // Assimp
     Assimp::Importer importer;
     const aiScene *myScene;
-
-    float angle;
 };
-
-
 
 #endif /* OBJECT_H */

@@ -8,6 +8,7 @@
 
 class Physics
 {
+  friend class Graphics;
 
   public:
     Physics();
@@ -22,18 +23,9 @@ class Physics
     void CreateTable();
     void CreateTableItem(std::string objFile, std::string texture);
 
-
-    friend class Graphics;
-
-
-
   private:
 
-
-    // set mass
-
-
-    // Initialize World
+    // Dynamics World Variables
     btBroadphaseInterface *broadphase;
     btDefaultCollisionConfiguration *collisionConfiguration;
     btCollisionDispatcher *dispatcher;

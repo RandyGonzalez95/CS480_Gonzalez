@@ -13,6 +13,8 @@ using namespace std;
 
 class Graphics
 {
+  friend class Physics;
+
   public:
     Graphics();
     ~Graphics();
@@ -21,9 +23,6 @@ class Graphics
     void SetCamera(bool codes[]);
     void PlayGame(bool codes[]);
     void Render();
-    friend class Physics;
-
-    glm::mat4 viewMatrix;
 
   private:
     std::string ErrorString(GLenum error);
@@ -43,19 +42,17 @@ class Graphics
     GLint m_SpecularProduct;
     GLfloat m_shininess;
 
-    // number of items to render
+    // Camera Position
     float x = 0, y = 0, z = 0;
 
+    // Simulation Time
     float simTime = 0;
 
-
+    // Lights
     float light = 1.0f;
     float light2 = 0.5f;
 
-
-    float score = 0;
-
-
+    // Physics World
     Physics *physicsWorld;
 };
 

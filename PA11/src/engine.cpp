@@ -60,12 +60,10 @@ void Engine::Run()
 {
   m_running = true;
 
-
   while(m_running)
   {
     // Update the DT
     m_DT = getDT();
-
 
     // Check the keyboard input
     while(SDL_PollEvent(&m_event) != 0)
@@ -73,28 +71,12 @@ void Engine::Run()
       Keyboard(codes);
     }
 
+    // Update Graphics
     m_graphics->Update(m_DT, codes);
 
+    // Update Render
     m_graphics->Render();
 
-    if(codes[15])
-    {
-      codes[15] = false;
-      codes[12] = false;
-      if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
-      {
-        printf("The graphics failed to initialize.\n");
-      }
-
-      else
-      {
-        if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
-        {
-          printf("The graphics failed to initialize.\n");
-        }
-      }
-
-    }
     // Swap to the Window
     m_window->Swap();
   }
@@ -106,48 +88,48 @@ void Engine::Keyboard(bool codes[])
   {
     m_running = false;
   }
+
   else if (m_event.type == SDL_KEYDOWN)
   {
-    // handle key down events here
-    if (m_event.key.keysym.sym == SDLK_ESCAPE)
+    switch(m_event.key.keysym.sym)
     {
-      m_running = false;
-    }
-    if(m_event.key.keysym.sym == SDLK_q)
-    {
-      codes[0] = true;
-    }
-    if(m_event.key.keysym.sym == SDLK_w)
-    {
-      codes[1] = true;
-    }
-    if(m_event.key.keysym.sym == SDLK_e)
-    {
-      codes[2] = true;
-    }
-    if(m_event.key.keysym.sym == SDLK_r)
-    {
-      codes[3] = true;
-    }
-    if(m_event.key.keysym.sym == SDLK_t )
-    {
-      codes[4] = true;
-    }
-    if(m_event.key.keysym.sym == SDLK_y)
-    {
-      codes[5] = true;
-    }
-    if(m_event.key.keysym.sym == SDLK_SPACE) // left paddle
-    {
-      codes[6] = true;
+      case SDLK_ESCAPE: // Quit Program
+        m_running = false;
+        break;
 
-    }
-    if(m_event.key.keysym.sym == SDLK_p) // right paddle
-    {
-      codes[7] = true;
+      case SDLK_q: // Move Camera X Up
+        codes[0] = true;
+        break;
+
+      case SDLK_w: // Move Camera Y Up
+        codes[1] = true;
+        break;
+
+      case SDLK_e: // Move Camera Z Up
+        codes[2] = true;
+        break;
+
+      case SDLK_r: // Move Camera X Down
+        codes[3] = true;
+        break;
+
+      case SDLK_t: // Move Camera Y Down
+        codes[3] = true;
+        break;
+
+      case SDLK_y: // Move Camera Z Down
+        codes[3] = true;
+        break;
+
+      case SDLK_SPACE: // Shoot Cue Ball
+        codes[6] = true;
+        break;
+
+      case SDLK_p: // Reset Game
+        codes[7] = true;
+        break;
     }
   }
-
 }
 
 unsigned int Engine::getDT()
@@ -156,7 +138,7 @@ unsigned int Engine::getDT()
   assert(TimeNowMillis >= m_currentTimeMillis);
   unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
   m_currentTimeMillis = TimeNowMillis;
-  //std::cout<< "time: "<< m_currentTimeMillis<< "\n";
+  
   return DeltaTimeMillis;
 }
 

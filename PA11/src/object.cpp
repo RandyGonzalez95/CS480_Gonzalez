@@ -4,22 +4,32 @@
 
 Object::Object()
 {
-  // Initialize
   myScene = NULL;
-  angle = 0;
-
 }
 
 Object::~Object()
 {
   Geometry.clear();
   Indices.clear();
+
+  delete shape;
+  shape = NULL;
+
+  delete motionState;
+  motionState = NULL;
+
+  delete rigidBody;
+  rigidBody = NULL;
+
+  delete objTriMesh;
+  objTriMesh = NULL;
+
+  delete myScene;
+  myScene = NULL;
 }
 
 void Object::CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh)
 {
-
-
   // Open File Data
   if(!Initialize(objFile))
   {
@@ -27,11 +37,11 @@ void Object::CreateObject(std::string objFile, std::string textureFile, btTriang
     exit(1);
   }
 
+  // Set Vertices
   SetVertices(triMesh);
 
-
+  // Get Textures
   getTextures(textureFile);
-
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -44,40 +54,38 @@ void Object::CreateObject(std::string objFile, std::string textureFile, btTriang
 
 bool Object::Initialize(std::string objFile)
 {
-
   // Open File
   myScene = importer.ReadFile(objFile.c_str(), aiProcess_Triangulate);
 
-  // check if file exits
+  // If file doesnt exist return false
   if(myScene == NULL)
   {
     return false;
   }
-return true;
+
+  return true;
 }
 
 void Object::SetVertices(btTriangleMesh *triMesh)
 {
-  // Declare variables
-    // myScene currently holds all .obj data
-    // grab the number of meshes
+  // Variables
   int index = 0;
   Vertex temp;
-
   btVector3 triArray[3];
 
   // Iterate through Meshes
-  for(unsigned int iMesh = 0; iMesh < myScene->mNumMeshes; iMesh++) // mesh index iterator
+  for(unsigned int iMesh = 0; iMesh < myScene->mNumMeshes; iMesh++)
   {
     aiMesh* model = myScene->mMeshes[iMesh];
 
     // Iterate through faces
-    for(int iFaces = 0; iFaces < model->mNumFaces; iFaces++) // face index
+    for(int iFaces = 0; iFaces < model->mNumFaces; iFaces++)
     {
-      // for each indice in the mesh
+      // For each indice on the face
       for(int i = 0; i < 3; i++)
       {
         aiVector3D position = model->mVertices[model->mFaces[iFaces].mIndices[i]];
+
         // Grab index info of the faces
         index = model->mFaces[iFaces].mIndices[i];
 
@@ -88,7 +96,7 @@ void Object::SetVertices(btTriangleMesh *triMesh)
           temp.uv[1] = 1-model->mTextureCoords[0][index].y;
         }
 
-        // check for normal vectorss
+        // check for normals
         if(model->mNormals != NULL)
         {
           temp.normal[0] = model->mNormals[index].x;
@@ -97,25 +105,27 @@ void Object::SetVertices(btTriangleMesh *triMesh)
         }
 
         // Load Vertex Position
-        for(int j = 0; j < 3; j++)  // iterate through each face
+        for(int j = 0; j < 3; j++)  // iterate through each indice
         {
           // Index info corresponds to a vertex position
           temp.position[j] = model->mVertices[index][j];
         }
 
+        // Set the tri Array position
         triArray[i] = btVector3( position.x, position.y, position.z);
 
         // Push back Index and Geomtry info
         Indices.push_back(index);
         Geometry.push_back(temp);
       }
+
+      // Add the tri mesh to the list
       if(triMesh != NULL)
       {
         triMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
       }
     }
   }
-
 }
 
 void Object::Update(btRigidBody* rigidBodyID)
@@ -124,12 +134,10 @@ void Object::Update(btRigidBody* rigidBodyID)
   btTransform trans;
   btScalar m[16];
 
-
   // Move Objects
   rigidBodyID->getMotionState()->getWorldTransform(trans);
   trans.getOpenGLMatrix(m);
   model = glm::make_mat4(m);
-
 }
 
 glm::mat4 Object::GetModel()
@@ -146,7 +154,7 @@ void Object::getTextures(std::string textureFile)
 
   int imageWidth = myImage.columns();
   int imageHeight = myImage.rows();
-  // Not too sure what this stuff is..
+
   Blob blob;
   myImage.magick("RGBA");
   myImage.write( &blob );
@@ -160,7 +168,6 @@ void Object::getTextures(std::string textureFile)
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 }
 
 void Object::Render()
@@ -179,7 +186,6 @@ void Object::Render()
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
 
   glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);

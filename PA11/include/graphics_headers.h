@@ -38,5 +38,4 @@ struct Vertex
   GLfloat normal[3];
 };
 
-
 #endif /* GRAPHICS_HEADERS_H */

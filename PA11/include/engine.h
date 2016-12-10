@@ -33,13 +33,10 @@ class Engine
     unsigned int m_DT;
     long long m_currentTimeMillis;
 
-
     // Graphics
     Graphics *m_graphics;
     bool m_running;
     bool codes[15] = {false};
-    int ballCount1 = 0;
-    int score = 0;
 };
 
 #endif // ENGINE_H

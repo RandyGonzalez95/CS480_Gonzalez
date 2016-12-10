@@ -35,12 +35,11 @@ bool Shader::Initialize()
 
 std::string Shader::readShaderFile( const char* fileName )
 {
-   std::ifstream fin;
+  std::ifstream fin;
 
   //Check if file is good
   if(!fin.good())
   {
-
     std::cerr<< "Shader files could not open\n";
     exit(1);
   }
@@ -50,13 +49,11 @@ std::string Shader::readShaderFile( const char* fileName )
   fin.open( fileName );
 
   //read file into one string
-  return std::string( std::istreambuf_iterator<char>(fin),
-		      std::istreambuf_iterator<char>()
-		    );
+  return std::string(std::istreambuf_iterator<char>(fin),
+		      std::istreambuf_iterator<char>());
 
   // close file
   fin.close();
-
 }
 
 // Use this method to add shaders to the program. When finished - call finalize()
@@ -69,6 +66,7 @@ bool Shader::AddShader(GLenum ShaderType, bool flag)
     // Read vertex shader file to string
     s = readShaderFile( "../shaders/vShader.glsl" );
   }
+
   else if(ShaderType == GL_FRAGMENT_SHADER && !flag)
   {
     // Read fragment shader file to string
@@ -80,6 +78,7 @@ bool Shader::AddShader(GLenum ShaderType, bool flag)
     // Read vertex shader file to string
     s = readShaderFile( "../shaders/vLight.glsl" );
   }
+
   else if(ShaderType == GL_FRAGMENT_SHADER && flag)
   {
     // Read fragment shader file to string
@@ -162,17 +161,18 @@ bool Shader::Finalize()
 
 void Shader::Enable()
 {
-    glUseProgram(m_shaderProg);
+  glUseProgram(m_shaderProg);
 }
 
 
 GLint Shader::GetUniformLocation(const char* pUniformName)
 {
-    GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+  GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if (Location == INVALID_UNIFORM_LOCATION) {
-        fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
-    }
+  if(Location == INVALID_UNIFORM_LOCATION)
+  {
+    fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
+  }
 
-    return Location;
+  return Location;
 }

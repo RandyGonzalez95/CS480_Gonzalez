@@ -3,8 +3,6 @@
 
 Physics::Physics()
 {
-
-
   if(!Initialize())
   {
     std::cerr<<"Physics Engine failed to initialize. Ending.\n";
@@ -17,22 +15,17 @@ Physics::Physics()
     exit(1);
   }
 
-
-
   Pool();
-
 }
 
 Physics::~Physics()
 {
-  // delete all pointers
+  delete dynamicsWorld;
   delete broadphase;
   delete collisionConfiguration;
   delete dispatcher;
   delete solver;
   objects.clear();
-  //delete dynamicsWorld;
-
 
   // set to NULL
   broadphase = NULL;
@@ -40,8 +33,6 @@ Physics::~Physics()
   dispatcher = NULL;
   solver = NULL;
   dynamicsWorld = NULL;
-
-
 }
 
 bool Physics::Initialize()
@@ -52,10 +43,9 @@ bool Physics::Initialize()
   dispatcher = new btCollisionDispatcher(collisionConfiguration);
   solver = new btSequentialImpulseConstraintSolver;
 
-
   // check if any are NULL
   if( (broadphase == NULL) || (collisionConfiguration == NULL)
-      || (dispatcher==NULL) || (solver==NULL) )
+      || (dispatcher == NULL) || (solver == NULL) )
   {
     return false;
   }
@@ -75,19 +65,16 @@ bool Physics::CreateWorld()
   if( dynamicsWorld == NULL)
     return false;
 
-
   return true;
 }
 
 void Physics::Pool()
 {
+  // Cue Ball (index 0)
+  CreateSphere("../models/sphere.obj", "../models/cue.png", btVector3(30,0.5,0));
 
-  // Cue Ball
-  CreateSphere("../models/sphere.obj", "../models/cue.png", btVector3(30,0.5,0)); // cue ball index = 0;
-
-  // All pool table balls in order
-      // 1 -15
-  CreateSphere("../models/sphere.obj", "../models/ball1.jpeg", btVector3(-25,0.5,0)); // ball 1, index 1
+  // All pool table balls in order (index 1-15)
+  CreateSphere("../models/sphere.obj", "../models/ball1.jpeg", btVector3(-25,0.5,0));
   CreateSphere("../models/sphere.obj", "../models/ball2.jpeg", btVector3(-33,0.5,2));
   CreateSphere("../models/sphere.obj", "../models/ball3.jpeg", btVector3(-27,0.5,-1.1));
   CreateSphere("../models/sphere.obj", "../models/ball4.jpeg", btVector3(-31,0.5,-1.1));
@@ -103,12 +90,11 @@ void Physics::Pool()
   CreateSphere("../models/sphere.obj", "../models/ball14.png", btVector3(-29,0.5,-2));
   CreateSphere("../models/sphere.obj", "../models/ball15.png", btVector3(-31,0.5,1.1));
 
-  // 16 - 19
-  CreateTable(); // All table items
+  // Table items (16-19)
+  CreateTable();
 
-  // 20
+  // Pool stick (index 20)
   CreateStick();
-
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
@@ -117,14 +103,15 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
   Object *tempObject = new Object();
   tempObject->CreateObject(objFile, texture, NULL);
 
+  // Set mass and inertia
   tempObject->mass = btScalar(100);
   tempObject->inertia = btVector3(0,0,0);
 
-  // collision shape
+  // Set collision Shape
   tempObject->shape = new btSphereShape(1);
   tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
 
-  // Motion State
+  // Set motion state
   tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), position));
 
   // Create RigidBody
@@ -133,12 +120,13 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
   tempObject->rigidBody->setRestitution(0.9);
   tempObject->rigidBody->setDamping(0,0.8);
 
-  // Set Active
+  // Disable deactivation of object
   tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
   // Add to world
   dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
+  // Add to objects vector
   objects.push_back(tempObject);
 }
 
@@ -146,55 +134,58 @@ void Physics::CreateStick()
 {
   // Create Object
   Object *tempObject = new Object();
-  tempObject->CreateObject("../models/stick.obj", "../models/image.jpg", NULL);
+  tempObject->CreateObject("../models/stick.obj", "../models/images.jpg", NULL);
 
-
+  // Set mass and inertia
   tempObject->mass = btScalar(100);
   tempObject->inertia = btVector3(0,0,0);
 
-  // Collision Shape
+  // Set collision shape
   tempObject->shape = new btCylinderShape(btVector3(1,1,1));
   tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
 
-  // Motion State
+  // Set motion state
   tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(34,1,0)));
 
   // Create RigidBody
   btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(tempObject->mass, tempObject->motionState, tempObject->shape, tempObject->inertia);
   tempObject->rigidBody = new btRigidBody(rigidBodyCI);
 
-  // Set Active
+  // Disable deactivation of object
   tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
   // Add to World
   dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
-
-  // Pool Stick Implementation
+  // Create slider transform
   btTransform fromB(btTransform::getIdentity());
 
+  // Set slider origin
   fromB.setOrigin( btVector3(5.0f,0.0f,0.0f));
 
+  // Create slider
   btSliderConstraint* slider =
       new btSliderConstraint(
           *tempObject->rigidBody,
           fromB,true);
 
+  // Set lin limits of slider
   slider->setLowerLinLimit(-5.0f);
   slider->setUpperLinLimit(5.0f);
 
+  // Set angle limits of slider
   slider->setLowerAngLimit(-5.0f);
   slider->setUpperAngLimit(5.0f);
 
+  // Add constraint to world
   dynamicsWorld->addConstraint(slider);
 
-
+  // Add object to vector
   objects.push_back(tempObject);
 }
 
 void Physics::CreateTable()
 {
-  //CreateTableItem("../models/box.obj", "../models/image.jpg");
   CreateTableItem("../models/frame.obj", "../models/images.jpg"); // 16
   CreateTableItem("../models/legs.obj", "../models/steel.jpg"); // 17
   CreateTableItem("../models/table.obj", "../models/green.jpg"); // 18
@@ -203,21 +194,20 @@ void Physics::CreateTable()
 
 void Physics::CreateTableItem(std::string objFile, std::string texture)
 {
-  // Create Object with texture
+  // Create Object
   Object *tempObject = new Object();
   tempObject->objTriMesh = new btTriangleMesh();
   tempObject->CreateObject(objFile, texture, tempObject->objTriMesh);
 
+  // Set mass and inertia
   tempObject->mass = btScalar(100);
   tempObject->inertia = btVector3(0,0,0);
 
-  // Collision Shape
+  // Create collision shape
   tempObject->shape = new btBvhTriangleMeshShape(tempObject->objTriMesh, true);
-
-
   tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
 
-  // Motion State
+  // Create motion state
   tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 0 ,0)));
 
   // Create RigidBody
@@ -227,6 +217,7 @@ void Physics::CreateTableItem(std::string objFile, std::string texture)
   // Add to world
   dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
+  // Add object to vector
   objects.push_back(tempObject);
 }
 

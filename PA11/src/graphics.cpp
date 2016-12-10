@@ -9,12 +9,16 @@ Graphics::Graphics()
 
 Graphics::~Graphics()
 {
-
+  delete m_camera;
+  delete m_shader;
+  delete physicsWorld;
+  physicsWorld = NULL;
+  m_camera = NULL;
+  m_shader = NULL;
 }
 
 bool Graphics::Initialize(int width, int height, bool flag)
 {
-
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
 
@@ -32,6 +36,7 @@ bool Graphics::Initialize(int width, int height, bool flag)
       std::cerr << "GLEW Error: " << glewGetErrorString(status) << "\n";
       return false;
     }
+
   #endif
 
   // For OpenGL 3
@@ -144,12 +149,9 @@ bool Graphics::Initialize(int width, int height, bool flag)
     return false;
   }
 
-
-
   //enable depth testing
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
-
 
   return true;
 
@@ -157,34 +159,34 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
 void Graphics::Update(unsigned int dt, bool codes[])
 {
-
-  // Set Physics Simulation
+  // Start Physics Step Simulation
   simTime = 0.0083;
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
   // Set Camera
   SetCamera(codes);
 
-  // Check for game logic
+  // Check Game Logic
   PlayGame(codes);
 
-  // update all items
+  // Update all items
   for(int i = 0; i < physicsWorld->objects.size(); i++)
   {
+    // Update all objects in the world
     physicsWorld->objects[i]->Update(physicsWorld->objects[i]->rigidBody);
 
-    // Prevent Objects from flying off the table
+    // Get the velocity of the objects
     btVector3 vel = physicsWorld->objects[i]->rigidBody->getLinearVelocity();
 
+    // If the velocity is moving upwards reset it to 0 to keep objects on table
     if (vel.getY() > 0)
+    {
       vel.setY(0);
+    }
 
-
-    // set linear velocity
+    // Set the linear velocity of the object
     physicsWorld->objects[i]->rigidBody->setLinearVelocity(vel);
-
   }
-
 }
 
 void Graphics::PlayGame(bool codes[])
@@ -197,8 +199,8 @@ void Graphics::PlayGame(bool codes[])
     codes[6] = false;
   }
 
-  // Reset
-  if(codes[7]) // 'O'
+  // Reset the game
+  if(codes[7]) // 'P'
   {
     physicsWorld = new Physics();
 
@@ -208,42 +210,44 @@ void Graphics::PlayGame(bool codes[])
 
 void Graphics::SetCamera(bool codes[])
 {
-  // Camera Controls 0-5
-  if(codes[0])
+  if(codes[0]) // Move X Up
   {
     x += 1;
     codes[0] = false;
   }
-  if(codes[1])
+
+  if(codes[1]) // Move Y Up
   {
     y += 1;
     codes[1] = false;
   }
-  if(codes[2])
+
+  if(codes[2]) // Move Z Up
   {
     z += 1;
     codes[2] = false;
   }
-  if(codes[3])
+
+  if(codes[3]) // Move X Down
   {
     x -= 1;
     codes[3] = false;
   }
-  if(codes[4])
+
+  if(codes[4]) // Move Y Down
   {
     y -= 1;
     codes[4] = false;
   }
-  if(codes[5])
+
+  if(codes[5]) // Move Z Down
   {
     z -= 1;
     codes[5] = false;
   }
 
-
   // Set camera view
   m_camera->SetView(x, y, z);
-
 }
 
 void Graphics::Render()
@@ -259,7 +263,6 @@ void Graphics::Render()
   glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
-
   // Render the all objects on Pool Table
   for(int i = 0; i < physicsWorld->objects.size(); i++)
   {
@@ -267,13 +270,11 @@ void Graphics::Render()
     physicsWorld->objects[i]->Render();
   }
 
-
-  // Light Stuff
+  // Lights
   glUniform4fv(m_LightPosition, 1, glm::value_ptr(m_camera->GetView()));
   glUniform4fv(m_AmbientProduct, 1, glm::value_ptr(glm::vec3(light)));
   //glUniform4fv(m_DiffuseProduct, 1, glm::value_ptr(glm::vec3(0.5) ));
   glUniform4fv(m_SpecularProduct, 1, glm::value_ptr(glm::vec4(glm::vec3(light2), 0.0)));
-
 
   // Get any errors from OpenGL
   auto error = glGetError();
