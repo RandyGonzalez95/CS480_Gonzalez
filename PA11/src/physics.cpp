@@ -87,18 +87,30 @@ bool Physics::CreateWorld()
 
 void Physics::Pool()
 {
-    CreateSphere("../models/cue.obj", "../models/image.jpg"); // cue ball index = 0;
 
-  for(int i = 1; i < 16 ; i++)
-  {
-      CreateSphere("../models/ball" + std::to_string(i) + ".obj", "../models/image.jpg"); // 15
-  }
+  CreateSphere("../models/sphere.obj", "../models/cue.png", btVector3(30,0.5,0)); // cue ball index = 0;
 
 
+  CreateSphere("../models/sphere.obj", "../models/ball1.jpeg", btVector3(-25,0.5,0)); // ball 1, index 1
+  CreateSphere("../models/sphere.obj", "../models/ball2.jpeg", btVector3(-33,0.5,2));
+  CreateSphere("../models/sphere.obj", "../models/ball3.jpeg", btVector3(-27,0.5,-1.1));
+  CreateSphere("../models/sphere.obj", "../models/ball4.jpeg", btVector3(-31,0.5,-1.1));
+  CreateSphere("../models/sphere.obj", "../models/ball5.jpeg", btVector3(-33,0.5,-2));
+  CreateSphere("../models/sphere.obj", "../models/ball6.jpeg", btVector3(-29,0.5,2));
+  CreateSphere("../models/sphere.obj", "../models/ball7.jpeg", btVector3(-33,0.5,4));
+  CreateSphere("../models/sphere.obj", "../models/ball8.png", btVector3(-29,0.5,0));
+  CreateSphere("../models/sphere.obj", "../models/ball9.jpeg", btVector3(-31,0.5,-3.1));
+  CreateSphere("../models/sphere.obj", "../models/ball10.png", btVector3(-33,0.5,0));
+  CreateSphere("../models/sphere.obj", "../models/ball11.png", btVector3(-27,0.5,1.1));
+  CreateSphere("../models/sphere.obj", "../models/ball12.png", btVector3(-33,0.5,-4));
+  CreateSphere("../models/sphere.obj", "../models/ball13.png", btVector3(-31,0.5,3.1));
+  CreateSphere("../models/sphere.obj", "../models/ball14.png", btVector3(-29,0.5,-2));
+  CreateSphere("../models/sphere.obj", "../models/ball15.png", btVector3(-31,0.5,1.1));
+  
   CreateTable(); // All table items
 }
 
-void Physics::CreateSphere(std::string objFile, std::string texture)
+void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
 {
   // Create Object
   Object *temp = new Object();
@@ -107,13 +119,13 @@ void Physics::CreateSphere(std::string objFile, std::string texture)
 
   // collision shape
   btCollisionShape *btTemp;
-  btTemp = new btSphereShape(0.015);
+  btTemp = new btSphereShape(1);
   btTemp->calculateLocalInertia(mass, inertia);
   shapes.push_back(btTemp);
 
   // Motion State
   btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 1 ,0)));
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), position));
   shapeMS.push_back(tempMS);
 
   // Create RigidBody
@@ -141,9 +153,10 @@ void Physics::CreateCube()
 
 void Physics::CreateTable()
 {
+  //CreateTableItem("../models/box.obj", "../models/image.jpg");
   CreateTableItem("../models/frame.obj", "../models/images.jpg");
   CreateTableItem("../models/legs.obj", "../models/steel.jpg");
-  CreateTableItem("../models/table.obj", "../models/pool.JPG");
+  CreateTableItem("../models/table.obj", "../models/green.jpg");
   CreateTableItem("../models/ledges.obj", "../models/ledges.png");
 }
 

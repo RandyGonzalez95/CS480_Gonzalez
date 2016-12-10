@@ -3,6 +3,9 @@
 Graphics::Graphics()
 {
   numItems = 0;
+  x = 3;
+  y = 91;
+  z = 0;
 }
 
 Graphics::~Graphics()
@@ -161,6 +164,39 @@ void Graphics::Update(unsigned int dt, bool codes[])
   simTime = 0.0083;
 
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
+
+  if(codes[0])
+  {
+    x += 1;
+    codes[0] = false;
+  }
+  if(codes[1])
+  {
+    y += 1;
+    codes[1] = false;
+  }
+  if(codes[2])
+  {
+    z += 1;
+    codes[2] = false;
+  }
+  if(codes[3])
+  {
+    x -= 1;
+    codes[3] = false;
+  }
+  if(codes[4])
+  {
+    y -= 1;
+    codes[4] = false;
+  }
+  if(codes[5])
+  {
+    z -= 1;
+    codes[5] = false;
+  }
+
+  m_camera->SetView(x, y, z);
 
   for(int i = 0; i < numItems; i++)
   physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));

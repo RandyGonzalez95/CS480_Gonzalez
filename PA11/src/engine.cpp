@@ -113,28 +113,27 @@ void Engine::Keyboard(bool codes[])
     {
       m_running = false;
     }
-    if(m_event.key.keysym.sym == SDLK_w)
+    if(m_event.key.keysym.sym == SDLK_q)
     {
       codes[0] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_a)
+    if(m_event.key.keysym.sym == SDLK_w)
     {
       codes[1] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_s)
+    if(m_event.key.keysym.sym == SDLK_e)
     {
       codes[2] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_d)
+    if(m_event.key.keysym.sym == SDLK_r)
     {
       codes[3] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_SPACE )
+    if(m_event.key.keysym.sym == SDLK_t )
     {
       codes[4] = true;
-      codes[12] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_r)
+    if(m_event.key.keysym.sym == SDLK_y)
     {
       codes[5] = true;
     }
