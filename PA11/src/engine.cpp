@@ -156,7 +156,7 @@ void Engine::Keyboard(bool codes[])
         }
       }
     }
-    if(m_event.key.keysym.sym == SDLK_z) // left paddle
+    if(m_event.key.keysym.sym == SDLK_SPACE) // left paddle
     {
       codes[7] = true;
 

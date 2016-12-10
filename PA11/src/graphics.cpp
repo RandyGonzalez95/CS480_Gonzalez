@@ -195,6 +195,11 @@ void Graphics::Update(unsigned int dt, bool codes[])
     z -= 1;
     codes[5] = false;
   }
+  if(codes[7])
+  {
+    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(0.0f, 0.0f, 100.0f));
+    codes[7] = false;
+  }
 
   m_camera->SetView(x, y, z);
 

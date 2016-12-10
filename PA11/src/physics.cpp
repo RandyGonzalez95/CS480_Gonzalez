@@ -114,6 +114,8 @@ void Physics::Pool()
 
   // 20
   CreateStick();
+
+
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
@@ -168,7 +170,7 @@ void Physics::CreateStick()
 
   // Motion State
   btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,10,0)));
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,1,0)));
   shapeMS.push_back(tempMS);
 
   // Create RigidBody
@@ -182,6 +184,10 @@ void Physics::CreateStick()
   // Add to World
   dynamicsWorld->addRigidBody(rigidBody[index]);
 
+
+  // Pool Stick Implementation  
+
+
   // Update Indeces
   index++;
   numItems++;
@@ -190,10 +196,10 @@ void Physics::CreateStick()
 void Physics::CreateTable()
 {
   //CreateTableItem("../models/box.obj", "../models/image.jpg");
-  CreateTableItem("../models/frame.obj", "../models/images.jpg");
-  CreateTableItem("../models/legs.obj", "../models/steel.jpg");
-  CreateTableItem("../models/table.obj", "../models/green.jpg");
-  CreateTableItem("../models/ledges.obj", "../models/ledges.png");
+  CreateTableItem("../models/frame.obj", "../models/images.jpg"); // 16
+  CreateTableItem("../models/legs.obj", "../models/steel.jpg"); // 17
+  CreateTableItem("../models/table.obj", "../models/green.jpg"); // 18
+  CreateTableItem("../models/ledges.obj", "../models/ledges.png"); //19
 }
 
 void Physics::CreateTableItem(std::string objFile, std::string texture)
