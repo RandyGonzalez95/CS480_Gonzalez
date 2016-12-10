@@ -113,7 +113,7 @@ void Physics::Pool()
   CreateTable(); // All table items
 
   // 20
-//  CreateStick();
+  CreateStick();
 
 
 }
@@ -172,7 +172,7 @@ void Physics::CreateStick()
 
   // Motion State
   btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(32,1,0)));
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(34,1,0)));
   shapeMS.push_back(tempMS);
 
   // Create RigidBody

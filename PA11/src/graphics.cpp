@@ -161,10 +161,54 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
 void Graphics::Update(unsigned int dt, bool codes[])
 {
-  simTime = 0.0083;
 
+  // Set Physics Simulation
+  simTime = 0.0083;
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
+  // Set Camera
+  SetCamera(codes);
+
+  // Hit the cue ball
+  if(codes[6])
+  {
+    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
+
+    codes[6] = false;
+  }
+
+  // Reset
+  if(codes[7]) // 'O'
+  {
+    physicsWorld = new Physics();
+
+    codes[7] = false;
+  }
+
+
+  // update all items
+  for(int i = 0; i < numItems; i++)
+  {
+    physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
+
+    // Prevent Objects from flying off the table
+    btVector3 vel = physicsWorld->getRigidBody(i)->getLinearVelocity();
+    
+    if (vel.getY() > 0)
+      vel.setY(0);
+
+
+    // set linear velocity
+    physicsWorld->getRigidBody(i)->setLinearVelocity(vel);
+  }
+
+
+
+
+}
+
+void Graphics::SetCamera(bool codes[])
+{
   // Camera Controls 0-5
   if(codes[0])
   {
@@ -197,40 +241,9 @@ void Graphics::Update(unsigned int dt, bool codes[])
     codes[5] = false;
   }
 
-  // Hit the cue ball
-  if(codes[6])
-  {
-    physicsWorld->getRigidBody(0)->setLinearVelocity(btVector3(-100.0f, 0.0f, 0.0f));
 
-    codes[6] = false;
-  }
-
-  // Hit the cue ball
-  if(codes[7])
-  {
-    physicsWorld = new Physics();
-
-    codes[7] = false;
-  }
-
+  // Set camera view
   m_camera->SetView(x, y, z);
-
-  for(int i = 0; i < numItems; i++)
-  {
-    physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
-
-  }
-
-  for (int i = 0; i < 16; i++)
-  {
-    btVector3 vel = physicsWorld->getRigidBody(i)->getLinearVelocity();
-    if (vel.getY() > 0){
-      vel.setY(0);
-    }
-    physicsWorld->getRigidBody(i)->setLinearVelocity(vel);
-  }
-
-
 
 }
 
