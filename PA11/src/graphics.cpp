@@ -3,9 +3,9 @@
 Graphics::Graphics()
 {
   numItems = 0;
-  x = 3;
-  y = 91;
-  z = 0;
+  x = 0;
+  y = 55;
+  z = 57;
 }
 
 Graphics::~Graphics()
