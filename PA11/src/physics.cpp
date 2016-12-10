@@ -3,18 +3,14 @@
 
 Physics::Physics()
 {
+  // Initialize physics world
   if(!Initialize())
   {
     std::cerr<<"Physics Engine failed to initialize. Ending.\n";
     exit(1);
   }
 
-  if(!CreateWorld())
-  {
-    std::cerr<<"Dynamic World failed to create. Ending.\n";
-    exit(1);
-  }
-
+  // Start pool game
   Pool();
 }
 
@@ -50,11 +46,6 @@ bool Physics::Initialize()
     return false;
   }
 
-  return true;
-}
-
-bool Physics::CreateWorld()
-{
   // Initialize the physics world
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
@@ -63,7 +54,9 @@ bool Physics::CreateWorld()
 
   // check if the world exists
   if( dynamicsWorld == NULL)
+  {
     return false;
+  }
 
   return true;
 }
@@ -91,10 +84,13 @@ void Physics::Pool()
   CreateSphere("../models/sphere.obj", "../models/ball15.png", btVector3(-31,0.5,1.1));
 
   // Table items (16-19)
-  CreateTable();
+  CreateTableItem("../models/frame.obj", "../models/images.jpg"); // 16
+  CreateTableItem("../models/legs.obj", "../models/steel.jpg"); // 17
+  CreateTableItem("../models/table.obj", "../models/green.jpg"); // 18
+  CreateTableItem("../models/ledges.obj", "../models/ledges.png"); //19
 
   // Pool stick (index 20)
-  CreateStick();
+  CreateStick("../models/stick.obj", "../models/images.jpg");
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
@@ -130,11 +126,11 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
   objects.push_back(tempObject);
 }
 
-void Physics::CreateStick()
+void Physics::CreateStick(std::string objFile, std::string texture)
 {
   // Create Object
   Object *tempObject = new Object();
-  tempObject->CreateObject("../models/stick.obj", "../models/images.jpg", NULL);
+  tempObject->CreateObject(objFile, texture, NULL);
 
   // Set mass and inertia
   tempObject->mass = btScalar(100);
@@ -182,14 +178,6 @@ void Physics::CreateStick()
 
   // Add object to vector
   objects.push_back(tempObject);
-}
-
-void Physics::CreateTable()
-{
-  CreateTableItem("../models/frame.obj", "../models/images.jpg"); // 16
-  CreateTableItem("../models/legs.obj", "../models/steel.jpg"); // 17
-  CreateTableItem("../models/table.obj", "../models/green.jpg"); // 18
-  CreateTableItem("../models/ledges.obj", "../models/ledges.png"); //19
 }
 
 void Physics::CreateTableItem(std::string objFile, std::string texture)

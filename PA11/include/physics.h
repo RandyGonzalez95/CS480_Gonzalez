@@ -15,16 +15,13 @@ class Physics
     ~Physics();
 
     bool Initialize();
-    bool CreateWorld();
     void Pool();
     btDiscreteDynamicsWorld *getWorld();
     void CreateSphere(std::string objFile, std::string texture, const btVector3 &position);
-    void CreateStick();
-    void CreateTable();
+    void CreateStick(std::string objFile, std::string texture);
     void CreateTableItem(std::string objFile, std::string texture);
 
   private:
-
     // Dynamics World Variables
     btBroadphaseInterface *broadphase;
     btDefaultCollisionConfiguration *collisionConfiguration;

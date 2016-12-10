@@ -15,19 +15,19 @@ class Object
     void CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh);
     bool Initialize(std::string objFile);
     void SetVertices(btTriangleMesh *triMesh);
-    void getTextures(std::string textureFile);
+    void SetTexture(std::string textureFile);
     void Update(btRigidBody* rigidBodyID);
     void Render();
     glm::mat4 GetModel();
 
+    // Bullet variables
     btCollisionShape *shape;
     btMotionState *motionState;
     btRigidBody *rigidBody;
     btTriangleMesh *objTriMesh;
-
     btScalar mass;
     btVector3 inertia;
-
+    
   private:
     glm::mat4 model;
     std::vector<Vertex> Geometry;
@@ -36,6 +36,7 @@ class Object
     GLuint Textures;
     GLuint VB;
     GLuint IB;
+
 
     // Assimp
     Assimp::Importer importer;

@@ -40,8 +40,8 @@ void Object::CreateObject(std::string objFile, std::string textureFile, btTriang
   // Set Vertices
   SetVertices(triMesh);
 
-  // Get Textures
-  getTextures(textureFile);
+  // Set Texture
+  SetTexture(textureFile);
 
   glGenBuffers(1, &VB);
   glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -145,7 +145,7 @@ glm::mat4 Object::GetModel()
   return model;
 }
 
-void Object::getTextures(std::string textureFile)
+void Object::SetTexture(std::string textureFile)
 {
   InitializeMagick(textureFile.c_str());
   Image myImage;
