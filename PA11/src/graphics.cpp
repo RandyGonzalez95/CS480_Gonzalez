@@ -165,6 +165,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
+  // Camera Controls 0-5
   if(codes[0])
   {
     x += 1;
@@ -195,9 +196,19 @@ void Graphics::Update(unsigned int dt, bool codes[])
     z -= 1;
     codes[5] = false;
   }
+
+  // Hit the cue ball
+  if(codes[6])
+  {
+    physicsWorld->getRigidBody(0)->setLinearVelocity(btVector3(-100.0f, 0.0f, 0.0f));
+
+    codes[6] = false;
+  }
+
+  // Hit the cue ball
   if(codes[7])
   {
-    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
+    physicsWorld = new Physics();
 
     codes[7] = false;
   }

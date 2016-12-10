@@ -113,7 +113,7 @@ void Physics::Pool()
   CreateTable(); // All table items
 
   // 20
-  CreateStick();
+//  CreateStick();
 
 
 }
@@ -249,9 +249,6 @@ void Physics::CreateTableItem(std::string objFile, std::string texture)
   btRigidBody::btRigidBodyConstructionInfo tableItemsRigidBodyCI(0, shapeMS[index], shapes[index], inertia);
   btRigidBody *rbTemp = new btRigidBody(tableItemsRigidBodyCI);
   rigidBody.push_back(rbTemp);
-
-  // Set Active
-  //rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
 
   // Add to world
   dynamicsWorld->addRigidBody(rigidBody[index]);

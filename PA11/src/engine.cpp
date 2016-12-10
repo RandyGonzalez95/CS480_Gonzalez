@@ -137,50 +137,14 @@ void Engine::Keyboard(bool codes[])
     {
       codes[5] = true;
     }
-    if(m_event.key.keysym.sym == SDLK_p)
-    {
-      codes[6] = !codes[6];
-      if(codes[6])
-      {
-        if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
-        {
-          printf("The graphics failed to initialize.\n");
-        }
-      }
-
-      else
-      {
-        if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
-        {
-          printf("The graphics failed to initialize.\n");
-        }
-      }
-    }
     if(m_event.key.keysym.sym == SDLK_SPACE) // left paddle
     {
+      codes[6] = true;
+
+    }
+    if(m_event.key.keysym.sym == SDLK_p) // right paddle
+    {
       codes[7] = true;
-
-    }
-    if(m_event.key.keysym.sym == SDLK_SLASH) // right paddle
-    {
-      codes[8] = true;
-
-    }
-
-    if(m_event.key.keysym.sym == SDLK_t) // left paddle
-    {
-      codes[9] = true;
-
-    }
-    if(m_event.key.keysym.sym == SDLK_y) // right paddle
-    {
-      codes[10] = true;
-
-    }
-    if(m_event.key.keysym.sym == SDLK_r) // right paddle
-    {
-      codes[11] = true;
-
     }
   }
 
