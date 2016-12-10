@@ -19,7 +19,7 @@ class Physics
     btDiscreteDynamicsWorld *getWorld();
     btRigidBody* getRigidBody(int index);
     void CreateSphere(std::string objFile, std::string texture, const btVector3 &position);
-    void CreateCube();
+    void CreateStick();
     void CreateTable();
     void CreateTableItem(std::string objFile, std::string texture);
     int GetNumItems();

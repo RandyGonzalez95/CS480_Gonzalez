@@ -88,9 +88,11 @@ bool Physics::CreateWorld()
 void Physics::Pool()
 {
 
+  // Cue Ball
   CreateSphere("../models/sphere.obj", "../models/cue.png", btVector3(30,0.5,0)); // cue ball index = 0;
 
-
+  // All pool table balls in order
+      // 1 -15
   CreateSphere("../models/sphere.obj", "../models/ball1.jpeg", btVector3(-25,0.5,0)); // ball 1, index 1
   CreateSphere("../models/sphere.obj", "../models/ball2.jpeg", btVector3(-33,0.5,2));
   CreateSphere("../models/sphere.obj", "../models/ball3.jpeg", btVector3(-27,0.5,-1.1));
@@ -106,8 +108,12 @@ void Physics::Pool()
   CreateSphere("../models/sphere.obj", "../models/ball13.png", btVector3(-31,0.5,3.1));
   CreateSphere("../models/sphere.obj", "../models/ball14.png", btVector3(-29,0.5,-2));
   CreateSphere("../models/sphere.obj", "../models/ball15.png", btVector3(-31,0.5,1.1));
-  
+
+  // 16 - 19
   CreateTable(); // All table items
+
+  // 20
+  CreateStick();
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
@@ -146,9 +152,39 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
 
 }
 
-void Physics::CreateCube()
+void Physics::CreateStick()
 {
+  // Create Object
+  Object *temp = new Object();
+  temp->CreateObject("../models/stick.obj", "../models/image.jpg", NULL);
+  objects.push_back(temp);
 
+
+  // Collision Shape
+  btCollisionShape *btTemp;
+  btTemp = new btCylinderShape(btVector3(1,1,1));
+  btTemp->calculateLocalInertia(mass, inertia);
+  shapes.push_back(btTemp);
+
+  // Motion State
+  btDefaultMotionState *tempMS;
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,10,0)));
+  shapeMS.push_back(tempMS);
+
+  // Create RigidBody
+  btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
+  btRigidBody *rbTemp = new btRigidBody(cylinderRigidBodyCI);
+  rigidBody.push_back(rbTemp);
+
+  // Set Active
+  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+
+  // Add to World
+  dynamicsWorld->addRigidBody(rigidBody[index]);
+
+  // Update Indeces
+  index++;
+  numItems++;
 }
 
 void Physics::CreateTable()
