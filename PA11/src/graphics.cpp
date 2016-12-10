@@ -2,7 +2,6 @@
 
 Graphics::Graphics()
 {
-  numItems = 0;
   x = 0;
   y = 55;
   z = 57;
@@ -18,7 +17,7 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
   // Used for the linux OS
   #if !defined(__APPLE__) && !defined(MACOSX)
-    // cout << glewGetString(GLEW_VERSION) << endl;
+
     glewExperimental = GL_TRUE;
 
     auto status = glewInit();
@@ -51,9 +50,6 @@ bool Graphics::Initialize(int width, int height, bool flag)
 
   // Create board
   physicsWorld = new Physics();
-  numItems = physicsWorld->GetNumItems();
-
-  std:: cout<< "number of items to render: "<< numItems<<std::endl;
 
   // Set up the shaders
   m_shader = new Shader();
@@ -173,19 +169,20 @@ void Graphics::Update(unsigned int dt, bool codes[])
   PlayGame(codes);
 
   // update all items
-  for(int i = 0; i < numItems; i++)
+  for(int i = 0; i < physicsWorld->objects.size(); i++)
   {
-    physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
+    physicsWorld->objects[i]->Update(physicsWorld->objects[i]->rigidBody);
 
     // Prevent Objects from flying off the table
-    btVector3 vel = physicsWorld->getRigidBody(i)->getLinearVelocity();
+    btVector3 vel = physicsWorld->objects[i]->rigidBody->getLinearVelocity();
 
     if (vel.getY() > 0)
       vel.setY(0);
 
 
     // set linear velocity
-    physicsWorld->getRigidBody(i)->setLinearVelocity(vel);
+    physicsWorld->objects[i]->rigidBody->setLinearVelocity(vel);
+
   }
 
 }
@@ -195,7 +192,7 @@ void Graphics::PlayGame(bool codes[])
   // Hit the cue ball
   if(codes[6]) // Space bar
   {
-    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
+    physicsWorld->objects[20]->rigidBody->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
 
     codes[6] = false;
   }
@@ -264,11 +261,10 @@ void Graphics::Render()
 
 
   // Render the all objects on Pool Table
-  for(int i = 0; i < numItems; i++)
+  for(int i = 0; i < physicsWorld->objects.size(); i++)
   {
     glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr( physicsWorld->objects[i]->GetModel()));
     physicsWorld->objects[i]->Render();
-
   }
 
 

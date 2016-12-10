@@ -3,11 +3,7 @@
 
 Physics::Physics()
 {
-  index = 0;
-  numItems = 0;
-  mass = btScalar(100);
-  inertia = btVector3(0,0,0);
-  triIndex = 0;
+
 
   if(!Initialize())
   {
@@ -35,8 +31,6 @@ Physics::~Physics()
   delete dispatcher;
   delete solver;
   objects.clear();
-  shapes.clear();
-  rigidBody.clear();
   //delete dynamicsWorld;
 
 
@@ -115,89 +109,75 @@ void Physics::Pool()
   // 20
   CreateStick();
 
-
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
 {
   // Create Object
-  Object *temp = new Object();
-  temp->CreateObject(objFile, texture, NULL);
-  objects.push_back(temp);
+  Object *tempObject = new Object();
+  tempObject->CreateObject(objFile, texture, NULL);
+
+  tempObject->mass = btScalar(100);
+  tempObject->inertia = btVector3(0,0,0);
 
   // collision shape
-  btCollisionShape *btTemp;
-  btTemp = new btSphereShape(1);
-  btTemp->calculateLocalInertia(mass, inertia);
-  shapes.push_back(btTemp);
+  tempObject->shape = new btSphereShape(1);
+  tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
 
   // Motion State
-  btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), position));
-  shapeMS.push_back(tempMS);
+  tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), position));
 
   // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
-  btRigidBody *rbTemp = new btRigidBody(sphereRigidBodyCI);
-  rbTemp->setRestitution(0.9);
-  rbTemp->setDamping(0,0.8);
-  rigidBody.push_back(rbTemp);
+  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(tempObject->mass, tempObject->motionState, tempObject->shape, tempObject->inertia);
+  tempObject->rigidBody = new btRigidBody(rigidBodyCI);
+  tempObject->rigidBody->setRestitution(0.9);
+  tempObject->rigidBody->setDamping(0,0.8);
 
   // Set Active
-  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
-
+  tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
   // Add to world
-  dynamicsWorld->addRigidBody(rigidBody[index]);
+  dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
-  // update indeces
-  index++;
-  numItems++;
-
+  objects.push_back(tempObject);
 }
 
 void Physics::CreateStick()
 {
   // Create Object
-  Object *temp = new Object();
-  temp->CreateObject("../models/stick.obj", "../models/image.jpg", NULL);
-  objects.push_back(temp);
+  Object *tempObject = new Object();
+  tempObject->CreateObject("../models/stick.obj", "../models/image.jpg", NULL);
 
+
+  tempObject->mass = btScalar(100);
+  tempObject->inertia = btVector3(0,0,0);
 
   // Collision Shape
-  btCollisionShape *btTemp;
-  btTemp = new btCylinderShape(btVector3(1,1,1));
-  btTemp->calculateLocalInertia(mass, inertia);
-  shapes.push_back(btTemp);
+  tempObject->shape = new btCylinderShape(btVector3(1,1,1));
+  tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
 
   // Motion State
-  btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(34,1,0)));
-  shapeMS.push_back(tempMS);
+  tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(34,1,0)));
 
   // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo cylinderRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
-  btRigidBody *rbTemp = new btRigidBody(cylinderRigidBodyCI);
-  rigidBody.push_back(rbTemp);
+  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(tempObject->mass, tempObject->motionState, tempObject->shape, tempObject->inertia);
+  tempObject->rigidBody = new btRigidBody(rigidBodyCI);
 
   // Set Active
-  rigidBody[index]->setActivationState(DISABLE_DEACTIVATION);
+  tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
   // Add to World
-  dynamicsWorld->addRigidBody(rigidBody[index]);
+  dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
 
   // Pool Stick Implementation
-  btTransform fromA(btTransform::getIdentity());
   btTransform fromB(btTransform::getIdentity());
 
-  fromA.setOrigin( btVector3(-1.0f,0.0f,0.0f));
   fromB.setOrigin( btVector3(5.0f,0.0f,0.0f));
-
 
   btSliderConstraint* slider =
       new btSliderConstraint(
-          *rigidBody[20],
+          *tempObject->rigidBody,
           fromB,true);
 
   slider->setLowerLinLimit(-5.0f);
@@ -209,10 +189,7 @@ void Physics::CreateStick()
   dynamicsWorld->addConstraint(slider);
 
 
-
-  // Update Indeces
-  index++;
-  numItems++;
+  objects.push_back(tempObject);
 }
 
 void Physics::CreateTable()
@@ -227,49 +204,33 @@ void Physics::CreateTable()
 void Physics::CreateTableItem(std::string objFile, std::string texture)
 {
   // Create Object with texture
-  Object *temp = new Object();
-  objTriMesh[triIndex] = new btTriangleMesh();
-  temp->CreateObject(objFile, texture, objTriMesh[triIndex]);
-  objects.push_back(temp);
+  Object *tempObject = new Object();
+  tempObject->objTriMesh = new btTriangleMesh();
+  tempObject->CreateObject(objFile, texture, tempObject->objTriMesh);
+
+  tempObject->mass = btScalar(100);
+  tempObject->inertia = btVector3(0,0,0);
 
   // Collision Shape
-  btCollisionShape *btTemp;
-  btTemp = new btBvhTriangleMeshShape(objTriMesh[triIndex], true);
+  tempObject->shape = new btBvhTriangleMeshShape(tempObject->objTriMesh, true);
 
 
-  btTemp->calculateLocalInertia(mass, inertia);
-  shapes.push_back(btTemp);
+  tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
 
   // Motion State
-  btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 0 ,0)));
-  shapeMS.push_back(tempMS);
+  tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0, 0 ,0)));
 
   // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo tableItemsRigidBodyCI(0, shapeMS[index], shapes[index], inertia);
-  btRigidBody *rbTemp = new btRigidBody(tableItemsRigidBodyCI);
-  rigidBody.push_back(rbTemp);
+  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(0, tempObject->motionState, tempObject->shape, tempObject->inertia);
+  tempObject->rigidBody = new btRigidBody(rigidBodyCI);
 
   // Add to world
-  dynamicsWorld->addRigidBody(rigidBody[index]);
+  dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
-  // update indeces
-  triIndex++;
-  index++;
-  numItems++;
+  objects.push_back(tempObject);
 }
 
 btDiscreteDynamicsWorld* Physics::getWorld()
 {
   return dynamicsWorld;
-}
-
-btRigidBody* Physics::getRigidBody(int i)
-{
-  return rigidBody[i];
-}
-
-int Physics::GetNumItems()
-{
-  return numItems;
 }

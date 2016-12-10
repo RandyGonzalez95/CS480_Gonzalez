@@ -18,7 +18,15 @@ class Object
     void getTextures(std::string textureFile);
     void Update(btRigidBody* rigidBodyID);
     void Render();
-  
+
+    btCollisionShape *shape;
+    btMotionState *motionState;
+    btRigidBody *rigidBody;
+    btTriangleMesh *objTriMesh;
+
+    btScalar mass;
+    btVector3 inertia;
+    
     glm::mat4 GetModel();
 
 
