@@ -5,7 +5,7 @@ Physics::Physics()
 {
   index = 0;
   numItems = 0;
-  mass = btScalar(10);
+  mass = btScalar(100);
   inertia = btVector3(1,1,1);
   triIndex = 0;
 
@@ -170,7 +170,7 @@ void Physics::CreateStick()
 
   // Motion State
   btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,1,0)));
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(32,1,0)));
   shapeMS.push_back(tempMS);
 
   // Create RigidBody
@@ -185,7 +185,27 @@ void Physics::CreateStick()
   dynamicsWorld->addRigidBody(rigidBody[index]);
 
 
-  // Pool Stick Implementation  
+  // Pool Stick Implementation
+  btTransform fromA(btTransform::getIdentity());
+  btTransform fromB(btTransform::getIdentity());
+
+  fromA.setOrigin( btVector3(-1.0f,0.0f,0.0f));
+  fromB.setOrigin( btVector3(5.0f,0.0f,0.0f));
+
+
+  btSliderConstraint* slider =
+      new btSliderConstraint(
+          *rigidBody[20],
+          fromB,true);
+
+  slider->setLowerLinLimit(-5.0f);
+  slider->setUpperLinLimit(5.0f);
+
+  slider->setLowerAngLimit(-5.0f);
+  slider->setUpperAngLimit(5.0f);
+
+  dynamicsWorld->addConstraint(slider);
+
 
 
   // Update Indeces

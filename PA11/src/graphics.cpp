@@ -197,14 +197,19 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
   if(codes[7])
   {
-    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(0.0f, 0.0f, 100.0f));
+    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-1000.0f, 0.0f, 0.0f));
+
     codes[7] = false;
   }
 
   m_camera->SetView(x, y, z);
 
   for(int i = 0; i < numItems; i++)
-  physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
+  {
+    physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
+
+  }
+
 
 
 }
