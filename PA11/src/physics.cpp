@@ -5,7 +5,7 @@ Physics::Physics()
 {
   index = 0;
   numItems = 0;
-  mass = btScalar(0.6);
+  mass = btScalar(100);
   inertia = btVector3(0,0,0);
   triIndex = 0;
 
@@ -172,7 +172,7 @@ void Physics::CreateStick()
 
   // Motion State
   btDefaultMotionState *tempMS;
-  tempMS = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(32,1,0)));
+  tempMS = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(32,1,0)));
   shapeMS.push_back(tempMS);
 
   // Create RigidBody

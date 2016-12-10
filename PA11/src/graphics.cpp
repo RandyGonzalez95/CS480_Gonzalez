@@ -197,7 +197,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
   if(codes[7])
   {
-    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-500.0f, 0.0f, 0.0f));
+    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
 
     codes[7] = false;
   }
