@@ -5,8 +5,8 @@ Physics::Physics()
 {
   index = 0;
   numItems = 0;
-  mass = btScalar(100);
-  inertia = btVector3(1,1,1);
+  mass = btScalar(0.6);
+  inertia = btVector3(0,0,0);
   triIndex = 0;
 
   if(!Initialize())
@@ -139,6 +139,8 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
   // Create RigidBody
   btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(mass, shapeMS[index], shapes[index], inertia);
   btRigidBody *rbTemp = new btRigidBody(sphereRigidBodyCI);
+  rbTemp->setRestitution(0.9);
+  rbTemp->setDamping(0,0.8);
   rigidBody.push_back(rbTemp);
 
   // Set Active

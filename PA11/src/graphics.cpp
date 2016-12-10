@@ -197,7 +197,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
   }
   if(codes[7])
   {
-    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-1000.0f, 0.0f, 0.0f));
+    physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-500.0f, 0.0f, 0.0f));
 
     codes[7] = false;
   }
@@ -208,6 +208,15 @@ void Graphics::Update(unsigned int dt, bool codes[])
   {
     physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
 
+  }
+
+  for (int i = 0; i < 16; i++)
+  {
+    btVector3 vel = physicsWorld->getRigidBody(i)->getLinearVelocity();
+    if (vel.getY() > 0){
+      vel.setY(0);
+    }
+    physicsWorld->getRigidBody(i)->setLinearVelocity(vel);
   }
 
 
