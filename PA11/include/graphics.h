@@ -19,6 +19,7 @@ class Graphics
     bool Initialize(int width, int height, bool flag);
     void Update(unsigned int dt, bool codes[]);
     void SetCamera(bool codes[]);
+    void PlayGame(bool codes[]);
     void Render();
     friend class Physics;
 

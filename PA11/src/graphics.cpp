@@ -169,8 +169,31 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Set Camera
   SetCamera(codes);
 
+  // Check for game logic
+  PlayGame(codes);
+
+  // update all items
+  for(int i = 0; i < numItems; i++)
+  {
+    physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
+
+    // Prevent Objects from flying off the table
+    btVector3 vel = physicsWorld->getRigidBody(i)->getLinearVelocity();
+
+    if (vel.getY() > 0)
+      vel.setY(0);
+
+
+    // set linear velocity
+    physicsWorld->getRigidBody(i)->setLinearVelocity(vel);
+  }
+
+}
+
+void Graphics::PlayGame(bool codes[])
+{
   // Hit the cue ball
-  if(codes[6])
+  if(codes[6]) // Space bar
   {
     physicsWorld->getRigidBody(20)->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
 
@@ -184,27 +207,6 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
     codes[7] = false;
   }
-
-
-  // update all items
-  for(int i = 0; i < numItems; i++)
-  {
-    physicsWorld->objects[i]->Update(physicsWorld->getRigidBody(i));
-
-    // Prevent Objects from flying off the table
-    btVector3 vel = physicsWorld->getRigidBody(i)->getLinearVelocity();
-    
-    if (vel.getY() > 0)
-      vel.setY(0);
-
-
-    // set linear velocity
-    physicsWorld->getRigidBody(i)->setLinearVelocity(vel);
-  }
-
-
-
-
 }
 
 void Graphics::SetCamera(bool codes[])
