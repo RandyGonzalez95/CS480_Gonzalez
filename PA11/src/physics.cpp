@@ -93,7 +93,7 @@ void Physics::Pool()
   CreateSphere("../models/sphere.obj", "../models/ball14.png", btVector3(-29,0.5,-2));
   CreateSphere("../models/sphere.obj", "../models/ball15.png", btVector3(-31,0.5,1.1));
 
-  // Table items (16-19)
+  // Table items (index 16-19)
   CreateTableItem("../models/frame.obj", "../models/images.jpg"); // 16
   CreateTableItem("../models/legs.obj", "../models/steel.jpg"); // 17
   CreateTableItem("../models/table.obj", "../models/green.jpg"); // 18
