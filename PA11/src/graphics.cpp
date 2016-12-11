@@ -311,6 +311,7 @@ void Graphics::SetCamera(bool codes[])
     z -= 1;
     codes[5] = false;
   }
+  
 
   // Set camera view
   m_camera->SetView(x, y, z);

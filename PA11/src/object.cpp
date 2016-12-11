@@ -144,7 +144,7 @@ void Object::SetLocation(float y, Object *cueBall)
 {
   glm::mat4 cueModel = cueBall->GetModel();
 
-  model = glm::rotate(cueModel, y, glm::vec3(0, 0, 1));
+  model = glm::rotate(glm::mat4(1.0f), y, glm::vec3(0, 0, 1));
 
 }
 

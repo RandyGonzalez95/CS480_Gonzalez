@@ -114,11 +114,11 @@ void Engine::Keyboard(bool codes[])
         break;
 
       case SDLK_t: // Move Camera Y Down
-        codes[3] = true;
+        codes[4] = true;
         break;
 
       case SDLK_y: // Move Camera Z Down
-        codes[3] = true;
+        codes[5] = true;
         break;
 
       case SDLK_SPACE: // Shoot Cue Ball
