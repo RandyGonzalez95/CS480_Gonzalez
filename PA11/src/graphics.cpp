@@ -177,9 +177,9 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
     // Get the velocity of the objects
     btVector3 vel = physicsWorld->getObject(i)->getRigidBody()->getLinearVelocity();
-
+    physicsWorld->getObject(20)->UpdateStick(xForce, zForce, physicsWorld->getObject(0));
     // If the velocity is moving upwards reset it to 0 to keep objects on table
-    if (vel.getY() > 0)
+    if(vel.getY() > 0)
     {
       vel.setY(0);
     }
@@ -233,7 +233,7 @@ void Graphics::PlayGame(bool codes[])
       zForce -= 5;
     }
 
-    physicsWorld->getObject(20)->UpdateStick(xForce, zForce, physicsWorld->getObject(0));
+
     codes[8] = false;
   }
 

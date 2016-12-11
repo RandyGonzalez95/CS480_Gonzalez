@@ -36,7 +36,8 @@ class Object
     glm::mat4 model;
     std::vector<Vertex> Geometry;
     std::vector<unsigned int> Indices;
-
+    float angle = 1.0;
+    
     // Texture members
     GLuint Textures;
     GLuint VB;
