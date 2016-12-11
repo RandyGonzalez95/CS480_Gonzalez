@@ -1,46 +1,56 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <vector>
 #include "graphics_headers.h"
-#include <btBulletDynamicsCommon.h>
+#include <iostream>
 
+struct Vertex
+{
+  GLfloat position[3];
+  GLfloat uv[2];
+  GLfloat normal[3];
+};
 
 class Object
 {
+  friend class Physics;
+
   public:
-    Object();
-    ~Object();
+    Object(); // Constructor
+    ~Object(); // Destructor
 
-    void CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh);
-    bool Initialize(std::string objFile);
-    void SetVertices(btTriangleMesh *triMesh);
-    void SetTexture(std::string textureFile);
-    void Update(btRigidBody* rigidBodyID);
-    void Render();
-    glm::mat4 GetModel();
+    void CreateObject(std::string objFile, std::string textureFile, btTriangleMesh *triMesh); // Create the object
+    bool Initialize(std::string objFile); // Initialize the object
+    void SetVertices(btTriangleMesh *triMesh); // Set vertices of object
+    void SetTexture(std::string textureFile); // Set texture of object
+    void Update(btRigidBody* rigidBodyID); // Update the object
+    void Render(); // Render the object
 
-    // Bullet variables
+    // Data member gets
+    glm::mat4 GetModel(); // Get Model
+    btRigidBody* getRigidBody(); // Get rigid body
+
+  private:
+    glm::mat4 model;
+    std::vector<Vertex> Geometry;
+    std::vector<unsigned int> Indices;
+
+    // Texture members
+    GLuint Textures;
+    GLuint VB;
+    GLuint IB;
+
+    // Assimp members
+    Assimp::Importer importer;
+    const aiScene *myScene;
+
+    // Bullet members
     btCollisionShape *shape;
     btMotionState *motionState;
     btRigidBody *rigidBody;
     btTriangleMesh *objTriMesh;
     btScalar mass;
     btVector3 inertia;
-    
-  private:
-    glm::mat4 model;
-    std::vector<Vertex> Geometry;
-    std::vector<unsigned int> Indices;
-
-    GLuint Textures;
-    GLuint VB;
-    GLuint IB;
-
-
-    // Assimp
-    Assimp::Importer importer;
-    const aiScene *myScene;
 };
 
 #endif /* OBJECT_H */

@@ -170,13 +170,13 @@ void Graphics::Update(unsigned int dt, bool codes[])
   PlayGame(codes);
 
   // Update all items
-  for(int i = 0; i < physicsWorld->objects.size(); i++)
+  for(int i = 0; i < physicsWorld->getObjects().size(); i++)
   {
     // Update all objects in the world
-    physicsWorld->objects[i]->Update(physicsWorld->objects[i]->rigidBody);
+    physicsWorld->getObject(i)->Update(physicsWorld->getObject(i)->getRigidBody());
 
     // Get the velocity of the objects
-    btVector3 vel = physicsWorld->objects[i]->rigidBody->getLinearVelocity();
+    btVector3 vel = physicsWorld->getObject(i)->getRigidBody()->getLinearVelocity();
 
     // If the velocity is moving upwards reset it to 0 to keep objects on table
     if (vel.getY() > 0)
@@ -185,7 +185,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
     }
 
     // Set the linear velocity of the object
-    physicsWorld->objects[i]->rigidBody->setLinearVelocity(vel);
+    physicsWorld->getObject(i)->getRigidBody()->setLinearVelocity(vel);
   }
 }
 
@@ -194,7 +194,7 @@ void Graphics::PlayGame(bool codes[])
   // Hit the cue ball
   if(codes[6]) // Space bar
   {
-    physicsWorld->objects[20]->rigidBody->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
+    physicsWorld->getObject(20)->getRigidBody()->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
 
     codes[6] = false;
   }
@@ -264,10 +264,10 @@ void Graphics::Render()
   glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
   // Render the all objects on Pool Table
-  for(int i = 0; i < physicsWorld->objects.size(); i++)
+  for(int i = 0; i < physicsWorld->getObjects().size(); i++)
   {
-    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr( physicsWorld->objects[i]->GetModel()));
-    physicsWorld->objects[i]->Render();
+    glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr( physicsWorld->getObject(i)->GetModel()));
+    physicsWorld->getObject(i)->Render();
   }
 
   // Lights
@@ -278,9 +278,9 @@ void Graphics::Render()
 
   // Get any errors from OpenGL
   auto error = glGetError();
-  if ( error != GL_NO_ERROR )
+  if (error != GL_NO_ERROR)
   {
-    string val = ErrorString( error );
+    std::string val = ErrorString(error);
     std::cout<< "Error initializing OpenGL! " << error << ", " << val << std::endl;
   }
 }

@@ -61,6 +61,16 @@ bool Physics::Initialize()
   return true;
 }
 
+std::vector<Object*> Physics::getObjects()
+{
+  return objects;
+}
+
+Object* Physics::getObject(int index)
+{
+  return objects[index];
+}
+
 void Physics::Pool()
 {
   // Cue Ball (index 0)

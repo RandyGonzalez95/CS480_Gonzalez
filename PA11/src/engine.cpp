@@ -1,6 +1,6 @@
 #include "engine.h"
 
-Engine::Engine(string name, int width, int height)
+Engine::Engine(std::string name, int width, int height)
 {
   m_WINDOW_NAME = name;
   m_WINDOW_WIDTH = width;
@@ -9,7 +9,7 @@ Engine::Engine(string name, int width, int height)
   m_DT = 0;
 }
 
-Engine::Engine(string name)
+Engine::Engine(std::string name)
 {
   m_WINDOW_NAME = name;
   m_WINDOW_HEIGHT = 0;
@@ -138,7 +138,7 @@ unsigned int Engine::getDT()
   assert(TimeNowMillis >= m_currentTimeMillis);
   unsigned int DeltaTimeMillis = (unsigned int)(TimeNowMillis - m_currentTimeMillis);
   m_currentTimeMillis = TimeNowMillis;
-  
+
   return DeltaTimeMillis;
 }
 

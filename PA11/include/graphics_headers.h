@@ -1,8 +1,6 @@
 #ifndef GRAPHICS_HEADERS_H
 #define GRAPHICS_HEADERS_H
 
-#include <iostream>
-
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 
 #if defined(__APPLE__) || defined(MACOSX)
@@ -10,7 +8,6 @@
   #include <OpenGL/GLU.h>
 #else //linux as default
   #include <GL/glew.h>
-  //#include <GL/glu.h>
 #endif
 
 // GLM for matricies
@@ -28,14 +25,9 @@
 #include <assimp/postprocess.h>
 #include <assimp/color4.h>
 #include <Magick++.h>
-
 using namespace Magick;
 
-struct Vertex
-{
-  GLfloat position[3];
-  GLfloat uv[2];
-  GLfloat normal[3];
-};
+// Bullet Libraries
+#include <btBulletDynamicsCommon.h>
 
 #endif /* GRAPHICS_HEADERS_H */

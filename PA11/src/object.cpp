@@ -145,6 +145,11 @@ glm::mat4 Object::GetModel()
   return model;
 }
 
+btRigidBody* Object::getRigidBody()
+{
+  return rigidBody;
+}
+
 void Object::SetTexture(std::string textureFile)
 {
   InitializeMagick(textureFile.c_str());

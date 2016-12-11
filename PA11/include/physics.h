@@ -1,38 +1,36 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-#include <btBulletDynamicsCommon.h>
-#include <vector>
 #include "object.h"
-#include "string"
 
 class Physics
-{
-  friend class Graphics;
-
+{  
   public:
-    Physics();
-    ~Physics();
+    Physics(); // Constructor
+    ~Physics(); // Destructor
+    bool Initialize(); // Initialize world
+    void Pool(); // Create pool game
 
-    bool Initialize();
-    void Pool();
-    btDiscreteDynamicsWorld *getWorld();
-    void CreateSphere(std::string objFile, std::string texture, const btVector3 &position);
-    void CreateStick(std::string objFile, std::string texture);
-    void CreateTableItem(std::string objFile, std::string texture);
+    // Create objects
+    void CreateSphere(std::string objFile, std::string texture, const btVector3 &position); // Create ball
+    void CreateStick(std::string objFile, std::string texture); // Create pool stick
+    void CreateTableItem(std::string objFile, std::string texture); // Create item on table
+
+    // Data member gets
+    btDiscreteDynamicsWorld *getWorld(); // Get world
+    std::vector<Object*> getObjects(); // Get vector of objects
+    Object* getObject(int index); // Get object at index
 
   private:
-    // Dynamics World Variables
+    // Dynamic world members
     btBroadphaseInterface *broadphase;
     btDefaultCollisionConfiguration *collisionConfiguration;
     btCollisionDispatcher *dispatcher;
     btSequentialImpulseConstraintSolver *solver;
-
-    // Physical World
     btDiscreteDynamicsWorld *dynamicsWorld;
 
     // Objects
     std::vector<Object*> objects;
 };
 
-#endif
+#endif  /* PHYSICS_H */

@@ -1,20 +1,12 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include <iostream>
-using namespace std;
-
-#include "graphics_headers.h"
 #include "camera.h"
 #include "shader.h"
-#include <vector>
-
 #include "physics.h"
 
 class Graphics
 {
-  friend class Physics;
-
   public:
     Graphics();
     ~Graphics();
