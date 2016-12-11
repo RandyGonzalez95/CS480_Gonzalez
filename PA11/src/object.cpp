@@ -143,7 +143,7 @@ void Object::Update()
 void Object::UpdateStick(float x, float z, Object* cueBall)
 {
   float angle = 1.0;
-  model = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(x, 0.0, y)) * cueBall->GetModel();
+  model = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(x, 0.0, z)) * cueBall->GetModel();
 }
 
 glm::mat4 Object::GetModel()
