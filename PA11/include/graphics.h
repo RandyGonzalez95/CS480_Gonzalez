@@ -50,6 +50,8 @@ class Graphics
     float light = 1.0f;
     float light2 = 0.5f;
 
+    float theta_y = 0;
+
     // Physics World
     Physics *physicsWorld;
 };

@@ -136,6 +136,8 @@ void Engine::Keyboard(bool codes[])
       case SDLK_RIGHT: // Move pool stick right
         codes[9] = true;
         break;
+
+
     }
   }
 }

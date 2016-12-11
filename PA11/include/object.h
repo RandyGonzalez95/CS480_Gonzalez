@@ -24,6 +24,7 @@ class Object
     void SetVertices(btTriangleMesh *triMesh); // Set vertices of object
     void SetTexture(std::string textureFile); // Set texture of object
     void Update(); // Update the object
+    void SetLocation(float, Object *cueBall); // set stick relative to ball
     void UpdateStick(float x, float z, Object* cueBall); // Update the stick
     void Render(); // Render the object
 
@@ -37,7 +38,7 @@ class Object
     std::vector<Vertex> Geometry;
     std::vector<unsigned int> Indices;
     float angle = 1.0;
-    
+
     // Texture members
     GLuint Textures;
     GLuint VB;

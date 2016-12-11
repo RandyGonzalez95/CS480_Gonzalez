@@ -5,6 +5,7 @@ Graphics::Graphics()
   x = 0;
   y = 55;
   z = 57;
+
 }
 
 Graphics::~Graphics()
@@ -177,7 +178,9 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
     // Get the velocity of the objects
     btVector3 vel = physicsWorld->getObject(i)->getRigidBody()->getLinearVelocity();
-    physicsWorld->getObject(20)->UpdateStick(xForce, zForce, physicsWorld->getObject(0));
+    physicsWorld->getObject(20)->SetLocation(theta_y, physicsWorld->getObject(0));
+    //physicsWorld->getObject(20)->UpdateStick(xForce, zForce, physicsWorld->getObject(0));
+
     // If the velocity is moving upwards reset it to 0 to keep objects on table
     if(vel.getY() > 0)
     {
@@ -211,6 +214,8 @@ void Graphics::PlayGame(bool codes[])
   // Move pool stick left
   if(codes[8])
   {
+    theta_y+= 1;
+
     if(zForce == 90)
     {
       positiveZ = false;
@@ -240,8 +245,11 @@ void Graphics::PlayGame(bool codes[])
   // Move pool stick right
   if(codes[9])
   {
+    theta_y -= 1;
+
     if(zForce == 90)
     {
+
       positiveZ = true;
       xForce -= 180;
     }

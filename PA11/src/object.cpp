@@ -140,10 +140,16 @@ void Object::Update()
   model = glm::make_mat4(m);
 }
 
+void Object::SetLocation(float y, Object *cueBall)
+{
+  glm::mat4 cueModel = cueBall->GetModel();
+
+  model = glm::rotate(cueModel, y, glm::vec3(0, 0, 1));
+
+}
+
 void Object::UpdateStick(float x, float z, Object* cueBall)
 {
-  angle += 0.1 * M_PI/600;
-  float x = cueBall->motionState->getX();
 
 }
 
@@ -196,6 +202,8 @@ void Object::Render()
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
+
+
 
   glBindBuffer(GL_ARRAY_BUFFER, VB);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);

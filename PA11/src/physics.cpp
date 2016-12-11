@@ -84,7 +84,7 @@ void Physics::Pool()
   CreateSphere("../models/sphere.obj", "../models/ball5.jpeg", btVector3(-33,0.5,-2));
   CreateSphere("../models/sphere.obj", "../models/ball6.jpeg", btVector3(-29,0.5,2));
   CreateSphere("../models/sphere.obj", "../models/ball7.jpeg", btVector3(-33,0.5,4));
-  CreateSphere("../models/sphere.obj", "../models/ball8.png", btVector3(-29,0.5,0));
+  CreateSphere("../models/sphere.obj", "../models/ball8.png",  btVector3(-29,0.5,0));
   CreateSphere("../models/sphere.obj", "../models/ball9.jpeg", btVector3(-31,0.5,-3.1));
   CreateSphere("../models/sphere.obj", "../models/ball10.png", btVector3(-33,0.5,0));
   CreateSphere("../models/sphere.obj", "../models/ball11.png", btVector3(-27,0.5,1.1));
