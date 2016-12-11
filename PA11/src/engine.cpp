@@ -128,6 +128,14 @@ void Engine::Keyboard(bool codes[])
       case SDLK_p: // Reset Game
         codes[7] = true;
         break;
+
+      case SDLK_LEFT: // Move pool stick left
+        codes[8] = true;
+        break;
+
+      case SDLK_RIGHT: // Move pool stick right
+        codes[9] = true;
+        break;
     }
   }
 }

@@ -23,12 +23,14 @@ class Object
     bool Initialize(std::string objFile); // Initialize the object
     void SetVertices(btTriangleMesh *triMesh); // Set vertices of object
     void SetTexture(std::string textureFile); // Set texture of object
-    void Update(btRigidBody* rigidBodyID); // Update the object
+    void Update(); // Update the object
+    void UpdateStick(float x, float z, Object* cueBall); // Update the stick
     void Render(); // Render the object
 
     // Data member gets
     glm::mat4 GetModel(); // Get Model
     btRigidBody* getRigidBody(); // Get rigid body
+    btTransform  getTrans(); // Get object trans
 
   private:
     glm::mat4 model;

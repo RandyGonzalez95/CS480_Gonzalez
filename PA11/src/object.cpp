@@ -128,16 +128,22 @@ void Object::SetVertices(btTriangleMesh *triMesh)
   }
 }
 
-void Object::Update(btRigidBody* rigidBodyID)
+void Object::Update()
 {
   // Initialize Physics
   btTransform trans;
   btScalar m[16];
 
   // Move Objects
-  rigidBodyID->getMotionState()->getWorldTransform(trans);
+  rigidBody->getMotionState()->getWorldTransform(trans);
   trans.getOpenGLMatrix(m);
   model = glm::make_mat4(m);
+}
+
+void Object::UpdateStick(float x, float z, Object* cueBall)
+{
+  float angle = 1.0;
+  model = glm::rotate(glm::mat4(1.0f), (angle), glm::vec3(x, 0.0, y)) * cueBall->GetModel();
 }
 
 glm::mat4 Object::GetModel()
@@ -148,6 +154,13 @@ glm::mat4 Object::GetModel()
 btRigidBody* Object::getRigidBody()
 {
   return rigidBody;
+}
+
+btTransform Object::getTrans()
+{
+	btTransform trans;
+	rigidBody->getMotionState()->getWorldTransform(trans);
+	return trans;
 }
 
 void Object::SetTexture(std::string textureFile)

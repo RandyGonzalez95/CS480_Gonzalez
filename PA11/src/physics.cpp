@@ -142,50 +142,6 @@ void Physics::CreateStick(std::string objFile, std::string texture)
   Object *tempObject = new Object();
   tempObject->CreateObject(objFile, texture, NULL);
 
-  // Set mass and inertia
-  tempObject->mass = btScalar(100);
-  tempObject->inertia = btVector3(0,0,0);
-
-  // Set collision shape
-  tempObject->shape = new btCylinderShape(btVector3(1,1,1));
-  tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
-
-  // Set motion state
-  tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,1), btVector3(34,1,0)));
-
-  // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(tempObject->mass, tempObject->motionState, tempObject->shape, tempObject->inertia);
-  tempObject->rigidBody = new btRigidBody(rigidBodyCI);
-
-  // Disable deactivation of object
-  tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-  // Add to World
-  dynamicsWorld->addRigidBody(tempObject->rigidBody);
-
-  // Create slider transform
-  btTransform fromB(btTransform::getIdentity());
-
-  // Set slider origin
-  fromB.setOrigin( btVector3(5.0f,0.0f,0.0f));
-
-  // Create slider
-  btSliderConstraint* slider =
-      new btSliderConstraint(
-          *tempObject->rigidBody,
-          fromB,true);
-
-  // Set lin limits of slider
-  slider->setLowerLinLimit(-5.0f);
-  slider->setUpperLinLimit(5.0f);
-
-  // Set angle limits of slider
-  slider->setLowerAngLimit(-5.0f);
-  slider->setUpperAngLimit(5.0f);
-
-  // Add constraint to world
-  dynamicsWorld->addConstraint(slider);
-
   // Add object to vector
   objects.push_back(tempObject);
 }

@@ -37,6 +37,12 @@ class Graphics
     // Camera Position
     float x = 0, y = 0, z = 0;
 
+    // Force on ball
+    float xForce = -90, zForce = 0;
+
+    bool positiveX = true;
+    bool positiveZ = true;
+
     // Simulation Time
     float simTime = 0;
 

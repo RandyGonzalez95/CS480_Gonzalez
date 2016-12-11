@@ -169,11 +169,11 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Check Game Logic
   PlayGame(codes);
 
-  // Update all items
-  for(int i = 0; i < physicsWorld->getObjects().size(); i++)
+  // Update all items that aren't the table
+  for(int i = 0; i < physicsWorld->getObjects().size() - 5; i++)
   {
     // Update all objects in the world
-    physicsWorld->getObject(i)->Update(physicsWorld->getObject(i)->getRigidBody());
+    physicsWorld->getObject(i)->Update();
 
     // Get the velocity of the objects
     btVector3 vel = physicsWorld->getObject(i)->getRigidBody()->getLinearVelocity();
@@ -191,10 +191,11 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
 void Graphics::PlayGame(bool codes[])
 {
+
   // Hit the cue ball
   if(codes[6]) // Space bar
   {
-    physicsWorld->getObject(20)->getRigidBody()->setLinearVelocity(btVector3(-200.0f, 0.0f, 0.0f));
+    physicsWorld->getObject(0)->getRigidBody()->setLinearVelocity(btVector3(xForce, 0.0f, zForce));
 
     codes[6] = false;
   }
@@ -205,6 +206,63 @@ void Graphics::PlayGame(bool codes[])
     physicsWorld = new Physics();
 
     codes[7] = false;
+  }
+
+  // Move pool stick left
+  if(codes[8])
+  {
+    if(zForce == 90)
+    {
+      positiveZ = false;
+      xForce += 180;
+    }
+
+    else if(zForce == -90)
+    {
+      positiveZ = true;
+      xForce -= 180;
+    }
+
+    if(positiveZ)
+    {
+      zForce  += 5;
+    }
+
+    else
+    {
+      zForce -= 5;
+    }
+
+    physicsWorld->getObject(20)->UpdateStick(xForce, zForce, physicsWorld->getObject(0));
+    codes[8] = false;
+  }
+
+  // Move pool stick right
+  if(codes[9])
+  {
+    if(zForce == 90)
+    {
+      positiveZ = true;
+      xForce -= 180;
+    }
+
+    else if(zForce == -90)
+    {
+      positiveZ = false;
+      xForce += 180;
+    }
+
+    if(positiveZ)
+    {
+      zForce -= 5;
+    }
+
+    else
+    {
+      zForce += 5;
+    }
+
+    codes[9] = false;
   }
 }
 
