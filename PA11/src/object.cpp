@@ -14,7 +14,7 @@ Object::~Object()
 
   delete shape;
   shape = NULL;
-
+std::cout << "Test";
   delete motionState;
   motionState = NULL;
 
