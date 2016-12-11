@@ -14,7 +14,6 @@ Object::~Object()
 
   delete shape;
   shape = NULL;
-std::cout << "Tst";
   delete motionState;
   motionState = NULL;
   delete objTriMesh;
