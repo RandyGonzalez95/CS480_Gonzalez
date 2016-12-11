@@ -14,13 +14,9 @@ Object::~Object()
 
   delete shape;
   shape = NULL;
-std::cout << "Test";
+std::cout << "Tst";
   delete motionState;
   motionState = NULL;
-
-  delete rigidBody;
-  rigidBody = NULL;
-
   delete objTriMesh;
   objTriMesh = NULL;
 
