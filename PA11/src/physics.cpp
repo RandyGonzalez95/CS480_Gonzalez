@@ -105,8 +105,6 @@ void Physics::Pool()
   // Pool stick (index 20)
   CreateStick("../models/stick.obj", "../texture/mahoganywood.jpg");
 
-  // Debugging cube
-  CreateCube();
   // Create Room
   CreateStick("../models/floor.obj", "../texture/carpet3.jpg");
   CreateStick("../models/wall.obj", "../texture/brick.jpg");
@@ -135,39 +133,6 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
   tempObject->rigidBody = new btRigidBody(rigidBodyCI);
   tempObject->rigidBody->setRestitution(0.9);
   tempObject->rigidBody->setDamping(0,0.8);
-
-  // Disable deactivation of object
-  tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-  // Add to world
-  dynamicsWorld->addRigidBody(tempObject->rigidBody);
-
-  // Add to objects vector
-  objects.push_back(tempObject);
-}
-
-void Physics::CreateCube()
-{
-  // Create Object
-  Object *tempObject = new Object();
-  tempObject->CreateObject("../models/cube.obj", "../models/steel.jpg", NULL);
-
-  // Set mass and inertia
-  tempObject->mass = btScalar(10);
-  tempObject->inertia = btVector3(0,0,0);
-
-  // Set collision Shape
-  tempObject->shape = new btBoxShape(btVector3(1,1,1));
-  tempObject->shape->calculateLocalInertia(tempObject->mass, tempObject->inertia);
-
-  // Set motion state
-  tempObject->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), btVector3(0,0.5,0)));
-
-  // Create RigidBody
-  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(tempObject->mass, tempObject->motionState, tempObject->shape, tempObject->inertia);
-  tempObject->rigidBody = new btRigidBody(rigidBodyCI);
-  //tempObject->rigidBody->setRestitution(0.9);
-  //tempObject->rigidBody->setDamping(0,0.8);
 
   // Disable deactivation of object
   tempObject->rigidBody->setActivationState(DISABLE_DEACTIVATION);

@@ -26,7 +26,6 @@ class Object
     void Update(); // Update the object
     void SetLocation(float, Object *cueBall); // set stick relative to ball
     void UpdateStick(float x, float z, Object* cueBall); // Update the stick
-    void move(float, float, float);
     void Reset();
     void ResetCue();
     void Render(); // Render the object
@@ -35,6 +34,8 @@ class Object
     glm::mat4 GetModel(); // Get Model
     btRigidBody* getRigidBody(); // Get rigid body
     btTransform  getTrans(); // Get object trans
+
+    bool madeIn = false;
 
   private:
     glm::mat4 model;

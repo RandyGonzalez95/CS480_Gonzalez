@@ -163,12 +163,6 @@ void Object::SetLocation(float y, Object *cueBall)
 
 }
 
-void Object::move(float xPos, float yPos, float zPos)
-{
-  rigidBody->applyForce(btVector3(xPos,yPos,zPos), btVector3(0,0,0));
-
-}
-
 void Object::Reset()
 {
   model = glm::mat4(0.0f);

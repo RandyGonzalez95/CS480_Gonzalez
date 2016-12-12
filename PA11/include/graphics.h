@@ -14,7 +14,6 @@ class Graphics
     void Update(unsigned int dt, bool codes[]);
     void SetCamera(bool codes[]);
     void PlayGame(bool codes[]);
-    void Move(bool codes[]);
     void Render();
 
   private:
@@ -37,8 +36,6 @@ class Graphics
 
     // Camera Position// Debugging cube
     float x = 0, y = 0, z = 0;
-
-
 
     float xPos = 0, yPos = 0, zPos = 0;
 
@@ -65,6 +62,8 @@ class Graphics
 
     // Physics World
     Physics *physicsWorld;
+
+    bool outputCue = false;
 };
 
 #endif /* GRAPHICS_H */
