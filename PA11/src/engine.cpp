@@ -125,7 +125,7 @@ void Engine::Keyboard(bool codes[])
         codes[6] = true;
         break;
 
-      case SDLK_p: // Reset Game
+      case SDLK_o: // Reset Game
         codes[7] = true;
         break;
 
@@ -158,9 +158,31 @@ void Engine::Keyboard(bool codes[])
         codes[14] = true;
         break;
 
+      case SDLK_p:
+        codes[15] = !codes[15];
+        if(codes[15])
+        {
+          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
+          {
+            printf("The graphics failed to initialize.\n");
+          }
+
+        }
+        else if(!codes[15])
+        {
+          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
+          {
+            printf("The graphics failed to initialize.\n");
+          }
+
+        }
+        break;
+
     }
+
   }
 }
+
 
 unsigned int Engine::getDT()
 {
