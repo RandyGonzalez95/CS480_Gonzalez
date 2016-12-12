@@ -193,16 +193,18 @@ void Graphics::Update(unsigned int dt, bool codes[])
           vel.setZ(0);
         }
 
+    // Check if the ball is ready to be shot
     if(!shot)
     {
       physicsWorld->getObject(20)->SetLocation(theta_y, physicsWorld->getObject(0));
       
     }
 
-
+    // Get each objects locations
     physicsWorld->getObject(i)->getRigidBody()->getMotionState()->getWorldTransform(ballTrans);
     ballPos = ballTrans.getOrigin();
 
+    // check what ball we made in
     if(ballPos.getY() < 0.0 && physicsWorld->getObject(i)->madeIn == false)
     {
       if(i == 0 && !outputCue)
@@ -247,6 +249,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
 void Graphics::ChangeLight(bool codes[])
 {
+  // Light Controls to change the ambient and Specular
   if(codes[10])
   {
     light -= 0.1;
