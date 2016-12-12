@@ -22,7 +22,7 @@ This project uses OpenGL 3.3. Some computers, such as virtual machines in the EC
 
 ### Assimp and libmagick++
 ```bash
-apt-get install g++ freeglut3-dev glew1.5-dev libmagick++-dev libassimp-dev libglfw-dev
+sudo apt-get install g++ freeglut3-dev glew1.5-dev libmagick++-dev libassimp-dev libglfw-dev
 ```
 
 ### Glew, GLM, SDL2
