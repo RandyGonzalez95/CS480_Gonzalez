@@ -259,7 +259,7 @@ void Graphics::ChangeLight(bool codes[])
     
     codes[11] = false;
   }
-  if(codes[1])
+  if(codes[12])
   {
     light2 -= 0.5;
     codes[12] = false;
