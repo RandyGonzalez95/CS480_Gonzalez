@@ -14,6 +14,7 @@ class Graphics
     void Update(unsigned int dt, bool codes[]);
     void SetCamera(bool codes[]);
     void PlayGame(bool codes[]);
+    void ChangeLight(bool codes[]);
     void Render();
 
   private:

@@ -172,6 +172,9 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Check Game Logic
   PlayGame(codes);
 
+  // Change Light stuff
+  ChangeLight(codes);
+
   // Update all items that aren't the table
   for(int i = 0; i < 17; i++)
   {
@@ -240,6 +243,33 @@ void Graphics::Update(unsigned int dt, bool codes[])
     // Set the linear velocity of the object
     physicsWorld->getObject(i)->getRigidBody()->setLinearVelocity(vel);
   }
+}
+
+void Graphics::ChangeLight(bool codes[])
+{
+  if(codes[10])
+  {
+    light -= 0.1;
+
+    codes[10] = false;
+  }
+  if(codes[11])
+  {
+    light += 0.1;
+    
+    codes[11] = false;
+  }
+  if(codes[1])
+  {
+    light2 -= 0.5;
+    codes[12] = false;
+  }
+  if(codes[13])
+  {
+    light2 +=0.5;
+    codes[13] = false;
+  }
+
 }
 
 void Graphics::PlayGame(bool codes[])
@@ -420,6 +450,13 @@ void Graphics::SetCamera(bool codes[])
   {
     z -= 1;
     codes[5] = false;
+  }
+  if(codes[14]) // reset view
+  {
+    x = 0;
+    y = 55;
+    z = 57;
+    codes[14] = false;
   }
 
 
