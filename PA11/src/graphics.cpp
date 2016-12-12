@@ -171,15 +171,27 @@ void Graphics::Update(unsigned int dt, bool codes[])
   PlayGame(codes);
 
   // Update all items that aren't the table
-  for(int i = 0; i < physicsWorld->getObjects().size() - 5; i++)
+  for(int i = 0; i < 17; i++)
   {
     // Update all objects in the world
     physicsWorld->getObject(i)->Update();
 
     // Get the velocity of the objects
     btVector3 vel = physicsWorld->getObject(i)->getRigidBody()->getLinearVelocity();
-    physicsWorld->getObject(20)->SetLocation(theta_y, physicsWorld->getObject(0));
-    //physicsWorld->getObject(20)->UpdateStick(xForce, zForce, physicsWorld->getObject(0));
+
+    // if cue ball is now static we may shoot again.
+    if( (i == 0) && 
+        (vel.length() < 0.3))
+        {
+          shot = false;
+          vel.setX(0);
+          vel.setZ(0);
+        }
+
+    if(!shot)
+    {
+      physicsWorld->getObject(20)->SetLocation(theta_y, physicsWorld->getObject(0));
+    }
 
     // If the velocity is moving upwards reset it to 0 to keep objects on table
     if(vel.getY() > 0)
@@ -196,11 +208,27 @@ void Graphics::PlayGame(bool codes[])
 {
 
   // Hit the cue ball
-  if(codes[6]) // Space bar
+  if(codes[6] && !shot ) // Space bar
   {
+    shot = true;
+    physicsWorld->getObject(20)->Reset();
     physicsWorld->getObject(0)->getRigidBody()->setLinearVelocity(btVector3(xForce, 0.0f, zForce));
 
+    theta_y = 0;
+    xForce = -90;
+    zForce = 0;
+    lpositiveX = true;
+    lpositiveZ = true;
+
+    rpositiveX = true;
+    rpositiveZ = true;
+
     codes[6] = false;
+  }
+
+  else
+  {
+      codes[6] = false;
   }
 
   // Reset the game
@@ -214,30 +242,51 @@ void Graphics::PlayGame(bool codes[])
   // Move pool stick left
   if(codes[8])
   {
-    theta_y+= .05;
+    theta_y+= .016744;
 
-    if(zForce == 90)
+    if(lpositiveX)
     {
-      positiveZ = false;
-      xForce += 180;
-    }
-
-    else if(zForce == -90)
-    {
-      positiveZ = true;
-      xForce -= 180;
-    }
-
-    if(positiveZ)
-    {
-      zForce  += 5;
+      xForce  += 1.0;
     }
 
     else
     {
-      zForce -= 5;
+      xForce -= 1.0;
     }
 
+    if(lpositiveZ)
+    {
+      zForce  += 1.0;
+    }
+
+    else
+    {
+      zForce -= 1.0;
+    }
+
+    if(zForce == 90)
+    {
+      lpositiveX = true;
+      lpositiveZ = false;
+    }
+
+    else if(zForce == -90)
+    {
+      lpositiveX = false;
+      lpositiveZ = true;
+    }
+
+    if(xForce == 90)
+    {
+      lpositiveX = false;
+      lpositiveZ = false;
+    }
+
+    else if(xForce == -90)
+    {
+      lpositiveZ = true;
+      lpositiveX = true;
+    }
 
     codes[8] = false;
   }
@@ -246,29 +295,50 @@ void Graphics::PlayGame(bool codes[])
   if(codes[9])
   {
 
-    theta_y -= .05;
+    theta_y -= .016744;
 
     if(zForce == 90)
     {
-
-      positiveZ = true;
-      xForce -= 180;
+      rpositiveX = false;
+      rpositiveZ = false;
     }
 
     else if(zForce == -90)
     {
-      positiveZ = false;
-      xForce += 180;
+      rpositiveX = true;
+      rpositiveZ = true;
     }
 
-    if(positiveZ)
+    if(xForce == 90)
     {
-      zForce -= 5;
+      rpositiveX = false;
+      rpositiveZ = true;
+    }
+
+    else if(xForce == -90)
+    {
+      rpositiveZ = false;
+      rpositiveX = true;
+    }
+
+    if(rpositiveX)
+    {
+      xForce  += 1.0;
     }
 
     else
     {
-      zForce += 5;
+      xForce -= 1.0;
+    }
+
+    if(rpositiveZ)
+    {
+      zForce += 1.0;
+    }
+
+    else
+    {
+      zForce -= 1.0;
     }
 
     codes[9] = false;

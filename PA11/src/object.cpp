@@ -139,9 +139,8 @@ void Object::SetLocation(float y, Object *cueBall)
 {
   glm::mat4 cueModel = cueBall->GetModel();
 
- std::cout<< y << "\n";
   model = cueModel;
-  model *= glm::rotate(glm::mat4(1.0f), -1.6f, glm::vec3(0, 0, 1));
+  model *= glm::rotate(glm::mat4(1.0f), -1.5f, glm::vec3(0, 0, 1));
 
   model *= glm::rotate(glm::mat4(1.0f), y, glm::vec3(0, 1, 0));
 
@@ -151,6 +150,11 @@ void Object::SetLocation(float y, Object *cueBall)
   //model *= glm::translate( glm::mat4(1.0f), glm::vec3(0,1,0));
   //model *= cueModel;
 
+}
+
+void Object::Reset()
+{
+  model = glm::mat4(0.0f);
 }
 
 void Object::UpdateStick(float x, float z, Object* cueBall)

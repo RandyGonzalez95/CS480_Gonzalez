@@ -14,6 +14,7 @@ class Physics
     // Create objects
     void CreateSphere(std::string objFile, std::string texture, const btVector3 &position); // Create ball
     void CreateStick(std::string objFile, std::string texture); // Create pool stick
+    void CreateItem(std::string objFile, std::string texture);
     void CreateTableItem(std::string objFile, std::string texture); // Create item on table
 
     // Data member gets

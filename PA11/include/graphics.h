@@ -40,8 +40,14 @@ class Graphics
     // Force on ball
     float xForce = -90, zForce = 0;
 
-    bool positiveX = true;
-    bool positiveZ = true;
+    bool shot = false;
+
+    bool lpositiveX = true;
+    bool lpositiveZ = true;
+
+    bool rpositiveX = true;
+    bool rpositiveZ = true;
+
 
     // Simulation Time
     float simTime = 0;

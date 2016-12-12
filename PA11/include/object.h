@@ -26,6 +26,7 @@ class Object
     void Update(); // Update the object
     void SetLocation(float, Object *cueBall); // set stick relative to ball
     void UpdateStick(float x, float z, Object* cueBall); // Update the stick
+    void Reset();
     void Render(); // Render the object
 
     // Data member gets
