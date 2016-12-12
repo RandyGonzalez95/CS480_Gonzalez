@@ -1,4 +1,4 @@
-# PA10: Pinball 
+# PA11: Pool Game 
 
 ## Team Members
 - Brett Knadle  
@@ -6,15 +6,15 @@
 - Randy Gonzalez  
 
 ## Objective:
-- To build an interactive Pinball Game.
+- To build an interactive Pool Game.
 - Use Assimp to load models and textures.
 - Use Bullet to handle the physics.
 
 # Assignment:
-- Building an interactive Pinball Game with models and textures loading. Use Bullet library to handle the physics of the game.
+- Building an interactive Pool Game with models and textures loading. Use Bullet library to handle the physics of the game.
 
 ## Dependencies, Building, and Running
-This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./PA10
+This program only runs if a object file path is specified in the command line. If you place an object file in the models folder you would enter this in the command line: ./Pool
 
 ## Dependency Instructions
 For both of the operating systems to run this project installation of these three programs are required [GLEW](http://glew.sourceforge.net/), [GLM](http://glm.g-truc.net/0.9.7/index.html), and [SDL2](https://wiki.libsdl.org/Tutorials).
@@ -31,7 +31,10 @@ apt-get install g++ freeglut3-dev glew1.5-dev libmagick++-dev libassimp-dev libg
 ```bash
 sudo apt-get install libglew-dev libglm-dev libsdl2-dev
 ```
-
+### Bullet Libray
+```bash
+sudo apt-get install libbullet-dev
+```
 ### Mac OSX
 Installation of brew is suggested to easily install the libs. Ensure that the latest version of the Developer Tools is installed.
 ```bash
@@ -48,24 +51,35 @@ mkdir build
 cd build
 cmake ..
 make
-./PA10 
+./Pool
 ```
 
 ### Controls:
-	- ‘z’---------- Left Paddle
-	- ‘/’ --------- Right Paddle
-	- ‘space’----launch the ball (start the game)
-	- ‘p’--------- Change per Vertex between Per Fragment Lighting
-	- ‘t’ --------- Side View
-	- ‘y’--------- zoom out view
-	- ‘r’--------- default view
-	- ‘a’-------- decrement specular light
-	- ‘d’-------- increment specular light  
-	- ‘w’-------- decrement ambient light
-	- ‘s’ -------- increment ambient light 
+	Controls:
+	- left arrow------------ 	Move Pool Stick to Left
+	- right arrow ---------- 	Move Pool Stick to Right
+	- space-----------------	hit the ball 
+	- o-----------------------	Restart Game
+
+	Views:
+	- u -----------------	reset view
+	- q------------------	increment X value on camera
+	- w-----------------	increment Y value on camera
+	- e------------------	Increment Z value on camera
+	- r-----------------  Decrement X value on camera 
+	- t------------------	Decrement Y value on camera
+	- y------------------	Decrement Z value on camera
+
+	Lighting:
+	- f--------------- 	Increment specular Light
+	- d--------------- 	Decrement specular Light  
+	- s --------------	Increment Ambient Light 
+	- a---------------	Decrement Ambient Light
+	- p---------------	Switch between Shader Lighting
+
 
 ## Ubuntu.cse.unr.edu
 OpenGL 3.3 will run on the [ubuntu.cse.unr.edu](https://ubuntu.cse.unr.edu/) website. To do so follow the build instructions, but when running the Tutorial executable use this line to execute.
 ```bash
-/usr/NX/scripts/vgl/vglrun ./PA10
+/usr/NX/scripts/vgl/vglrun ./Pool
 ```

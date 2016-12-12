@@ -40,5 +40,8 @@ This program is to become familiar with Bullet Physics, a 3D physics simulation 
 ## PA9: Lighting
 This program is to become familiar with Lighting, per vertex lighting and per fragment lighting. To run this project ```cd PA9``` then follow the instructions in the README.md. 
 
-## PA10: Pinball
+## PA10: Pinball Game			
 This program is an interactive Pinball game using Assimp to load models and textures then using Bullets to handle physics. To run this project ```cd PA10``` then follow the instructions in the README.md. 
+
+## PA11: Pool Game
+This program is an interactive Pool game using Assimp to load models and textures then using Bullets to handle physics. To run this project ```cd PA11``` then follow the instructions in the README.md. 
