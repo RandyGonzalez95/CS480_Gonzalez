@@ -183,7 +183,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
     // if cue ball is now static we may shoot again.
     if( (i == 0) && 
-        (vel.length() < 0.7))
+        (vel.length() < 0.5))
         {
           shot = false;
           vel.setX(0);
