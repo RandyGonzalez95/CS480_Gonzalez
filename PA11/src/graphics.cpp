@@ -210,7 +210,17 @@ void Graphics::Update(unsigned int dt, bool codes[])
       if(i == 0 && !outputCue)
       {
         std::cout << "The cue ball was hit in, resetting the cue ball now." << std::endl;
+        
+        // Reset cue position
         physicsWorld->getObject(0)->ResetCue();
+
+        // Reset all of the velocities and forces
+        vel.setX(0);
+        vel.setZ(0);
+        btVector3 zeroVector(0,0,0);
+        physicsWorld->getObject(0)->getRigidBody()->setAngularVelocity(zeroVector);
+        physicsWorld->getObject(0)->getRigidBody()->clearForces();
+
         outputCue = true;
       }
 
