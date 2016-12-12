@@ -94,18 +94,18 @@ void Physics::Pool()
   CreateSphere("../models/sphere.obj", "../models/ball15.png", btVector3(-31,0.5,1.1));
 
   // Table items (index 16-19)
-  CreateTableItem("../models/frame.obj", "../texture/wood1.jpg"); // 16
-  CreateTableItem("../models/legs.obj", "../texture/wood1.jpg"); // 17
-  CreateTableItem("../models/table.obj", "../texture/cloth.jpg"); // 18
-  CreateTableItem("../models/ledges.obj", "../texture/blackwood.jpg"); //19
+  CreateTableItem("../models/frame.obj", "../models/wood1.jpg"); // 16
+  CreateTableItem("../models/legs.obj", "../models/wood1.jpg"); // 17
+  CreateTableItem("../models/table.obj", "../models/cloth.jpg"); // 18
+  CreateTableItem("../models/ledges.obj", "../models/blackwood.jpg"); //19
   
   // Pool stick (index 20)
-  CreateItem("../models/stick.obj", "../texture/mahoganywood.jpg");
+  CreateItem("../models/stick.obj", "../models/mahoganywood.jpg");
 
   // Create Room (index 21-23)
-  CreateItem("../models/floor.obj", "../texture/carpet3.jpg");
-  CreateItem("../models/wall.obj", "../texture/brick.jpg");
-  CreateItem("../models/couch.obj", "../texture/beige.jpg");
+  CreateItem("../models/floor.obj", "../models/carpet3.jpg");
+  CreateItem("../models/wall.obj", "../models/brick.jpg");
+  CreateItem("../models/couch.obj", "../models/beige.jpg");
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
