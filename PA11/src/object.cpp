@@ -14,13 +14,8 @@ Object::~Object()
 
   delete shape;
   shape = NULL;
-
   delete motionState;
   motionState = NULL;
-
-  delete rigidBody;
-  rigidBody = NULL;
-
   delete objTriMesh;
   objTriMesh = NULL;
 
