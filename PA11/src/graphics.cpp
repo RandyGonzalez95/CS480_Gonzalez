@@ -284,8 +284,8 @@ void Graphics::PlayGame(bool codes[])
     physicsWorld->getObject(0)->getRigidBody()->setLinearVelocity(btVector3(xForce, 0.0f, zForce));
 
     theta_y = 0;
-    xForce = -90;
-    zForce = 0;
+    xForce = -89;
+    zForce = -1;
     lpositiveX = true;
     lpositiveZ = true;
 

@@ -41,7 +41,7 @@ class Graphics
     float xPos = 0, yPos = 0, zPos = 0;
 
     // Force on ball
-    float xForce = -90, zForce = 0;
+    float xForce = -89, zForce = -1;
 
     bool shot = false;
 
