@@ -25,9 +25,8 @@ class Object
     void SetTexture(std::string textureFile); // Set texture of object
     void Update(); // Update the object
     void SetLocation(float, Object *cueBall); // set stick relative to ball
-    void UpdateStick(float x, float z, Object* cueBall); // Update the stick
-    void Reset();
-    void ResetCue();
+    void unrenderPoolStick(); // Unrender the pool stick
+    void ResetCue(); // Reset cue ball
     void Render(); // Render the object
 
     // Data member gets
@@ -41,7 +40,6 @@ class Object
     glm::mat4 model;
     std::vector<Vertex> Geometry;
     std::vector<unsigned int> Indices;
-    float angle = 1.0;
 
     // Texture members
     GLuint Textures;

@@ -137,52 +137,44 @@ void Object::Update()
 
 void Object::SetLocation(float y, Object *cueBall)
 {
-  
+  // Variables
   btTransform cueTrans;
   btVector3 cuePos;
 
+  // Get world transform of cue ball
   cueBall->rigidBody->getMotionState()->getWorldTransform(cueTrans);
   cuePos = cueTrans.getOrigin();
 
-
+  // Delete the cue ball
   delete cueBall->motionState;
+
+  // Reset the cue ball's motion state so it is standing up right
   cueBall->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), btVector3(cuePos.getX(), 0.5, cuePos.getZ())));
   cueBall->rigidBody->setMotionState(cueBall->motionState);
   glm::mat4 cueModel = cueBall->GetModel();
 
+  // Fix the pool stick to the ball and the rotation that the user specifies
   model = cueModel;
   model *= glm::rotate(glm::mat4(1.0f), -1.57f, glm::vec3(0, 0, 1));
-
   model *= glm::rotate(glm::mat4(1.0f), y, glm::vec3(0, 1, 0));
-
   model *= glm::rotate(glm::mat4(1.0f), 0.2f, glm::vec3(0, 0, 1));
-
   model *= glm::translate(glm::mat4(1.0f), glm::vec3(2, 0, 0));
-
   model *= glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.5, 0));
-
-  //model = glm::rotate(glm::mat4(1.0f), y, glm::vec3(0, 1, 0));
-
-  //model *= glm::translate( glm::mat4(1.0f), glm::vec3(0,1,0));
-  //model *= cueModel;
-
 }
 
-void Object::Reset()
+void Object::unrenderPoolStick()
 {
   model = glm::mat4(0.0f);
 }
 
 void Object::ResetCue()
 {
+  // Delete cue's motion state
   delete motionState;
+
+  // Reset the motion state to its default
   motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), btVector3(30.0f, 0.5, 0.0f)));
   rigidBody->setMotionState(motionState);
-}
-
-void Object::UpdateStick(float x, float z, Object* cueBall)
-{
-
 }
 
 glm::mat4 Object::GetModel()
@@ -234,8 +226,6 @@ void Object::Render()
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
-
-
 
   glBindBuffer(GL_ARRAY_BUFFER, VB);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);

@@ -137,37 +137,40 @@ void Engine::Keyboard(bool codes[])
         codes[9] = true;
         break;
 
-        // light stuff
-      case SDLK_a:
+      case SDLK_a: // Decrease Ambient List
         codes[10] = true;
         break;
 
-      case SDLK_s:
+      case SDLK_s: // Increase Ambient List
         codes[11] = true;
         break;
-      case SDLK_d:
+
+      case SDLK_d: // Decrease Specular Light
         codes[12] = true;
         break;
 
-      case SDLK_f:
+      case SDLK_f: // Increase Specular Light
         codes[13] = true;
         break;
 
-        // reset view on camera
-      case SDLK_u:
+      case SDLK_u: // Reset Camera View
         codes[14] = true;
         break;
 
       case SDLK_p:
         codes[15] = !codes[15];
+
+        // Vertex Lighting
         if(codes[15])
         {
-          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
+          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
           {
             printf("The graphics failed to initialize.\n");
           }
 
         }
+
+        // Fragment Lighting
         else if(!codes[15])
         {
           if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
@@ -177,9 +180,7 @@ void Engine::Keyboard(bool codes[])
 
         }
         break;
-
     }
-
   }
 }
 

@@ -38,19 +38,18 @@ class Graphics
     // Camera Position// Debugging cube
     float x = 0, y = 0, z = 0;
 
-    float xPos = 0, yPos = 0, zPos = 0;
-
-    // Force on ball
+    // Force on ball and movement of pool stick
     float xForce = -89, zForce = -1;
+    float theta_y = 0;
 
+    // Flag for if ball is in middle of being shot
     bool shot = false;
 
+    // Flags for moving the pool stick
     bool lpositiveX = false;
     bool lpositiveZ = true;
-
     bool rpositiveX = true;
     bool rpositiveZ = false;
-
 
     // Simulation Time
     float simTime = 0;
@@ -58,8 +57,6 @@ class Graphics
     // Lights
     float light = 1.0f;
     float light2 = 0.5f;
-
-    float theta_y = 0;
 
     // Physics World
     Physics *physicsWorld;

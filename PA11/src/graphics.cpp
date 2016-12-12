@@ -178,13 +178,13 @@ void Graphics::Update(unsigned int dt, bool codes[])
   // Update all items that aren't the table
   for(int i = 0; i < 17; i++)
   {
-    // Update all objects in the world
+    // Update the object in the world
     physicsWorld->getObject(i)->Update();
 
-    // Get the velocity of the objects
+    // Get the velocity of the object
     btVector3 vel = physicsWorld->getObject(i)->getRigidBody()->getLinearVelocity();
 
-    // if cue ball is now static we may shoot again.
+    // If cue ball is now static we may shoot again.
     if( (i == 0) && 
         (vel.length() < 0.5))
         {
@@ -193,20 +193,20 @@ void Graphics::Update(unsigned int dt, bool codes[])
           vel.setZ(0);
         }
 
-    // Check if the ball is ready to be shot
+    // Move stick to location of cue ball and current theta
     if(!shot)
     {
       physicsWorld->getObject(20)->SetLocation(theta_y, physicsWorld->getObject(0));
-      
     }
 
-    // Get each objects locations
+    // Get the objects location
     physicsWorld->getObject(i)->getRigidBody()->getMotionState()->getWorldTransform(ballTrans);
     ballPos = ballTrans.getOrigin();
 
-    // check what ball we made in
+    // Check if the ball has been made into a pocket
     if(ballPos.getY() < 0.0 && physicsWorld->getObject(i)->madeIn == false)
     {
+      // If the cue has been made reset it
       if(i == 0 && !outputCue)
       {
         std::cout << "The cue ball was hit in, resetting the cue ball now." << std::endl;
@@ -214,6 +214,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
         outputCue = true;
       }
 
+      // If the 8 ball has been made end game
       else if(i == 8)
       {
         codes[7] = true;
@@ -221,6 +222,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
         std::cout << "End of game, restarting" << std::endl;
       }
 
+      // If a solid has been made output this information to the user
       else if(i < 8 && !outputCue)
       {
         physicsWorld->getObject(i)->madeIn = true;
@@ -228,6 +230,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
         std::cout << "This ball is solid." << std::endl;
       }
 
+      // Else a striped has been made, output this to user
       else if(!outputCue)
       {
         physicsWorld->getObject(i)->madeIn = true;
@@ -249,102 +252,108 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
 void Graphics::ChangeLight(bool codes[])
 {
-  // Light Controls to change the ambient and Specular
-  if(codes[10])
+  if(codes[10]) // Decrease Ambient
   {
     light -= 0.1;
-
     codes[10] = false;
   }
-  if(codes[11])
+
+  if(codes[11]) // Increase Ambient
   {
     light += 0.1;
-    
     codes[11] = false;
   }
-  if(codes[12])
+
+  if(codes[12]) // Decrease Specular
   {
     light2 -= 0.5;
     codes[12] = false;
   }
-  if(codes[13])
+
+  if(codes[13]) // Increase Specular
   {
     light2 +=0.5;
     codes[13] = false;
   }
-
 }
 
 void Graphics::PlayGame(bool codes[])
 {
-
-  // Hit the cue ball
-  if(codes[6] && !shot ) // Space bar
+  if(codes[6] && !shot ) // Hit the cue ball with the pool stick
   {
+    // Set flags that the cue ball has been hit
     outputCue = false;
     shot = true;
-    physicsWorld->getObject(20)->Reset();
+
+    // Unrender the pool stick
+    physicsWorld->getObject(20)->unrenderPoolStick();
+
+    // Give the cue ball the velocity specified by the user
     physicsWorld->getObject(0)->getRigidBody()->setLinearVelocity(btVector3(xForce, 0.0f, zForce));
 
+    // Reset all values for force
     theta_y = 0;
     xForce = -89;
     zForce = -1;
     lpositiveX = false;
     lpositiveZ = true;
-
     rpositiveX = true;
     rpositiveZ = false;
 
     codes[6] = false;
   }
 
-  else
+  else // Else user is trying to shoot the ball while it is moving
   {
       codes[6] = false;
   }
 
-  // Reset the game
-  if(codes[7]) // 'P'
+  if(codes[7]) // Reset the game
   {
     physicsWorld = new Physics();
 
     codes[7] = false;
   }
 
-  // Move pool stick left
-  if(codes[8])
+  if(codes[8]) // Move pool stick left
   {
+    // Update model of pool stick
     theta_y+= .01693;
 
+    // Move the x positive
     if(lpositiveX)
     {
       xForce  += 1.0;
     }
 
+    // Else move the x negative
     else
     {
       xForce -= 1.0;
     }
 
+    // Move the z positive
     if(lpositiveZ)
     {
       zForce  += 1.0;
     }
 
+    // Else move the z negative
     else
     {
       zForce -= 1.0;
     }
 
+    // If zForce is 90 set flags
     if(zForce == 90)
     {
       lpositiveX = true;
       lpositiveZ = false;
       rpositiveX = false;
       rpositiveZ = true;
-
     }
 
+    // Else if zForce is -90 set flags
     else if(zForce == -90)
     {
       lpositiveX = false;
@@ -353,6 +362,7 @@ void Graphics::PlayGame(bool codes[])
       rpositiveZ = false;
     }
 
+    // Else if xForce is 90 set flags
     if(xForce == 90)
     {
       lpositiveX = false;
@@ -361,6 +371,7 @@ void Graphics::PlayGame(bool codes[])
       rpositiveZ = true;
     }
 
+    // Else if xForce is -90 set flags
     else if(xForce == -90)
     {
       lpositiveZ = true;
@@ -372,32 +383,36 @@ void Graphics::PlayGame(bool codes[])
     codes[8] = false;
   }
 
-  // Move pool stick right
-  if(codes[9])
+  if(codes[9]) // Move pool stick right
   {
-
+    // Update model of pool stick
     theta_y -= .01693;
 
+    // Move the z positive
     if(rpositiveX)
     {
-      xForce  += 1.0;
+      xForce += 1.0;
     }
 
+    // Else move the x negative
     else
     {
       xForce -= 1.0;
     }
 
+    // Move the z positive
     if(rpositiveZ)
     {
       zForce += 1.0;
     }
 
+    // Else move the z negative
     else
     {
       zForce -= 1.0;
     }
 
+    // If zForce is 90 set flags
     if(zForce == 90)
     {
       rpositiveX = false;
@@ -406,6 +421,7 @@ void Graphics::PlayGame(bool codes[])
       lpositiveZ = true;
     }
 
+    // If zForce is -90 set flags
     else if(zForce == -90)
     {
       rpositiveX = true;
@@ -414,6 +430,7 @@ void Graphics::PlayGame(bool codes[])
       lpositiveZ = false;
     }
 
+    // If xForce is 90 set flags
     if(xForce == 90)
     {
       rpositiveX = false;
@@ -422,6 +439,7 @@ void Graphics::PlayGame(bool codes[])
       lpositiveZ = false;
     }
 
+    // If xForce is -90 set flags
     else if(xForce == -90)
     {
       rpositiveZ = false;
@@ -471,6 +489,7 @@ void Graphics::SetCamera(bool codes[])
     z -= 1;
     codes[5] = false;
   }
+
   if(codes[14]) // reset view
   {
     x = 0;
@@ -478,8 +497,7 @@ void Graphics::SetCamera(bool codes[])
     z = 57;
     codes[14] = false;
   }
-
-
+  
   // Set camera view
   m_camera->SetView(x, y, z);
 }

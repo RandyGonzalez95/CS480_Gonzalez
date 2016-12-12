@@ -98,17 +98,14 @@ void Physics::Pool()
   CreateTableItem("../models/legs.obj", "../texture/wood1.jpg"); // 17
   CreateTableItem("../models/table.obj", "../texture/cloth.jpg"); // 18
   CreateTableItem("../models/ledges.obj", "../texture/blackwood.jpg"); //19
-
-  // Debugging cube
   
-
   // Pool stick (index 20)
-  CreateStick("../models/stick.obj", "../texture/mahoganywood.jpg");
+  CreateItem("../models/stick.obj", "../texture/mahoganywood.jpg");
 
-  // Create Room
-  CreateStick("../models/floor.obj", "../texture/carpet3.jpg");
-  CreateStick("../models/wall.obj", "../texture/brick.jpg");
-  CreateStick("../models/couch.obj", "../texture/beige.jpg");
+  // Create Room (index 21-23)
+  CreateItem("../models/floor.obj", "../texture/carpet3.jpg");
+  CreateItem("../models/wall.obj", "../texture/brick.jpg");
+  CreateItem("../models/couch.obj", "../texture/beige.jpg");
 }
 
 void Physics::CreateSphere(std::string objFile, std::string texture, const btVector3 &position)
@@ -141,16 +138,6 @@ void Physics::CreateSphere(std::string objFile, std::string texture, const btVec
   dynamicsWorld->addRigidBody(tempObject->rigidBody);
 
   // Add to objects vector
-  objects.push_back(tempObject);
-}
-
-void Physics::CreateStick(std::string objFile, std::string texture)
-{
-  // Create Object
-  Object *tempObject = new Object();
-  tempObject->CreateObject(objFile, texture, NULL);
-
-  // Add object to vector
   objects.push_back(tempObject);
 }
 
