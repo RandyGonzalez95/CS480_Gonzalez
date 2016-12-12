@@ -3,7 +3,7 @@
 Graphics::Graphics()
 {
   x = 0;
-  y = 55;
+  y = 75;
   z = 57;
 }
 
@@ -286,11 +286,11 @@ void Graphics::PlayGame(bool codes[])
     theta_y = 0;
     xForce = -89;
     zForce = -1;
-    lpositiveX = true;
+    lpositiveX = false;
     lpositiveZ = true;
 
     rpositiveX = true;
-    rpositiveZ = true;
+    rpositiveZ = false;
 
     codes[6] = false;
   }
@@ -471,7 +471,7 @@ void Graphics::SetCamera(bool codes[])
   if(codes[14]) // reset view
   {
     x = 0;
-    y = 55;
+    y = 75;
     z = 57;
     codes[14] = false;
   }

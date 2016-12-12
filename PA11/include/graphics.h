@@ -45,11 +45,11 @@ class Graphics
 
     bool shot = false;
 
-    bool lpositiveX = true;
+    bool lpositiveX = false;
     bool lpositiveZ = true;
 
     bool rpositiveX = true;
-    bool rpositiveZ = true;
+    bool rpositiveZ = false;
 
 
     // Simulation Time
