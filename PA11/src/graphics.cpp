@@ -311,7 +311,7 @@ void Graphics::PlayGame(bool codes[])
   // Move pool stick left
   if(codes[8])
   {
-    theta_y+= .016744;
+    theta_y+= .01693;
 
     if(lpositiveX)
     {
@@ -337,24 +337,33 @@ void Graphics::PlayGame(bool codes[])
     {
       lpositiveX = true;
       lpositiveZ = false;
+      rpositiveX = false;
+      rpositiveZ = true;
+
     }
 
     else if(zForce == -90)
     {
       lpositiveX = false;
       lpositiveZ = true;
+      rpositiveX = true;
+      rpositiveZ = false;
     }
 
     if(xForce == 90)
     {
       lpositiveX = false;
       lpositiveZ = false;
+      rpositiveX = true;
+      rpositiveZ = true;
     }
 
     else if(xForce == -90)
     {
       lpositiveZ = true;
       lpositiveX = true;
+      rpositiveX = false;
+      rpositiveZ = false;
     }
 
     codes[8] = false;
@@ -364,31 +373,7 @@ void Graphics::PlayGame(bool codes[])
   if(codes[9])
   {
 
-    theta_y -= .016744;
-
-    if(zForce == 90)
-    {
-      rpositiveX = false;
-      rpositiveZ = false;
-    }
-
-    else if(zForce == -90)
-    {
-      rpositiveX = true;
-      rpositiveZ = true;
-    }
-
-    if(xForce == 90)
-    {
-      rpositiveX = false;
-      rpositiveZ = true;
-    }
-
-    else if(xForce == -90)
-    {
-      rpositiveZ = false;
-      rpositiveX = true;
-    }
+    theta_y -= .01693;
 
     if(rpositiveX)
     {
@@ -410,6 +395,38 @@ void Graphics::PlayGame(bool codes[])
       zForce -= 1.0;
     }
 
+    if(zForce == 90)
+    {
+      rpositiveX = false;
+      rpositiveZ = false;
+      lpositiveX = true;
+      lpositiveZ = true;
+    }
+
+    else if(zForce == -90)
+    {
+      rpositiveX = true;
+      rpositiveZ = true;
+      lpositiveX = false;
+      lpositiveZ = false;
+    }
+
+    if(xForce == 90)
+    {
+      rpositiveX = false;
+      rpositiveZ = true;
+      lpositiveX = true;
+      lpositiveZ = false;
+    }
+
+    else if(xForce == -90)
+    {
+      rpositiveZ = false;
+      rpositiveX = true;
+      lpositiveZ = true;
+      lpositiveX = false;
+    }
+    
     codes[9] = false;
   }
 }
