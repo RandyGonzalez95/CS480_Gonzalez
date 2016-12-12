@@ -214,7 +214,7 @@ void Graphics::PlayGame(bool codes[])
   // Move pool stick left
   if(codes[8])
   {
-    theta_y+= 1;
+    theta_y+= .1;
 
     if(zForce == 90)
     {
@@ -245,7 +245,7 @@ void Graphics::PlayGame(bool codes[])
   // Move pool stick right
   if(codes[9])
   {
-    theta_y -= 1;
+    theta_y -= .1;
 
     if(zForce == 90)
     {
@@ -311,7 +311,7 @@ void Graphics::SetCamera(bool codes[])
     z -= 1;
     codes[5] = false;
   }
-  
+
 
   // Set camera view
   m_camera->SetView(x, y, z);
