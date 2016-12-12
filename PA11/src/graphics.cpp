@@ -164,12 +164,17 @@ void Graphics::Update(unsigned int dt, bool codes[])
   simTime = 0.0083;
   physicsWorld->getWorld()->stepSimulation(simTime, 10);
 
+  btTransform cueTrans;
+  btVector3 cuePos;
+
   // Set Camera
   SetCamera(codes);
 
   // Check Game Logic
   PlayGame(codes);
 
+  // move cube for debugging
+  Move(codes);
   // Update all items that aren't the table
   for(int i = 0; i < 17; i++)
   {
@@ -181,7 +186,7 @@ void Graphics::Update(unsigned int dt, bool codes[])
 
     // if cue ball is now static we may shoot again.
     if( (i == 0) && 
-        (vel.length() < 0.3))
+        (vel.length() < 0.7))
         {
           shot = false;
           vel.setX(0);
@@ -193,6 +198,15 @@ void Graphics::Update(unsigned int dt, bool codes[])
       physicsWorld->getObject(20)->SetLocation(theta_y, physicsWorld->getObject(0));
     }
 
+
+    physicsWorld->getObject(0)->getRigidBody()->getMotionState()->getWorldTransform(cueTrans);
+    cuePos = cueTrans.getOrigin();
+
+    if(cuePos.getY() < 0.0)
+    {
+      physicsWorld->getObject(0)->ResetCue();
+    }
+
     // If the velocity is moving upwards reset it to 0 to keep objects on table
     if(vel.getY() > 0)
     {
@@ -202,6 +216,34 @@ void Graphics::Update(unsigned int dt, bool codes[])
     // Set the linear velocity of the object
     physicsWorld->getObject(i)->getRigidBody()->setLinearVelocity(vel);
   }
+}
+
+void Graphics::Move(bool codes[])
+{ 
+
+
+  if(codes[10])
+  {
+    zPos = -1000;
+    codes[10] = false;
+  }
+  if(codes[11])
+  {
+    xPos = -1000;
+    codes[11] = false;
+  }
+  if(codes[12])
+  {
+    zPos = 1000;
+    codes[12] = false;
+  }
+  if(codes[13])
+  {
+    xPos = 1000;
+    codes[13] = false;
+  }
+  physicsWorld->getObject(21)->Update();
+  physicsWorld->getObject(21)->move(xPos, 0, zPos);
 }
 
 void Graphics::PlayGame(bool codes[])

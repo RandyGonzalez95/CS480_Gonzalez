@@ -14,6 +14,7 @@ class Graphics
     void Update(unsigned int dt, bool codes[]);
     void SetCamera(bool codes[]);
     void PlayGame(bool codes[]);
+    void Move(bool codes[]);
     void Render();
 
   private:
@@ -34,8 +35,12 @@ class Graphics
     GLint m_SpecularProduct;
     GLfloat m_shininess;
 
-    // Camera Position
+    // Camera Position// Debugging cube
     float x = 0, y = 0, z = 0;
+
+
+
+    float xPos = 0, yPos = 0, zPos = 0;
 
     // Force on ball
     float xForce = -90, zForce = 0;

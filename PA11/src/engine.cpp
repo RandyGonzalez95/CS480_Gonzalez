@@ -138,6 +138,23 @@ void Engine::Keyboard(bool codes[])
         break;
 
 
+      case SDLK_i: // Shoot Cue Ball
+        codes[10] = true;
+        break;
+
+      case SDLK_j: // Reset Game
+        codes[11] = true;
+        break;
+
+      case SDLK_l: // Move pool stick left
+        codes[12] = true;
+        break;
+
+      case SDLK_k: // Move pool stick right
+        codes[13] = true;
+        break;
+
+
     }
   }
 }

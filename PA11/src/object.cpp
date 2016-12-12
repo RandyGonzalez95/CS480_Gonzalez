@@ -137,6 +137,17 @@ void Object::Update()
 
 void Object::SetLocation(float y, Object *cueBall)
 {
+  
+  btTransform cueTrans;
+  btVector3 cuePos;
+
+  cueBall->rigidBody->getMotionState()->getWorldTransform(cueTrans);
+  cuePos = cueTrans.getOrigin();
+
+
+  delete cueBall->motionState;
+  cueBall->motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), btVector3(cuePos.getX(), 0.5, cuePos.getZ())));
+  cueBall->rigidBody->setMotionState(cueBall->motionState);
   glm::mat4 cueModel = cueBall->GetModel();
 
   model = cueModel;
@@ -152,9 +163,22 @@ void Object::SetLocation(float y, Object *cueBall)
 
 }
 
+void Object::move(float xPos, float yPos, float zPos)
+{
+  rigidBody->applyForce(btVector3(xPos,yPos,zPos), btVector3(0,0,0));
+
+}
+
 void Object::Reset()
 {
   model = glm::mat4(0.0f);
+}
+
+void Object::ResetCue()
+{
+  delete motionState;
+  motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,1,1), btVector3(30.0f, 0.5, 0.0f)));
+  rigidBody->setMotionState(motionState);
 }
 
 void Object::UpdateStick(float x, float z, Object* cueBall)
