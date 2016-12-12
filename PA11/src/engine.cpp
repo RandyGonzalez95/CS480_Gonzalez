@@ -163,7 +163,7 @@ void Engine::Keyboard(bool codes[])
         // Vertex Lighting
         if(codes[15])
         {
-          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
+          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
           {
             printf("The graphics failed to initialize.\n");
           }
@@ -173,7 +173,7 @@ void Engine::Keyboard(bool codes[])
         // Fragment Lighting
         else if(!codes[15])
         {
-          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, false))
+          if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT, true))
           {
             printf("The graphics failed to initialize.\n");
           }
